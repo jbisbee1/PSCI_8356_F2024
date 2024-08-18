@@ -175,7 +175,7 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 10/01 | Estimation | Estimates and estimators | [Lecture 9](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_9_slides.html#1)<br/>[Notes 9](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_9_notes.Rmd)<br/>[Recording]() | 
 10/03 | Review Session | Lectures 7-9 review | [Lecture R3](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_R3_slides.html#1)<br/>[Notes R3](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_R3_notes.Rmd)<br/>[Recording]() | 
 10/08 | Midterm Exam |  |  | 
-10/10 | FALL BREAK |  |  | 
+10/10 | FALL BREAK | PARTY |  | 
 10/15 | Inference 1 | CLT, CIs, and inference | [Lecture 11](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_11_slides.html#1)<br/>[Notes 11](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_11_notes.Rmd)<br/>[Recording]() | [PS 6](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_6.Rmd)<br/>[AK 6](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_6_AK.pdf)
 10/17 | Inference 2 | Bias and consistency | [Lecture 12](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_12_slides.html#1)<br/>[Notes 12](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_12_notes.Rmd)<br/>[Recording]() | 
 10/22 | Review Session | Lectures 11-12 review | [Lecture R4](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_R4_slides.html#1)<br/>[Notes R4](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_R4_notes.Rmd)<br/>[Recording]() | [PS 7](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_7.Rmd)<br/>[AK 7](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_7_AK.pdf)
@@ -183,13 +183,13 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 10/29 | OLS 1 | Sum of squares, least squares line, R-squared | [Lecture 14](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_14_slides.html#1)<br/>[Notes 14](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_14_notes.Rmd)<br/>[Recording]() | [PS 8](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_8.Rmd)<br/>[AK 8](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_8_AK.pdf)
 10/31 | OLS 2 | Properties of OLS | [Lecture 15](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_15_slides.html#1)<br/>[Notes 15](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_15_notes.Rmd)<br/>[Recording]() | 
 11/05 | Review Session | Lectures 13-15 review | [Lecture R5](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_R5_slides.html#1)<br/>[Notes R5](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_R5_notes.Rmd)<br/>[Recording]() | [PS 9](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_9.Rmd)<br/>[AK 9](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_9_AK.pdf)
-11/07 | NO CLASS |  |  | 
+11/07 | NO CLASS | IPES |  | 
 11/12 | Confounding 1 | OVB, controls and interpretation | [Lecture 17](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_17_slides.html#1)<br/>[Notes 17](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_17_notes.Rmd)<br/>[Recording]() | [PS 10](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_10.Rmd)<br/>[AK 10](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_10_AK.pdf)
 11/14 | Confounding 2 | Matrix algebra and OLS | [Lecture 18](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_18_slides.html#1)<br/>[Notes 18](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_18_notes.Rmd)<br/>[Recording]() | 
 11/19 | Interpreting regression | Derivatives, continuous & categorical variables, interactions | [Lecture 19](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_19_slides.html#1)<br/>[Notes 19](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_19_notes.Rmd)<br/>[Recording]() | [PS 11](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_11.Rmd)<br/>[AK 11](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/ds1000_pset_11_AK.pdf)
 11/21 | Measurement | Measurement | [Lecture 20](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_20_slides.html#1)<br/>[Notes 20](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_20_notes.Rmd)<br/>[Recording]() | 
-11/26 | THANKSGIVING BREAK |  |  | 
-11/28 | THANKSGIVING BREAK |  |  | 
+11/26 | THANKSGIVING BREAK | EAT |  | 
+11/28 | THANKSGIVING BREAK | EAT |  | 
 12/03 | Presentations |  |  | 
 12/05 | Presentations |  |  | 
 12/10 | Final Exam |  |  | 
