@@ -25,9 +25,9 @@ This course is designed to train political scientists to contribute to the very 
 
 ### Books
 **Required:** 
-- Wackerly, Mendenhall, and Scheaffer. *Mathematical Statistics with Applications, 7th edition*. Thompson. (WMS) [PDF](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Materials/WMS.pdf)
+- Wackerly, Mendenhall, and Scheaffer. *Mathematical Statistics with Applications, 7th edition*. Thompson. (WMS) [PDF](https://brightspace.vanderbilt.edu/d2l/le/content/512961/viewContent/3407237/View)
 
-- Wooldridge. *Introductory Econometrics*, 5th edition. Cengage. [PDF](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Materials/Wooldridge.pdf) 
+- Wooldridge. *Introductory Econometrics*, 5th edition. Cengage. [PDF](https://brightspace.vanderbilt.edu/d2l/le/content/512961/viewContent/3407238/View) 
 
 **Suggested:**
 
