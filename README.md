@@ -74,8 +74,8 @@ Participating in lecture and section is expected. Constructive questions count.
 - **Problem Sets:** 40%
 Problem sets will be issued regularly to offer practice applying the tools taught in class. You are welcome to work together on the problem sets as long as the writeup you turn is your own. The writeup must be done in LaTeX to earn credit. You can turn in one problem set for credit written using something other than LaTeX. All R code must be commented.
 
-- ** Exams:** 50% (25% each)
-The final exam will be comprised of two parts. The first is a presentation of the results of a data exercise. The second is a take-home exam. Details for both will be given in class. All material covered during the semester is eligible for the take-home exam; you may consult any non-person resource to complete it, but please work alone.
+- **Exams:** 50% (15% for the midterm, 35% for the final)
+The midterm exam will be in-class. The final exam will be comprised of two parts. The first is a presentation of the results of a data exercise. The second is a take-home exam. Details for both will be given in class. All material covered during the semester is eligible for the take-home exam; you may consult any non-person resource to complete it, but please work alone.
 
 Problem sets and exams will have opportunities to earn extra credit, theoretically meaning you could score above 100%. All grades are curved without taking the extra credit results into consideration. We follow the standard Vanderbilt grading system, reproduced below:
 
