@@ -25,9 +25,9 @@ This course is designed to train political scientists to contribute to the very 
 
 ### Books
 **Required:** 
-- Wackerly, Mendenhall, and Scheaffer. *Mathematical Statistics with Applications, 7th edition*. Thompson. (WMS) [PDF](https://github.com/jbisbee1/PSCI_8356F_2024/blob/main/Materials/WMS.pdf)
+- Wackerly, Mendenhall, and Scheaffer. *Mathematical Statistics with Applications, 7th edition*. Thompson. (WMS) [PDF](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Materials/WMS.pdf)
 
-- Wooldridge. *Introductory Econometrics*, 5th edition. Cengage. [PDF](https://github.com/jbisbee1/PSCI_8356F_2024/blob/main/Materials/Wooldridge.pdf) 
+- Wooldridge. *Introductory Econometrics*, 5th edition. Cengage. [PDF](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Materials/Wooldridge.pdf) 
 
 **Suggested:**
 
@@ -62,7 +62,7 @@ Here is the list of channels you should see upon joining the Campuswire workspac
 - **Grades**: A space for grades (**NOT USED. VISIT BRIGHTSPACE INSTEAD.**)
 	
 ### GitHub
-I have created a [`GitHub`](https://github.com/jbisbee1/PSCI_8356F_2024) repository to prepare and share all course-related content. This very syllabus is available as the repository's README and all links below are connected to the appropriate folders, sub-folders, and files in this repository. 
+I have created a [`GitHub`](https://github.com/jbisbee1/PSCI_8356_F2024) repository to prepare and share all course-related content. This very syllabus is available as the repository's README and all links below are connected to the appropriate folders, sub-folders, and files in this repository. 
 
 *[Back to ToC](#table-of-contents)*
 
