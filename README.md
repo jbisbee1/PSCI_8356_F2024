@@ -188,8 +188,8 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 11/14 | Confounding 2 | Matrix algebra and OLS | [Slides 18](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_18_slides.html#1)<br/>[Notes 18](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_18_notes.pdf)<br/>[Recording]() | Wooldridge ch 7 & 8
 11/19 | Interpreting regression | Derivatives, continuous & categorical variables, interactions | [Slides 19](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_19_slides.html#1)<br/>[Notes 19](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_19_notes.pdf)<br/>[Recording]() | [PS 11](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/pset_11.Rmd)<br/>[AK 11](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/pset_11_AK.pdf)
 11/21 | Measurement | Measurement | [Slides 20](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_20_slides.html#1)<br/>[Notes 20](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_20_notes.pdf)<br/>[Recording]() | 
-**11/26** | **THANKSGIVING BREAK** | **EAT** |  | 
-**11/28** | **THANKSGIVING BREAK** | **EAT** |  | 
+**11/26** | **THANKSGIVING** | **EAT** |  | 
+**11/28** | **THANKSGIVING** | **EAT** |  | 
 **12/03** | **Presentations** |  |  | 
 **12/05** | **Presentations** |  |  | 
 **12/10** | **Final Exam** |  |  | 
