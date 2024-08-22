@@ -160,7 +160,7 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 ## Syllabus
 
 | Date | Topic | Learning Goal | Materials | Assignment
-| ---: | :--- | :--- | --- | --- | ---
+| ---: | :--- | :--- | --- | ---
 08/22 | Introduction | Description, prediction, causation | [Slides 1](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_1_slides.html#1)<br/>[Notes 1](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_1_notes.pdf)<br/>[Recording]() | WMS ch 1 & 2
 08/27 | Basics of data summaries | Summary statistics, visualization | [Slides 2](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_2_slides.html#1)<br/>[Notes 2](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_2_notes.pdf)<br/>[Recording]() | [PS 1](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/pset_1.pdf)<br/>[AK 1](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Psets/pset_1_AK.pdf)
 08/29 | Probability theory 1 | Experiments, set notation, definitions | [Slides 3](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_3_slides.html#1)<br/>[Notes 3](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_3_notes.pdf)<br/>[Recording]() |
