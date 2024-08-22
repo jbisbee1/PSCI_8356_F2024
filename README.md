@@ -197,18 +197,6 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 *[Back to ToC](#table-of-contents)*
 
 
-### Lecture Notes, Data and Code for Each Topic 
-Each lecture's materials will be released according to the following schedule:
-* Lecture Slides (PDF/html): Published the evening of the date of the class. PDFs can be downloaded. html slides can be viewed online.
-
-**Note that these links will return a 404 error if clicked prior to this release schedule.**
-
-*To access lecture content and/or data sets use ctrl+click on a mac or right click on a pc, then click "save link as" and save to the class directory on your computer.*
-
-
-*[Back to Syllabus](#syllabus)*
-
-
 ## Helpful Resources
 
 [Rstudio Cheat Sheet: Data Wrangling](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
