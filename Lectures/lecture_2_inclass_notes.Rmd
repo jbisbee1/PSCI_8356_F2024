@@ -1,0 +1,56 @@
+---
+title: "Stats 1: Lecture 2 Notes"
+output: html_document
+date: "2024-08-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I can take notes here.
+
+I can create bulletted lists here:
+
+  1. item 1
+  2. item 2
+
+**Bold** *italic* `code`
+
+```{r}
+2+2
+```
+
+# OOL: Object-Oriented Language
+
+```{r}
+the_number_four <- 2+2
+
+the_number_four^2
+
+vector_of_numbers <- c(1,53,100,-251,15.32)
+
+mean(vector_of_numbers)
+```
+
+# Package
+
+- A collection of functions written by some randos
+
+```{r}
+require(tidyverse) # library(tidyverse)
+
+df <- read_rds("https://github.com/jbisbee1/PSCI_8356_F2024/raw/main/Data/sc_debt.Rds")
+
+# filter(): a verb that allows us to subset to specific rows
+df %>%
+  filter(instnm == "Vanderbilt University")
+
+# select(): a verb that allows us to subset to specific columns
+df %>%
+  select(instnm,adm_rate,sat_avg,md_earn_wne_p6)%>%
+  filter(instnm == "Vanderbilt University")
+
+
+```
+
