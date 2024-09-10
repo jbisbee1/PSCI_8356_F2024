@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Review 1: Lectures 1-4</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Prof. Bisbee" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/lexis.css" type="text/css" />
+    <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Review 1: Lectures 1-4
+]
+.subtitle[
+## Quantitative Political Science
+]
+.author[
+### Prof. Bisbee
+]
+.institute[
+### Vanderbilt University
+]
+.date[
+### Slides Updated: 2024-09-09
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.small .remark-code { /*Change made here*/
+  font-size: 85% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 50% !important;
+}
+&lt;/style&gt;
+
+
+
+# Agenda
+
+- Where we started
+
+- Where we are
+
+- Where we're going
+
+---
+
+# Where we started
+
+- Goal of this course: teach you how to answer three questions
+
+--
+
+  1. What can we say about the data that we have? (descriptive)
+  
+  2. What can we say about the data that we don't have based on the data we do have? (inferential)
+  
+  3. What can we say about the data we would expect to see? (predictive)
+
+---
+
+# Where we are
+
+- We have learned about tools for description
+
+--
+
+  - Tables &amp; Figures
+  
+  - Summary statistics
+
+--
+
+- We have learned about data structure
+
+--
+
+  - Tabular data (rows = units of analysis; columns = variables)
+  
+  - Variables: logical groupings of mutually exclusive attributes
+  
+--
+
+- We have learned about variables
+
+--
+
+  -  4 levels of detail (nominal, ordinal, interval, and ratio)
+  
+--
+
+- And we have learned about summary statistics
+
+--
+
+  - Central tendency (mean, median, and mode)
+  
+  - Dispersion (range, IQR, variance)
+  
+---
+
+# Where we are
+
+- Everything on the preceding slide was in service of the first question: What can we say about the data that we have?
+
+- Currently working toward our second question: What can we say about the data that we don't have?
+
+- How do we move from the observed to the unobserved? Probability theory!
+
+--
+
+  - Define an experiment as **the process by which an observation is made**
+  
+  - Define an outcome of an experiment as an **event**
+  
+--
+
+- These definitions allow us to work with **set theory** to talk about the probability of an event
+
+--
+
+  - Experiment: I draw a card at random from a standard 52 card deck
+  
+  - Outcome of interest: the card is not a "face card"
+  
+---
+
+# Pause for the big picture
+
+- The card example (and many of the examples thus far) embody a population-to-sample question
+
+--
+
+  - I know the deck is 52 cards, I know it is "standard"
+  
+  - Thus I know the probability of each card
+  
+--
+
+- But what if we don't know the deck is 52 cards, or if it is "standard"?
+
+  - I might try drawing cards at random and recording their values to learn more!
+  
+--
+
+- This is the sample-to-population challenge that is at the heart of the second question: What can we say about the data that we don't have?
+
+  - This is where we are going, but up to now we are learning about the population-to-sample process
+
+---
+
+# Where we are
+
+- The deck of cards is easy and intuitive, but there are many population-to-sample settings that aren't so simple
+
+- To solve, need to get comfortable with calculating probabilities with set theory
+
+- And because you are now **among the elite**, you need to know how these skills are built on solid foundations
+
+---
+
+# Where we are
+
+- Foundations 1: The Three Axioms
+
+  1. `\(P(A) \geq 0\)`
+  
+  2. `\(P(S) = 1\)`
+  
+  3. `\(P(A_1 \cup A_2 \cup \dots \cup A_n) = \sum_{i=1}^n P(A_i)\)`
+  
+---
+
+# Where we are
+
+- Foundations 2: The Four Tools
+
+  1. **Conditional Probability:** `\(P(A|B) = \frac{P(A\cap B)}{P(B)}\)` and **Independence:** `\(P(A|B) = P(A)\)` or `\(P(B|A) = P(B)\)` or `\(P(A\cap B) = P(A)P(B)\)`
+  
+  2. **Multiplicative Law**: `\(P(A_1 \cap A_2 \cap \dots \cap A_k) = P(A_1)P(A_2|A_1)P(A_3|A_1 \cap A_2)\dots P(A_k|A_1\cap A_2 \cap \dots \cap A_{k-1})\)` and **Additive Law**: `\(P(A \cup B) = P(A) + P(B) - P(A\cap B)\)`
+  
+  3. **Complements**: `\(A^c\)` is literally "not `\(A\)`". 
+  
+  4. **Law of total probability**: `\(P(A) = \sum_{i=1}^k P(A|B_i)P(B_i)\)` if `\(\{B_1,B_2,\dots,B_k\}\)` is a **partition**
+  
+---
+
+# Where we are
+
+- Foundations 3: Cool results from Foundations 1 and 2
+
+  1. `\(P(A) = 1 - P(A^c)\)` (can you prove this?)
+  
+  2. `\(P(B_j|A) = \frac{P(A|B_j)P(B_j)}{\sum_{i=1}^k P(A|B_i)P(B_i)}\)` (can you prove this?)
+  
+---
+
+# Where we are
+
+- At this point, you should be able to make a probabilistic statement about a sample, based on a population
+
+--
+
+  - The odds are two to one that, when A and B play tennis, A wins. Suppose that A and B play two matches. What is the probability that A wins at least one match?
+  
+  - Consider an experiment that consists of recording the birthday for each of 20 randomly selected persons. Ignoring leap years and assuming that there are only 365 possible distinct birthdays, find the number of points in the sample space S for this experiment. If we assume that each of the possible sets of birthdays is equiprobable, what is the probability that each person in the 20 has a different birthday?
+  
+  - Suppose a balanced die is tossed once. What is the probability that the value is a 1, given that the value is an odd number?
+  
+---
+
+# Where we are going
+
+- Eventually, we will need to run this all in **reverse**
+
+  - Instead of knowing things about the population, we will only know things about the sample
+  
+- The next step is to define a **random variable** which takes on values from an experiment which are drawn from the sample space `\(S\)`
+
+  - The mapping from the sample space `\(S\)` and the realized values is how the random variable is created
+  
+  - But we can think of a **random variable** as the function for which the domain is the sample space
+  
+--
+
+- This will also prove to be an essential concept for **inference**...
+
+--
+
+- ...but first, we need to learn how to apply many of the preceding tools to random variables!
+
+---
+
+# Random Variables
+
+- Start with **discrete** random variables
+
+  - `\(Y\)` is discrete if it can only take on finite or countably infinite number of distinct values
+  
+  - "Countably infinite": a one-to-one correspondence with the integers
+  
+- To make inferences about the **population** based on a **sample**:
+
+  - Need to know the probability of observing a particular event
+  
+    - Events are numerical events corresponding to values `\(y\)` of discrete random variables `\(Y\)`
+    
+  - `\(P(Y = y)\)` for all the values `\(Y\)` can take on
+  
+  - The collection of these probabilities is a **probability distribution**
+  
+---
+
+# Example: dice
+
+- Experiment: roll a pair of six-sided dice and record the sum of their faces
+
+  - Sample space consists of 36 simple events
+  
+  - Random variable `\(Y\)` is the sum of the faces
+  
+  - `\(P(Y = y) = \sum_{E_i: Y(E_i) = y}P(E_i)\)`
+  
+  - Sometimes written as `\(p(y)\)`
+  
+- Can express `\(Y\)`'s probability distribution as a **table**, a **formula**, or a **graph**
+
+---
+
+# Probability Distribution: Table
+
+
+```
+##     y samples       Pr_y
+## 1   2       1 0.02777778
+## 2   3       2 0.05555556
+## 3   4       3 0.08333333
+## 4   5       4 0.11111111
+## 5   6       5 0.13888889
+## 6   7       6 0.16666667
+## 7   8       5 0.13888889
+## 8   9       4 0.11111111
+## 9  10       3 0.08333333
+## 10 11       2 0.05555556
+## 11 12       1 0.02777778
+```
+
+---
+
+# Probability Distribution: Graph
+
+
+```r
+p %&gt;%
+  ggplot(aes(x = y,y = Pr_y)) + 
+  geom_bar(stat = 'identity')
+```
+
+&lt;img src="Lecture_R1_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Probability Distribution: Function
+
+`$$P(Y = y) = p(y) = \frac{6 - |7-y|}{36},\; y = \{1,2,\dots,6\}$$`
+
+- Also called a **probability mass function** or **PMF**
+
+  - The "mass of a random variable at `\(y\)`" is the PMF evaluated at `\(y\)`, or `\(p(y)\)`
+  
+- The probability distribution of a random variable is a **theoretical model** for the empirical distribution of data associated with a real population
+
+  - If we roll a pair of dice over and over again, the empirical distribution would look *like* (but not *identical to*) the theoretical probability distribution
+  
+---
+
+# Expectations
+
+- We can summarize a random variable with its central tendency and dispersion
+  
+- We can specify and manipulate formulas describing random variables using the **expectations operator**
+
+  - **Expected value** of `\(Y\)` is `\(E(Y) \equiv \sum_y yp(y)\)`
+  
+  - Each possible value of `\(Y\)` multiplied by the probability of it appearing, summed up over all `\(y\)`
+  
+  - Apply this to the dice example!
+  
+- The **expected value** is how we talk about the central tendency of a random variable with a theoretical probability distribution
+
+  - Equivalent to the concept of the *mean of an empirical frequency distribution*
+  
+---
+
+# Expectations
+
+- Recall that the probability distribution of a random variable is a *theoretical model* for the empirical distribution of data **associated with a real population**
+
+  - If the theoretical model is **accurate**, then `\(E(Y) = \mu\)`
+  
+- `\(\mu\)` is the **population mean** which is a "parameter"
+  
+  - **Parameter**: characteristic of the distribution `\(Y\)` in the population that we never actually observe
+  
+---
+
+# Expectations
+
+- Can also define variance of `\(Y\)` with expectations
+
+- `\(VAR(Y) = E[(Y - E(Y))^2]\)`
+
+--
+
+  - Look familiar?
+  
+  - `\(s^2 = \frac{1}{N}\sum_{i = 1}^N (y_i - \bar{y})^2\)`
+  
+---
+
+# Expectations
+
+- The expected value concept can be applied to any **function of a random variable**
+
+  - Consider any real-valued function of `\(Y\)`, denoted `\(g(Y)\)`
+  
+  - `\(E[g(Y)] = \sum_y g(y)p(y)\)`
+  
+- Instead of summing over the discrete values of `\(y\)` multiplied by their probability `\(p(y)\)`, we are summing over the discrete values of `\(y\)` that are transformed with the function `\(g(y)\)`
+
+- NB: `\(E[g(Y)] = \sum_y g(y)p(y)\)` is not a definition. We have to **prove** it.
+
+---
+
+# Expectations
+
+- Several other nice properties of expectations, but you need to **prove** all of them!
+
+  1. `\(E(c) = c\)`
+
+  2. `\(E[cg(Y)] = cE[g(Y)]\)`
+
+  3. `\(E[g_1(Y) + g_2(Y)] = E[g_1(Y)] + E[g_2(Y)]\)`
+  
+--
+
+- Put it into practice! Show that `\(E[(Y-E(Y))^2] = E(Y^2) - \mu^2\)`
+  
+---
+
+# Wrapping up
+
+- We're once again back to a bunch of new math
+
+- And you're probably wondering "what is all this and why do I need to know it?"
+
+- Just like the math of probability and set theory brought us to a place where we can easily calculate population-to-sample probabilities, I promise this new math of expectations will become **enormously** helpful for calculating sample-to-population probabilities!
+
+  - I.e., answering our second question!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
