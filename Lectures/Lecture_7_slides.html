@@ -4,7 +4,7 @@
     <title>Lecture 7</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.16/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2023/09/21
-Slides Updated: 2023-09-26
+### Lecture Date: 2024/09/24
+Slides Updated: 2024-09-11
 ]
 
 ---
@@ -46,441 +46,254 @@ Slides Updated: 2023-09-26
 
 # Agenda
 
-1. Sampling
+1. Multivariate analysis
 
-2. The Central Limit Theorem
+2. Joint probability distributions
 
-3. Estimation
-
-4. An example
+3. Independence revisited
 
 ---
 
-# Our journey thus far
+# Multivariate Analysis
 
-- Overarching goal: find the **best possible way** to make inferences about populations from samples
+- First part of course focuses on univariate analysis
+
+- However, multivariate is helpful to develop a **theory**
 
 --
 
-- Defined social phenomena as **experiments** that yield observations
+  - How can we draw **inferences** about a *population* from a *sample*?
   
-  - Outcomes defined as **events**
-    
-  - Defined **sample space** as the set of all possible events
-    
-  - Used **set theory** to guide how we assign probabilities to events
-    
 --
 
-- Then defined a **random variable** as a function mapping sample space to real numbers
-  
-  - Built on set theory to describe the **probability distribution** of an RV
-    
-  - And the probability distribution of a **function** of RVs
-    
----
+- To answer, let's consider a multivariate probability distribution
 
-# "Random" variables
-
-- All observed social phenomena are **realizations of random variables**
-
-- Put differently, political scientists study **random events**
-  
-- We mean "random" differently from the layperson
-
-  - Layperson: "Random" `\(\Rightarrow\)` something that cannot be anticipated
-  
-  - Us: an event that is **probabilistic** instead of deterministic
-
-- In sum, **random variables** means we expect that the values we observe to be draws from an associated probability distribution
-  
----
-
-# Expectations
-
-- Powerful result: if the probability distribution is an accurate representation of the population frequency distribution, then the expected value of an RV is the population mean `\(\mu\)`
-
-Discrete case:
-$$
-E(Y) \equiv \sum_y yp(y)
-$$
-
-Continuous case:
-$$
-E(Y) \equiv \int_y yf(y)dy
-$$
-
----
-
-# Putting this to work
-
-- Fundamental challenge: **inference**
-
-- What can we say about the **data we don't have**?
-
-- Typically want to say something that **summarizes** the population
-
-  - Central tendency is a very common target!
-  
-- These "things" we want to say are **parameters**
-
-  - And we "estimate" them with **estimators**
-
-- Definition: **Estimator**
-
-  - A *rule* (often a formula) that tells us how to calculate an **estimate** from a sample
-  
-- We can come up with many of these, but how do we know if they're any good?
-
----
-
-# Estimates and Estimators
-
-- What do we mean by "good"?
-
-- Example: the observed sample mean
-
-  - Draw random sample of `\(n\)` observations from a random variable `\(Y\)`
-  
-$$
-\bar{Y} \equiv \frac{y_1 + y_2 + \dots + y_n}{n} = \frac{1}{n}\sum_i y_i
-$$
-
-- Is this "good"?
-
-  - Be precise! Is this a "good" estimate of the population parameter `\(\mu\)`?
-  
-- It feels good...but why?
-
----
-
-# Simple Example
-
-- Want to know the mean income of the American population
-
-  - `\(\mu\)`: Average income of **all** Americans
-  
-- But we can't ask everybody (takes too long, too expensive), so we run an **experiment** where we sample Americans **at random** and ask their income
-
-- The response for the first person I ask is `\(y_1\)`
-  
-  - **NOTE:** `\(y_1\)` is one of literally millions of responses I might have recorded
-
-  - Thus it is **probabilistic**
-  
-  - Thus we can think of it as a realization of the random variable `\(Y_1\)`
-  
-- Denote response of second person I ask as `\(y_2\)`
-
-  - AGAIN... `\(y_2\)` is probabilistic and can be thought of as the realization of the random variable `\(Y_2\)`
-  
----
-
-# Simple Example Cont'd
-
-- Thus let observed sample of `\(n\)` observations be realizations of `\(n\)` random variables: `\(Y_1, Y_2, \dots, Y_n\)`
-
-- So what is `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)`?
-
-  - One realization of many possible `\(\bar{Y}\)` values
-  
-  - `\(\bar{Y}\)` is a **function** of random variables, and therefore **itself** a random variable (recall definition of RV)
-  
-  - In other words, our observed sample produces `\(\bar{y}\)`, a realization of the random variable `\(\bar{Y}\)`
-  
-- Since `\(\bar{Y}\)` is a random variable, it has a theoretical probability distribution
-
-  - What does the probability distribution look like?
-  
----
-
-# Magic time
-
-- Thus far, we have being pretty **sketchy** about our distributions
-
-  - Talked about *some* in concrete terms (Bernoulli, Binomial, Poisson, Uniform, Normal)
-  
-  - But mostly been **very** agnostic with our notation: `\(f(y)\)`; `\(F(y)\)` could be (almost) anything
-  
-- But, thanks to a carefully defined experiment, we be **concrete** about the probability distribution of `\(\bar{Y}\)`
-
-- Specifically, we are working with a **random sample**
-
-  - Choose a set of `\(n\)` observations from a population of size `\(N\)`, producing `\(N \choose n\)` possible samples
-  
-  - And each of these samples is **equiprobable**
-  
-- A random sample allows us to assume that the random variables `\(Y_1, Y_2, \dots, Y_n\)` are "i.i.d."
-
-  - **I**ndependent and **I**dentically **D**istributed
-
----
-
-# IID
-
-- **Independent**: `\(F(y_1,y_2,\dots,y_n) = F_1(y_1)*F_2(y_2)*\dots*F_n(y_n)\)`
-
-- **Identically Distributed**: `\(F_1(y_1) = F_2(y_2) = \dots = F_n(y_n) = F(y)\)`
-
----
-
-# How good is `\(\bar{Y}\)`?
-
-- We will refer to `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)` as a **sample statistic**
-
-  - A function of the random variables `\(Y_1,Y_2,\dots,Y_n\)` and "known constants" (in this case, `\(\frac{1}{n}\)`)
-  
-- We can prove that `\(E(\bar{Y}) = \mu\)` thanks to the **identicality assumption**
-
-  - So we can say `\(\bar{Y}\)` is "good" on average because it will be `\(\mu\)` on average
-  
-- But how far off might a given sample's `\(\bar{Y}\)` be?
-
-  - This is just the standard deviation of `\(\bar{Y}\)`, or `\(\sigma_{\bar{Y}}\)`
-  
-  - `\(\sigma_{\bar{Y}} = \sqrt{VAR(\bar{Y})} = \frac{\sigma}{\sqrt{n}}\)` (we can prove with **identicality and independence**)
-  
----
-
-# How good is `\(\bar{Y}\)`?
-
-- Remember that `\(\bar{Y}\)` is a random variable and thus it has a probability distribution?
-
-- In general, any **sample statistic** is a random variable and has a probability distribution
-
-- We call these probability distributions **sampling distributions**
-
-  - Literally just the probability distribution for a sample statistic
-  
-  - They are **theoretical models** for the possible values of the sample statistic we would expect to see through repeated random sampling
-  
-- We might have one sampling distribution for `\(\bar{Y}\)` and another for `\(\bar{Y'}\)`
-
-  - The "better" sampling distribution is the one whose estimates are closer to the true parameter of interest `\(\mu\)`
-  
-  - I.e., the one whose variance is **smaller**
-
----
-
-# How good is `\(\bar{Y}\)`?
-
-
-&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
-
----
-
-# Shapes
-
-- But the previous was just an example, wasn't it? There's no way the **sampling distribution** would look like that
-
-  - After all, other random variables can have *any* shape
-  
-&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
-
----
-
-# Central Limit Theorem
-
-- We can rely on a **powerful** result of the math thus far:
-
-- If `\(Y_1, Y_2, \dots, Y_n\)` are i.i.d., then `\(\bar{Y}\)`'s sampling distribution is approximately normal
-
-- See some examples in the handout!
-
-- Formally, let `\(Y_1, Y_2, \dots, Y_n\)` be i.i.d. random variables with:
-
-  - `\(E(Y_i) = \mu\)`
-  
-  - `\(VAR(Y_i) = \sigma^2\)`
-  
-- Define `\(U_n \equiv \frac{\bar{Y} - \mu}{\sigma / \sqrt{n}}\)` as the standardized `\(\bar{Y}\)`, and denote `\(F_{U_n}(u)\)` as the CDF of this standardized random variable
-
-- We know that `\(\lim_{n \rightarrow \infty} F_{U_n}(u) \int_{-\infty}^u \frac{1}{\sqrt{2\pi}}e^{-t^2/2} dt\;\; \forall\; u\)`
-
-  - You don't need to know this proof, but see Section 7.4 in WMS if interested
-  
----
-
-# Central Limit Theorem
-
-- In plain language: We know the (asymptotic) sampling distribution of `\(\bar{Y}\)` **without requiring any assumptions about the probability distribution of `\(Y\)`**
-
-- We can now actually **calculate** probabilities!
-
-- This is inference!
-
-- This is magic!
-
-- THIS IS SPARTA!
-
----
-
-# Estimation
-
-- With the CLT in hand, let's return to **estimators**
-
-  - Remember the definition?
-  
-  - A rule (often a formula) that tells us how to calculate an estimate of a population parameter
-  
-- Two types:
-
-  1. **Point Estimates**: a single value (i.e., a "point") is given as the estimate of the parameter of interest
-  
-  2. **Interval Estimates**: two values are used to construct an range (i.e., an "interval") in which the parameter of interest exists
-
----
-
-# Estimation
-
-- What is `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)`?
+- Running example: hypothetical congressional election
 
 --
 
-  - A point estimate
+  - GOP has a 73% chance of winning control of the House
   
-- But there are many other candidates
+  - GOP has an 18% chance of winning control of the Senate
+  
+- Two random variables, `\(Y_1\)` and `\(Y_2\)`, one for each chamber
+  
+---
 
-- Consider `\(\bar{Y}_B = \frac{1}{n} \sum_i(Y_i + 1)\)`
+# Multivariate Example
 
-- Is this "good"? No...why not?
+- `\(Y_1\)` and `\(Y_2\)` take on the value 1 if the GOP wins control of the associated chamber, and 0 otherwise
 
-- It is "biased"
+  - Refresher: what type of RVs are these?
+  
+--
+
+  - Bernoulli experiments where "success" is GOP winning control
+  
+- Denote any particular realization of these RVs as the "ordered pair" `\((y_1,y_2)\)`
+
+--
+
+  - `\((y_1,y_2) = (y_2,y_1)\)` iff `\(y_1 = y_2\)`
+  
+- What is `\(P(Y_1 = 1)\)`? What about `\(P(Y_2 = 1)\)`?
+
+--
+
+  - `\(P(Y_1 = 1) = 0.73\)`; `\(P(Y_2 = 1) = 0.18\)`
+  
+---
+
+# Multivariate Example
+  
+- What is the probability that Republicans win both chambers?
+
+- Use set notation! `\(A\)` is the **intersection** of the events `\(Y_1 = 1\)` and `\(Y_2 = 1\)`
+
+--
+
+  - `\(A = (Y_1 = 1 \cap Y_2 = 1)\)`
+  
+- So what is `\(P(A)\)`?
+
+  - 0.73*0.18 = 0.1314?
+  
+--
+
+- Not necessarily! Use the multiplicative law
+
+--
+
+  - `\(P(A) = P(Y_1 = 1)P(Y_2 = 1 | Y_1 = 1)\)`
+  
+  - If `\(P(A) = 0.73*0.18\)`, it must be that control of the two chambers are **independent events**
+  
+  - Refresh: definition of an independent event?
+
+--
+
+  - `\(P(Y_1 = 1 \cap Y_2 = 1) = P(Y_1 = 1)P(Y_2 = 1)\)`
+  
+---
+
+# Joint Probability Distribution
+
+- So...*are* these independent events?
+
+--
+
+- An example of two independent events
+
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
+|-------|-------|-------|-------:|
+|       `\(Y_2 = 0\)`     |       0.22        |       0.60        |       0.82        |
+|       `\(Y_2 = 1\)`     |       0.05        |       0.13        |       0.18        |
+|       Totals     |       0.27        |       0.73        |       1        |
+
+--
+
+- An example of two **dependent events**
+
+
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
+|-------|-------|-------|-------:|
+|       `\(Y_2 = 0\)`     |       0.25        |       0.57        |       0.82        |
+|       `\(Y_2 = 1\)`     |       0.02        |       0.16        |       0.18        |
+|       Totals     |       0.27        |       0.73        |       1        |
 
 ---
 
-# Aside on notation
+# Joint Probability Distribution
 
-- We have been interested in `\(\mu\)` which is a population parameter
+- Why was one **independent** and the other **dependent**?
 
-- But there are other quantities of the population that we might be interested in
+--
 
-  - Central tendency parameters: median, mode
+- In the first table, each cell divided by either the row or column total is the same as the marginal probability (subject to rounding)
   
-  - Dispersion parameters: range, variance
+  - `\(0.22 / 0.27 \approx 0.82\)`
   
-  - (Preview) Relationship parameters: coefficients
+  - `\(0.05 / 0.27 \approx 0.18\)`
   
-- Generically, denote a population parameter with `\(\theta\)` and the proposed estimator for this parameter as `\(\hat{\theta}\)`
+  - `\(0.22 / 0.82 \approx 0.27\)`
+  
+  - `\(0.13 / 0.18 \approx 0.82\)`
+  
+--
+
+- In the second table, this relationship **broke**
+
+  - Relate back to the definitions!
 
 ---
 
-# Bias
+# Joint Probability Distribution
 
-- Math of expectations can help us formalize bias
+- Just as we did with univariate probability distributions, **joint probability distributions** are the probabilities associated with all possible values of `\(Y_1\)` and `\(Y_2\)`
 
-- Define "bias" as an estimator that is equal to the parameter it claims to estimate **in expectation**
-
-  - `\(\hat{\theta}\)` is unbiased for `\(\theta\)` if `\(E(\hat{\theta}) = \theta\)`
+  - Denote as `\(P(Y_1 = y_1,Y_2 = y_2)\)` or just `\(P(y_1,y_2)\)`
   
-    - (i.e., `\(E(\bar{Y}) = \mu\)`)
-    
-  - If `\(E(\hat{\theta}) \neq \theta\)`, then `\(\hat{\theta}\)` is **biased**
+  - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
   
-  - Denote bias as `\(B(\hat{\theta}) = E(\hat{\theta}) - \theta\)`
-  
-- We can prove an estimator is unbiased using expectations!
+- Note that the axioms from the univariate world apply here
 
+  - Axiom 1: `\(p(y_1,y_2) \geq 0\;\forall\;y_1,y_2\)`
+  
+  - Axiom 2: `\(\sum_{y1,y2}p(y_1,y_2) = 1\)`
+  
+- Joint probability distributions can have **distribution functions**
+
+  - `\(F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty &lt; y_1 &lt; \infty, -\infty &lt; y_2 &lt; \infty\)`
+  
+  - Often referred to as the **joint cumulative distribution function** or **joint CDF**
+  
 ---
 
-# Bias
+# Joint CDFs
 
-- Does `\(E(\hat{Y}_B) = \mu\)`?
+- For two discrete RVs like in our example, this is `\(F(y_1,y_2) = \sum_{t_1 \leq y_1} \sum_{t_2\leq y_2} p(t_1,t_2)\)`
+  
+- For two continuous RVs, we say they are **jointly continuous** if their *joint distribution function is continuous in both arguments*
 
-$$
-`\begin{aligned}
-E(\hat{Y}_B) &amp;= E\bigg[\frac{1}{n}\sum_i^n(Y_i + 1)\bigg]\\
-&amp;= \frac{1}{n}\bigg[ \sum_i^n E(Y_i + 1)\bigg]\\
-&amp;= \frac{1}{n}\bigg[\bigg(\sum_i^n E(Y_i)\bigg) + \bigg(\sum_i^nE(1)\bigg)\bigg]\\
-&amp;= \frac{1}{n}\bigg[\sum_i^n \mu + \sum_i^n 1\bigg]\\
-&amp;= \frac{1}{n}(n\mu + n)\\
-&amp;= \mu + 1\\
-&amp;\neq \mu
-\end{aligned}`
-$$
+--
 
----
+  - That is, if there exists a nonnegative function `\(f(y_1,y_2)\)` such that:
 
-# Variance
-
-- Recall from earlier when we talked about how close a random sample's `\(\bar{Y}\)` would be to `\(\mu\)`
-
-- This is equivalent to saying we want to minimize the variance of the sampling distribution
-
-- Recall the definition of variance of a random variable
-
-$$
-VAR(\hat{\theta}) = E[(\hat{\theta} - E(\hat{\theta}))^2]
-$$
-
-- We want to make this as small as possible
-
----
-
-# "Good" is bias and variance
-
-- **Bias-variance tradeoff**: we often will find ourselves caught between wanting to reduce the bias of an estimator and reducing its variance
-
-- Evaluate this tradeoff using the **mean squared error (MSE)**
-
-$$
-MSE(\hat{\theta}) = E[(\hat{\theta} - \theta)^2]
-$$
-
-- MSE can be rewritten in terms of both bias and variance
-
-$$
-MSE(\hat{\theta}) = VAR(\hat{\theta}) + B(\hat{\theta})^2
-$$
-
-- (Ideas on why this includes the square of the estimator's bias?)
-
+  - `\(F(y_1,y_2) = \int_{-\infty}^{y_1} \int_{-\infty}^{y_2} f(t_1,t_2)dt_2dt_1\)` for `\(-\infty &lt; y_1 &lt; \infty,\; -\infty &lt; y_2 &lt; \infty\)`
+  
+  - then `\(Y_1\)` and `\(Y_2\)` are jointly continuous and the function `\(f(y_1,y_2)\)` is the **joint probability density function** or **joint PDF**
+  
 ---
 
 # Example
 
-- Consider a new parameter of interest, defined as `\(\theta = \mu_1 - \mu_2\)`
+- Let's say we want to calculate the probability that two jointly continuous random variables fall into particular intervals
 
-  - We are interested in **the difference in means of two different populations**
-  
-  - Note that we are using `\(Y_1\)` and `\(Y_2\)` to represent random variables from **different populations** here (don't get confused from the notation above)
-  
-- Is `\(\hat{\theta} = \bar{Y}_1 - \bar{Y}_2\)` unbiased?
+- `\(P(a &lt; Y_1 \leq b,\; c &lt; Y_2 \leq d) = \int_c^d\int_a^bf(y_1,y_2)dy_1dy_2\)`
 
-  - Easy proof!
+- Show that this is equivalent to `\(F(b,d) - F(b,c) - F(a,d) + F(a,c)\)`
 
 ---
 
-# Example
+# Marginal Probability Distributions
 
-- What is `\(\hat{\theta}\)`'s variance?
+- NB: all **bivariate** events ( `\(Y_1 = y_1, Y_2 = y_2\)` ) are **mutually exclusive**
 
-$$
-`\begin{aligned}
-VAR(\bar{Y}_1 - \bar{Y}_2) &amp;= VAR(\bar{Y}_1) + VAR(\bar{Y}_2) + 2COV(\bar{Y}_1,\bar{Y}_2)\\
-&amp;= VAR(\bar{Y}_1) + VAR(\bar{Y}_2) + 2*0 \;\; \text{(bc} \; \bar{Y}_1,\bar{Y}_2\;\text{are indep)} \\
-&amp;= \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
-\end{aligned}`
-$$
+- Thus, the **univariate** event `\(Y_1 = y_1\)` can be thought of as the **union** of bivariate events
 
-- We denote the standard error of the estimator `\(\hat{\theta}\)` with `\(\sigma_{\hat{\theta}}\)`, which is just the square root of the variance
+  - The union is taken *over all possible values for `\(y_2\)` *
+  
+- Example: let's roll two 6-sided dice
 
-  - Thus `\(\sigma_{\bar{Y}_1 - \bar{Y}_2} = \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_{2}^2}{n_2}}\)`
+  - `\(P(Y_1 = 1) = p(1,1) + p(1,2) + \dots + p(1,6)\)`
+  
+  - `\(P(Y_1 = 1) = 6*\frac{1}{36} = \frac{1}{6}\)`
+  
+- Generically: `\(P(Y_1 = y_1) = \sum_{\forall y_2} p(y_1,y_2)\)`
+
+- Test: What is the marginal probability for `\(Y_2 = y_2\)`?
+
+--
+
+  - `\(P(Y_2 = y_2) = \sum_{\forall y_1} p(y_1,y_2)\)`
+  
+- Denote `\(p_1(y_1)\)` as the **marginal probability function** of the *discrete* random variable `\(Y_1\)`
+
+---
+
+# Continuous Case
+
+- **Marginal density function** for continuous RV `\(Y_1\)` is:
+
+  - `\(f_1(y_1) = \int_{-\infty}^\infty f(y_1,y_2)dy_2\)`
+  
+- Test: what is the marginal density function for `\(Y_2\)`?
+
+--
+
+  - `\(f_2(y_2) = \int_{-\infty}^\infty f(y_1,y_2)dy_1\)`
   
 ---
 
-# Final CLT Variant
+# Conditional Probability Distributions: Discrete
 
-- Turns out (beyond the scope of this class) that a variant of the CLT tells us
+- Recall: `\(P(A \cap B) = P(A)P(B|A)\)` due to the **multiplicative law**
 
-$$
-\bar{Y}_1 - \bar{Y}_2 \sim \mathcal{N}\bigg(\mu_1 - \mu_2, \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}\bigg)\;\; \text{as}\;\; n_1,n_2 \rightarrow \infty
-$$
+- The bivariate event ( `\(y_1,y_2\)` ) can be re-written as the **intersection** of two events: `\(Y_1 = y_1\)` and `\(Y_2 = y_2\)`
 
-- (Notation reminder! 
+  - Thus: `\(p(y_1,y_2) = p_1(y_1)p(y_2|y_1)\)`
+  
+  - or `\(p(y_1,y_2) = p_2(y_2)p(y_1|y_2)\)`
+  
+- NB: `\(p(y_1|y_2) = P(Y_1 = y_1|Y_2 = y_2)\)`
 
-  - `\(Y \sim \mathcal{N}(\mu,\sigma^2)\)` is how we write "is distributed normal with mean `\(\mu\)` and standard deviation `\(\sigma^2\)`)
+  - or `\(p(y_1|y_2) = \frac{P(Y_1 = y_1,Y_2 = y_2)}{P(Y_2 = y_2)}\)`
+  
+  - or `\(p(y_1|y_2) = \frac{p(y_1,y_2)}{p_2(y_2)}\)` for `\(p_2(y_2) &gt; 0\)` (why?)
 
+- The **conditional distribution function** of `\(Y_1\)` given `\(Y_2 = y_2\)` is `\(P(Y_1 \leq y_1|Y_2 = y_2) = F(y_1|y_2)\)`
+
+- The associated CDF is `\(f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}\)`
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

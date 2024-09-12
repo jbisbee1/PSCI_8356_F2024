@@ -3,7 +3,7 @@ title: "Lecture 4"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2023/09/07\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2024/09/03\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
@@ -45,297 +45,332 @@ require(tidyverse)
 
 # Agenda
 
-1. Continuous random variables
+1. 3 Axioms
 
-2. Density functions
+2. 4 Tools
 
-3. Two more theoretical probability models
+3. Putting probability theory and set theory to work!
 
-4. Three distributions related to the standard Normal
+---
 
+# Probabilities in Set Theory
+
+- Assign a number $P(A)$ to each event $A$ in $S$ 
+
+--
+
+- Three axioms of probability give structure to this assignment
+
+--
+
+  1. $P(A) \geq 0$
+  
+  2. $P(S) = 1$
+  
+  3. $P(A_1 \cup A_2 \cup A_3 \cup \dots A_n) = \sum_{i=1}^n P(A_i)$
+  
+--
+
+- With these axioms in hand, $P(A)$ is defined as the **probabilities of $A$**
+
+---
+
+# Calculating Probability of Event
+
+- **Sample point** method
+
+--
+
+  - Define experiment and sample space $S$
+  
+  - Assign reasonable probabilities to sample points s.t. $P(E_i) \geq 0$ and $\sum_i P(E_i) = 1$
+  
+  - For $A = E_{i_1} \cup E_{i_2} \cup \dots E_{i_J}$, calculate $P(A) = \sum_{j}^J P(E_{i_j})$
+  
+--
+
+- **Event composition** method
+
+--
+
+  - Decompose and compose event $A$ into **unions** and **intersections** of events with conveniently calculated probabilities
+
+
+---
+
+# Event Composition Method
+
+- Need four tools
+
+--
+
+  1. Definitions of **conditional probability** and **independence**
+  
+  2. **Multiplicative** and **additive** laws
+  
+  3. Probability of an event and its **complement**
+  
+  4. The **law of total probability** and **Bayes' Rule**
+  
+--
+
+- Before this, recall that
+
+--
+
+  - $A \cap B$: compound event where *both* $A$ and $B$ happen (AND)
+  
+  - $A \cup B$: compound event where *either* $A$ or $B$ happens, or both (OR)
+  
+---
+
+# 1. Definitions
+
+- **Conditional probability**: $P(A|B) = \frac{P(A\cap B)}{P(B)}$
+  
+- **Independence**: For two events $A$ and $B$, if *any one* of the following conditions holds:
+
+  - $P(A|B) = P(A)$
+  
+  - $P(B|A) = P(B)$
+  
+  - $P(A\cap B) = P(A)P(B)$
+  
+- then $A$ and $B$ are *independent* events
+
+- If none hold, then $A$ and $B$ are dependent events
+
+---
+
+# 2. Laws
+
+- **Multiplicative law** (intersection)
+
+--
+
+  - $P(A\cap B) = P(A)P(B|A) = P(B)P(A|B)$ **OR**
+  
+  - $P(A\cap B) = P(A)P(B)$ if $A$ and $B$ are independent events
+  
+--
+
+  - For three events $P(A_1 \cap A_2 \cap A_3) = P(A_1)P(A_2|A_1)P(A_3|A_1\cap A_2)$
+  
+--
+
+  - For many events $P(A_1 \cap A_2 \cap \dots A_k) = P(A_1)P(A_2|A_1) \dots P(A_k|A_1 \cap A_2 \cap \dots A_{k-1})$
+  
+--
+
+- **Additive law** (union)
+
+--
+
+  - $P(A\cup B) = P(A) + P(B) - P(A\cap B)$
+  
+  - If $A$ and $B$ are mutually exclusive, $P(A\cap B) = 0$
+  
+---
+
+# Aside on a simple proof
+
+- Denote "not $A$" as $A^c$ (sometimes written $\sim A$ or, in WMS, $\bar{A}$ )
+
+- **Complementary events** means that $P(A) = 1 - P(A^c)$
+
+--
+
+- Proof:
+
+  - $S = A \cup A^c$ (given $A \subset S$)
+  
+  - $P(S) = P(A) + P(A^c)$ (by Axiom 3, since $A$ and $A^c$ are mutually exclusive)
+  
+  - $1 = P(A) + P(A^c)$ (by Axiom 2)
+  
+  - $P(A) = 1 - P(A^c) \blacksquare$
+  
+---
+
+# Example of event composition method
+
+- Randomly assign 16 students into 3 teams of 6, 5, and 5
+
+- 11 of the students are male
+
+- What is the probability that the team of six students (call this "Team 1") is entirely male?
+
+--
+
+1. Define event as "the first six assigned students are male"
+  
+2. Decompose event into simpler events $A$ through $F$
+  
+--
+
+  - $A$: First student picked is male
+  
+  - $B$: Second student picked is male
+  
+  - $\dots$
+  
+  - $F$: Sixth student picked is male
+  
+3. Event occurs iff $A$ through $F$ all occur, meaning $A \cap B \cap C \cap D \cap E \cap F$.
+
+---
+
+# Example contd
+
+- Thus we want $P(A \cap B \cap C \cap D \cap E \cap F)$
+
+--
+
+- How to solve?
+
+--
+
+- **Multiplicative Law**
+
+--
+
+  - $P(A_1 \cap A_2 \cap \dots A_k) = P(A_1)P(A_2|A_1) \dots P(A_k|A_1 \cap A_2 \cap \dots A_{k-1})$
+  
+  - $P(A_1 \cap A_2 \cap \dots A_6) = P(A_1)P(A_2|A_1) \dots P(A_6|A_1 \cap A_2 \cap \dots A_5)$
+  
+---
+
+# Example contd
+
+- Step through it
+
+--
+
+  - What is the probability that the first student picked is male? $\frac{11}{16}$
+  
+  - $P(A_1 \cap A_2 \cap \dots A_6) = \frac{11}{16}P(A_2|A_1) \dots P(A_6|A_1 \cap A_2 \cap \dots A_5)$
+  
+--
+
+  - What is the probability that the second student picked is male? $\frac{10}{15}$
+  
+  - $P(A_1 \cap A_2 \cap \dots A_6) = \frac{11}{16} \cdot \frac{10}{15}P(A_3|A_1 \cap A_2) \dots P(A_6|A_1 \cap A_2 \cap \dots A_5)$
+  
+--
+
+- And so on
+
+  - $P(A_1 \cap A_2 \cap \dots A_6) = \frac{11}{16} \cdot \frac{10}{15} \cdot \frac{9}{14} \cdot \frac{8}{13} \cdot \frac{7}{12} \cdot \frac{6}{11} = \frac{3}{52}$
+  
+---
+
+# Factor notation
+
+- Note that the product of the numerators is $11 \cdot 10 \cdot \dots \cdot 2 \cdot 1$ except we remove the final five multiplicands
+
+- Same as $\frac{11 \cdot 10 \cdot \dots \cdot 2 \cdot 1}{5 \cdot 4 \cdot 3 \cdot 2 \cdot 1}$ which is $\frac{11!}{5!}$
+
+- Similarly, denominator can be written as $\frac{10!}{16!}$
+
+- Thus $P(A_1 \cap A_2 \cap \dots A_6) = \frac{11!}{5!} \cdot \frac{10!}{16!}$
+  
+---
+
+# Law of Total Probability
+
+- In a discrete sample space $S$, we can define $S$ as the union of $k$ mutually exclusive events
+
+--
+
+  - $S = B_1 \cup B_2 \cup \dots B_k$, where
+  
+  - $B_i \cap B_j = \varnothing, \forall i \neq j$
+  
+- Note that a collection of sets $\{B_1, B_2, \dots B_k\}$  is a **partition** of $S$ iff
+  
+--
+
+  - their union is $S$ and
+  
+  - they are themselves mutually exclusive
+  
+
+---
+
+# Law of Total Probability
+
+- If $A$ is a subset of $S$, it can be **decomposed** as the union of its intersections with each of the partitions of $S$ as follows:
+
+--
+
+  - $A = (A \cap B_1) \cup (A \cap B_2) \cup \dots (A \cap B_k)$
+
+--
+
+- If $\{B_1, B_2, \dots B_k\}$ is a partition of $S$ such that $P(B_i) > 0 \forall i = 1,2,\dots k$
+
+- then the **Law of Total Probability** states:
+
+--
+
+  - $P(A) = \sum_{i=1}^k P(A|B_i)P(B_i)$
+  
+---
+
+# Bayes' Rule
+
+- $P(B_j|A) = \frac{P(A\cap B_j)}{P(A)}$
+
+- Substitute the definition into the numerator and the Law of Total Probability into the denominator
+
+- $P(B_j|A) = \frac{P(A|B_j)P(B_j)}{\sum_{i=1}^k P(A|B_i)P(B_i)}$
+
+---
+
+# Bayes' Rule
+
+- Simpler example with two sets
+
+- $P(B|A) = \frac{P(A|B)P(B)}{P(A|B)P(B) + P(A|B^c)P(B^c)}$
+
+<center><img src="figs/bayes_example.png" width="50%"></center>
+
+
+---
+
+# Bayes' Rule
+
+- Example time!
+
+- WMS 2.124, pg. 73: "A population of voters contains 40% Republicans and 60% Democrats. It is reported that 30% of the Republicans and 70% of the Democrats favor an election issue. A person chosen at random from this population is found to favor the issue in question. Find the conditional probability that this person is a Democrat."
+
+- WMS 2.125, pg. 73: "A diagnostic test for a disease is such that it (correctly) detects the disease in 90% of the individuals who actually have the disease. Also, if a person does not have the disease, the test will report that he or she does not have it with probability .9. Only 1% of the population has the disease in question. If a person is chosen at random from the population and the diagnostic test indicates that she has the disease, what is the conditional probability that she does, in fact, have the disease? Are you surprised by the answer? Would you call this diagnostic test reliable?"
+
+
+---
+
+# One additional tool
+
+- Assigning probabilities in a sample space consisting of **equiprobable events**
+
+- $S$ consists of $n$ **equiprobable** events $E$ such that $P(E_1) = P(E_2) = \dots = P(E_n)$
+
+  - Recall we define $A$ as a subset of $S$: some subset of sample points that make up $S$
+  
+  - Then $P(A) = \frac{|A|}{n}$ where $|A|$ indicates the number of elements in $A$
+  
 ---
 
 # Quick recap
 
-- Three discrete probability models
+- We now have an intellectual foundation for probability
 
-  - The Bernoulli
+  - Probabilistic events in the context of an **experiment** and **simple events**
   
-  - The Binomial
+  - All possible events define the **sample space**
   
-  - The Poisson
-
----
-
-# Continuous Random Variables
-
-- Often dealing with RVs that take on uncountably infinite values. These are **continuous** random variables.
-
-  - It is impossible to assign nonzero probabilities to all the uncountably infinite points on an interval while satisfying that they sum to 1.
+  - 3 axioms for how to assign probabilities to events
   
-  - Thus the notion of $p(y)$ from the discrete world doesn't work with continuous RVs
+  - 4 tools to decompose and compose events of interest
   
-- Need a different approach to describing the probability distribution of a continuous RV
 
-  - Define the cumulative distribution function (CDF) as $F(y)$ where $F(y) \equiv P(Y\leq y)$ for $-\infty < y < \infty$
-  
----
-
-# CDFs
-
-- CDFs have the following properties
-
-  - $F(-\infty) \equiv \lim_{y \rightarrow -\infty} F(y) = 0$
-  
-  - $F(\infty) \equiv \lim_{y \rightarrow \infty} F(y) = 1$
-  
-  - $y_1 < y_2 \Rightarrow F(y_1) \leq F(y_2)$
-  
-- Note that discrete random variables also have CDFs
-
-  - If $F(y)$ is continuous for $-\infty < y < \infty$, then $Y$ is continuous
-  
-  - Discrete CDFs are always **step** functions: meaning they have discontinuities separating the possible values of $y$
-
----
-
-# CDF
-
-```{r}
-# create sample data
-sample_Data = rnorm(5000)
-# calculate CDF 
-CDF <- ecdf(sample_Data)
-# draw the cdf plot
-plot(CDF,main = 'CDF',ylab = 'F(y)',xlab = 'y')
-```
-
----
-
-# Density
-
-- NB: $P(Y = y) = 0\; \forall\;y$
-
-  - Weird? Imagine calculating the probability of observing the temperature of 50.71351309 degrees F. Now add 10 additional digits to this number.
-  
-- Instead, we think about probability for continuous random variables in terms of **density**
-
-- Define $f(y)$ as the derivative of $F$
-
-  - $f(y) \equiv \frac{dF(y)}{dy} = F'(y)$
-  
-- $f(y)$ is the probability density function (PDF)
-  
----
-
-# PDF
-
-```{r,echo = F,message = F,warning = F}
-require(tidyverse)
-data.frame(py = dnorm(seq(-5,5,length.out = 100)),y = seq(-5,5,length.out = 100)) %>%
-  ggplot(aes(x = y,y = py)) + 
-  geom_line() + 
-  labs(x = 'y',y = 'f(y)')
-```
-
----
-
-# PDF and CDF
-
-- Having defined $f(y) \equiv \frac{dF(y)}{dy}$, we can write $F(y) = \int_{-\infty}^{y}f(t)dt$ where $t$ is a placeholder.
-
-- The pdf $f(\cdot)$ has the following properties
-
-  - $f(y) \geq 0\;\forall\;y, -\infty < y < \infty$
-  
-  - $\int_{-\infty}^{\infty} f(y)dy = 1$
-  
-- How do we work with probabilities in this setting?
-
-  - What is the probability that $Y$ takes on values $y$ that fall between $a$ and $b$?
-  
-  - $P(a < Y \leq b) = P(Y \leq B) - P(Y \leq a)$
-  
-  - $P(a < Y \leq b) = F(b) - F(a)$
-  
-  - $P(a < Y \leq b) = \int_{a}^b f(y)dy$
-  
-- NOTE: $P(a < Y < b) = P(a < Y \leq b) = P(a \leq Y < b) = P(a \leq Y \leq b)$. Why?
-
----
-
-# Expectations
-
-- Recall that the expectation of a discrete random variable is $E(Y) \equiv \sum_y yp(y)$
-
-- For continuous RVs, the intuition is similar
-
-  - $E(Y) \equiv \int_{-\infty}^{\infty} yf(y)dy$
-  
-  - $E[g(Y)] = \int_{-\infty}^{\infty} g(y)f(y)dy$
-  
-  - $\textit{VAR}(Y) \equiv \int_{-\infty}^{\infty}(y - \mu)^2f(y)dy$
-  
-- Prove $\textit{VAR}(Y) = E(Y^2) - \mu^2$
-
----
-
-# Theoretical models
-
-- We'll look at two commonly used to describe continuous random variables
-
-  - The **uniform**
-  
-  - The **Normal**
-  
-- And three distributions related to the Normal that we will use constantly in statistical tests
-
-  - The **Chi-squared** ( $\chi^2$ ) distribution
-  
-  - The **t-distribution**
-  
-  - The **F-distribution**
-  
----
-
-# The Uniform
-
-- A random variable that can take on any value in an interval between two other values, and the chances are equal for every value
-
-- We can visualize the density function like this:
-
-```{r,echo=F}
-data.frame(py = dunif(seq(-5,5,length.out = 1000),min = -3,max = 4),y = seq(-5,5,length.out = 1000)) %>%
-  ggplot(aes(x = y,y = py)) + 
-  geom_line() + 
-  labs(x = 'y',y = 'f(y)')
-```
-
----
-
-# The Uniform
-
-- The pdf is thus:
-
-  - $f(y) = \frac{1}{\theta_2 - \theta_1}$ for $\theta_1 \leq y \leq \theta_2$
-  
-  - $f(y) = 0$ otherwise
-  
-- Proof? Geometry!
-
-- The CDF can be derived:
-
-  - $F(y) = \int_{-\infty}^y f(t)dt$
-  
-  - $F(y) = \int_{\theta_1}^y \frac{1}{\theta_2 - \theta_1}dt$
-  
-  - $F(y) = \frac{t}{\theta_2 - \theta_1}\bigg|_{\theta_1}^y$
-  
-  - $F(y) = \frac{y - \theta_1}{\theta_2 - \theta_1}$
-  
----
-
-# The Uniform
-
-- What is $E(Y)$?
-
-- What is $\textit{VAR}(Y)$?
-
-- What are some examples of uniformly distributed continuous random variables?
-
----
-
-# The Normal
-
-- Many empirical distributions are closely approximated by a distribution that is:
-
-  1. symmetric
-  
-  2. has non-zero probability for all possible values of $y$
-  
-  3. is "bell shaped"
-  
-- These characteristics are embodied in the **normal distribution**
-
----
-
-# The Normal
-
-- We won't get into the math of the normal, but it is an essential part of quantitative analysis!
-
-- SO just trust me:
-
-  - $f(y) = \frac{1}{\sigma \sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}$ for $-\infty < y < \infty$
-  
-- Two parameters: $\mu$ and $\sigma$
-
-  - $E(Y) = \mu$
-  
-  - $\textit{VAR}(Y) = \sigma^2$
-  
----
-
-# The Normal
-  
-- What is the probability $Y$ takes on some value $y$ within an interval between $a = 62$ and $b = 65$?
-
-  - $P(a \leq Y \leq b) = \int_{a}^bf(y)dy$
-  
-  - $P(a \leq Y \leq b) = \int_{a}^b\frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}dy$
-
---
-
-```{r,echo=F,message=F,warning=F}
-require(tidyverse)
-data.frame(y = seq(50,75,length.out = 1000)) %>%
-  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
-  mutate(area = y >= 62 & y <= 65) %>%
-  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
-  geom_ribbon() +
-  geom_ribbon(fill = NA,color = 'black') + 
-  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
-  theme_bw() + 
-  geom_vline(xintercept = c(62,65),linetype = 'dashed')
-```
-
----
-
-# The Normal
-
-- We typically **standardize** a normally distributed variable
-
---
-
-  - Units measured in terms of standard deviations (instead of inches or whatever else)
-  
-- $Z \equiv \frac{Y - \mu}{\sigma}$
-
-  - $Z$ is a random variable with mean zero and standard deviation one
-  
-  - PDF simplifies to $f(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}$
-  
-- We use these so frequently in statistics we denote them with special symbols!
-
-  - "Little phi of z" is the PDF of the standardized normal evaluated at $Z = z$: $\phi(z)$
-  
-  - "Big phi of z" is the CDF of the standardized normal evaluated at $Z = z$: $\Phi(z)$
-  
----
-
-# Three Associated Distributions
-
-- We use the normal a **ton**
-
-- But we also use it with three other distributions
-
---
-
-  1. The **Chi-squared** ( $\chi^2$ ): $Y$ is the sum of squares of a series of standard normal RVs
-  
-  2. The **t-distribution**: $Y$ is the ratio of the standard normal RV / the square root of the chi-squared RV
-  
-  3. The **F distribution**: $Y$ is the ratio of two chi-squared RVs
-  
---
-
-- We will return to these later, but I'm signposting them here

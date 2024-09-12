@@ -4,7 +4,7 @@
     <title>Lecture 6</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.16/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2023/09/19
-Slides Updated: 2023-09-26
+### Lecture Date: 2024/09/17
+Slides Updated: 2024-09-11
 ]
 
 ---
@@ -46,372 +46,266 @@ Slides Updated: 2023-09-26
 
 # Agenda
 
-1. Finishing up Marginal and Conditional Probability Distributions
+1. Continuous random variables
 
-3. Independent Random Variables
+2. Common examples of continuous RVs
 
-4. The EV of a function of RVs
-
-5. Covariance of two RVs
-
----
-
-# Joint Probability Distribution
-
-- `\(P(House) = .73\)`, `\(P(Sen) = .18\)`
-
---
-
-- An example of two independent events
-
-|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
-|-------|-------|-------|-------:|
-|       `\(Y_2 = 0\)`     |       0.22        |       0.60        |       0.82        |
-|       `\(Y_2 = 1\)`     |       0.05        |       0.13        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
-
---
-
-- An example of two **dependent events**
-
-
-|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
-|-------|-------|-------|-------:|
-|       `\(Y_2 = 0\)`     |       0.25        |       0.57        |       0.82        |
-|       `\(Y_2 = 1\)`     |       0.02        |       0.16        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
-
-
----
-
-# Joint Probability Distribution
-
-- Just as we did with univariate probability distributions, **joint probability distributions** are the probabilities associated with all possible values of `\(Y_1\)` and `\(Y_2\)`
-
-  - Denote as `\(P(Y_1 = y_1,Y_2 = y_2)\)` or just `\(P(y_1,y_2)\)`
-  
-  - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
-  
-- Note that the axioms from the univariate world apply here
-
-  - Axiom 1: `\(p(y_1,y_2) \geq 0\;\forall\;y_1,y_2\)`
-  
-  - Axiom 2: `\(\sum_{y1,y2}p(y_1,y_2) = 1\)`
-  
-- Joint probability distributions can have **distribution functions**
-
-  - `\(F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty &lt; y_1 &lt; \infty, -\infty &lt; y_2 &lt; \infty\)`
-  
-  - Often referred to as the **joint cumulative distribution function** or **joint CDF**
   
 ---
 
-# Joint CDFs
+# Continuous Random Variables
 
-- For two discrete RVs like in our example, this is `\(F(y_1,y_2) = \sum_{t_1 \leq y_1} \sum_{t_2\leq y_2} p(t_1,t_2)\)`
+- Often dealing with RVs that take on uncountably infinite values. These are **continuous** random variables.
+
+  - It is impossible to assign nonzero probabilities to all the uncountably infinite points on an interval while satisfying that they sum to 1.
   
-- For two continuous RVs, we say they are **jointly continuous** if their *joint distribution function is continuous in both arguments*
-
---
-
-  - That is, if there exists a nonnegative function `\(f(y_1,y_2)\)` such that:
-
-  - `\(F(y_1,y_2) = \int_{-\infty}^{y_1} \int_{-\infty}^{y_2} f(t_1,t_2)dt_2dt_1\)` for `\(-\infty &lt; y_1 &lt; \infty,\; -\infty &lt; y_2 &lt; \infty\)`
+  - Thus the notion of `\(p(y)\)` from the discrete world doesn't work with continuous RVs
   
-  - then `\(Y_1\)` and `\(Y_2\)` are jointly continuous and the function `\(f(y_1,y_2)\)` is the **joint probability density function** or **joint PDF**
+- Need a different approach to describing the probability distribution of a continuous RV
+
+  - Define the cumulative distribution function (CDF) as `\(F(y)\)` where `\(F(y) \equiv P(Y\leq y)\)` for `\(-\infty &lt; y &lt; \infty\)`
   
 ---
 
-# Example
+# CDFs
 
-- Let's say we want to calculate the probability that two jointly continuous random variables fall into particular intervals
+- CDFs have the following properties
 
-- `\(P(a &lt; Y_1 \leq b,\; c &lt; Y_2 \leq d) = \int_c^d\int_a^bf(y_1,y_2)dy_1dy_2\)`
+  - `\(F(-\infty) \equiv \lim_{y \rightarrow -\infty} F(y) = 0\)`
+  
+  - `\(F(\infty) \equiv \lim_{y \rightarrow \infty} F(y) = 1\)`
+  
+  - `\(y_1 &lt; y_2 \Rightarrow F(y_1) \leq F(y_2)\)`
+  
+- Note that discrete random variables also have CDFs
 
-- Show that this is equivalent to `\(F(b,d) - F(b,c) - F(a,d) + F(a,c)\)`
+  - If `\(F(y)\)` is continuous for `\(-\infty &lt; y &lt; \infty\)`, then `\(Y\)` is continuous
+  
+  - Discrete CDFs are always **step** functions: meaning they have discontinuities separating the possible values of `\(y\)`
 
 ---
 
-# Marginal Probability Distributions
+# CDF
 
-- NB: all **bivariate** events ( `\(Y_1 = y_1, Y_2 = y_2\)` ) are **mutually exclusive**
 
-- Thus, the **univariate** event `\(Y_1 = y_1\)` can be thought of as the **union** of bivariate events
-
-  - The union is taken *over all possible values for `\(y_2\)` *
-  
-- Example: let's roll two 6-sided dice
-
-  - `\(P(Y_1 = 1) = p(1,1) + p(1,2) + \dots + p(1,6)\)`
-  
-  - `\(P(Y_1 = 1) = 6*\frac{1}{36} = \frac{1}{6}\)`
-  
-- Generically: `\(P(Y_1 = y_1) = \sum_{\forall y_2} p(y_1,y_2)\)`
-
-- Test: What is the marginal probability for `\(Y_2 = y_2\)`?
-
---
-
-  - `\(P(Y_2 = y_2) = \sum_{\forall y_1} p(y_1,y_2)\)`
-  
-- Denote `\(p_1(y_1)\)` as the **marginal probability function** of the *discrete* random variable `\(Y_1\)`
-
----
-
-# Continuous Case
-
-- **Marginal density function** for continuous RV `\(Y_1\)` is:
-
-  - `\(f_1(y_1) = \int_{-\infty}^\infty f(y_1,y_2)dy_2\)`
-  
-- Test: what is the marginal density function for `\(Y_2\)`?
-
---
-
-  - `\(f_2(y_2) = \int_{-\infty}^\infty f(y_1,y_2)dy_1\)`
-  
----
-
-# Conditional Probability Distributions: Discrete
-
-- Recall: `\(P(A \cap B) = P(A)P(B|A)\)` due to the **multiplicative law**
-
-- The bivariate event ( `\(y_1,y_2\)` ) can be re-written as the **intersection** of two events: `\(Y_1 = y_1\)` and `\(Y_2 = y_2\)`
-
-  - Thus: `\(p(y_1,y_2) = p_1(y_1)p(y_2|y_1)\)`
-  
-  - or `\(p(y_1,y_2) = p_2(y_2)p(y_1|y_2)\)`
-  
-- NB: `\(p(y_1|y_2) = P(Y_1 = y_1|Y_2 = y_2)\)`
-
-  - or `\(p(y_1|y_2) = \frac{P(Y_1 = y_1,Y_2 = y_2)}{P(Y_2 = y_2)}\)`
-  
-  - or `\(p(y_1|y_2) = \frac{p(y_1,y_2)}{p_2(y_2)}\)` for `\(p_2(y_2) &gt; 0\)` (why?)
-
-- The **conditional distribution function** of `\(Y_1\)` given `\(Y_2 = y_2\)` is `\(P(Y_1 \leq y_1|Y_2 = y_2) = F(y_1|y_2)\)`
-
-- The associated CDF is `\(f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}\)`
-
----
-
-# Independent Random Variables
-
-- Previous content was hurried in order to bring us here...**how to make inferences from samples**
-
-- Recall that independent events `\(A\)` and `\(B\)` imply `\(P(A \cap B) = P(A)P(B)\)`
-
-- Also remember our example of an event involving two random variables: `\((a &lt; Y_1 \leq b) \cap (c &lt; Y_2 \leq d)\)`
-
-  - This event can be **decomposed** to two events: `\(a &lt; Y_1 \leq b\)` and `\(c &lt; Y_2 \leq d\)`
-  
-- If `\(Y_1\)` and `\(Y_2\)` are **independent**, then:
-
-  - `\(P(a &lt; Y_1 \leq b,\; c &lt; Y_2 \leq d) = P(a &lt; Y_1 \leq b)P(c &lt; Y_2 \leq d)\)`
-  
-- The joint probability of two independent RVs can be written as the **product of their marginal probabilities**
-
----
-
-# Independent Random Variables
-
-- Generalizing to `\(F(y_1,y_2) = F_1(y_1)F_2(y_2)\;\forall\;(y_1,y_2)\)`
-
-  - where `\(F(y_1,y_2)\)` is the joint CDF for `\(Y_1\)` and `\(Y_2\)`
-  
-  - and `\(F_1(y_1)\)` is the CDF for `\(Y_1\)`, and `\(F_2(y_2)\)` is the CDF for `\(Y_2\)`
-  
-- Thus, if `\(Y_1\)` and `\(Y_2\)` are independent:
-
-  - **Discrete RVs**: `\(p(y_1,y_2) = p_1(y_1)p_2(y_2)\)`
-  
-  - **Continuous RVs**: `\(f(y_1,y_2) = f_1(y_1)f_2(y_2)\)`
-  
-- Thus, further, `\(f(y_1,y_2) = g(y_1)h(y_2)\)`
-
-  - where `\(g(\cdot)\)` and `\(h(\cdot)\)` are non-negative functions
-  
-  - In English, if we want to prove two RVs are independent, we can do so by finding two functions that satisfy these properties
-  
----
-
-# Expectations of functions of RVs
-
-- Recall from the univariate world that we can show the expected value of a function of a random variable `\(g(Y)\)` was
-
-  - **Discrete RVs**: `\(E[g(Y)] = \sum_y g(y)p(y)\)`
-  
-  - **Continuous RVs**: `\(E[g(Y)] = \int_{-\infty}^{\infty}g(y)f(y)dy\)`
-  
-- We can do the same in the multivariate world with a function of several random variables
-
-  - **Discrete**: `\(E[g(Y_1,Y_2,\dots,Y_k)] = \sum_{y_k}\dots\sum_{y_2}\sum_{y_1}g(y_1,y_2,\dots,y_k)p(y_1,y_2,\dots,y_k)\)`
-  
-  - **Continuous**: `\(E[g(Y_1,Y_2,\dots,Y_k)] = \int_{-\infty}^\infty \dots \int_{-\infty}^\infty \int_{-\infty}^\infty g(y_1,y_2,\dots,y_k)f(y_1,y_2,\dots,y_k)dy_1dy_2\dots dy_k\)`
-  
----
-
-# Expectations of functions of RVs
-
-- Rules of expectations also work here
-
-  - Pull out constants: `\(E[cg(Y_1,Y_2)] = cE[g(Y_1,Y_2)]\)`
-  
-  - Distribute expectations: `\(E[g_1(Y_1,Y_2) + \dots + g_k(Y_1,Y_2)] = E[g_1(Y_1,Y_2)] + \dots + E[g_k(Y_1,Y_2)]\)`
-  
-- These allow a powerful result in which
-
-  - If `\(Y_1\)` and `\(Y_2\)` are independent
-  
-  - And if `\(g(Y_1)\)` and `\(h(Y_2)\)` are functions of only `\(Y_1\)` and `\(Y_2\)`
-  
-  - Then `\(E[g(Y_1)h(Y_2)] = E[g(Y_1)]E[h(Y_2)]\)`
-  
----
-
-# Covariance of Two RVs
-
-- If we say that `\(Y_1\)` and `\(Y_2\)` are **independent**, we are saying
-
-  - **Discrete**: joint probability is equal to *the product of their individual probability functions*
-  
-  - **Continuous**: joint PDF is equal to *the product of their individual PDFs*
-  
-- But what if `\(Y_1\)` and `\(Y_2\)` **are** related?
-
-  - That is, given what we know about the value of `\(Y_1\)`, we can make better than a random guess about `\(Y_2\)`
-  
-- We can **describe** how much the two processes are related with the property of **covariance**
-
-  - `\(\textit{COV}(Y_1,Y_2) \equiv E[(Y_1 - \mu_1)(Y_2 - \mu_2)]\)`
-  
----
-
-# Examples
+``` r
+# create sample data
+sample_Data = rnorm(5000)
+# calculate CDF 
+CDF &lt;- ecdf(sample_Data )
+# draw the cdf plot
+plot(CDF,main = 'CDF',ylab = 'F(y)',xlab = 'y')
+```
 
 &lt;img src="Lecture_6_slides_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Covariance
+# Density
 
-- Let's think about two quantities: `\((y_1 - \mu_1)\)` and `\((y_2 - \mu_2)\)`
+- NB: `\(P(Y = y) = 0\; \forall\;y\)`
+
+  - Weird? Imagine calculating the probability of observing the temperature of 50.71351309 degrees F. Now add 10 additional digits to this number.
+  
+- Instead, we think about probability for continuous random variables in terms of **density**
+
+- Define `\(f(y)\)` as the derivative of `\(F\)`
+
+  - `\(f(y) \equiv \frac{dF(y)}{dy} = F'(y)\)`
+  
+- `\(f(y)\)` is the probability density function (PDF)
+  
+---
+
+# PDF
 
 &lt;img src="Lecture_6_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Covariance
+# PDF and CDF
 
-- Think through what these lines represent
+- Having defined `\(f(y) \equiv \frac{dF(y)}{dy}\)`, we can write `\(F(y) = \int_{-\infty}^{y}f(t)dt\)` where `\(t\)` is a placeholder.
 
-  - How much a randomly chosen point **deviates** from its mean
-  
-- Note two patterns from the points chosen in each panel
+- The pdf `\(f(\cdot)\)` has the following properties
 
-  - In panel A: bigger deviations in `\(y_1\)` are sometimes associated with bigger deviations in `\(y_2\)`, but not always
+  - `\(f(y) \geq 0\;\forall\;y, -\infty &lt; y &lt; \infty\)`
   
-  - In panel A: in some cases the `\(y_1\)` deviation is positive and the `\(y_2\)` deviation is negative, but not always
+  - `\(\int_{-\infty}^{\infty} f(y)dy = 1\)`
   
-  - In panels B and C: bigger deviations in `\(y_1\)` are consistently associated with bigger deviations in `\(y_2\)`
-  
-  - In panel B: positive deviations in `\(y_1\)` are associated with positive deviations in `\(y_2\)`, and negative deviations in `\(y_1\)` are associated with negative deviations in `\(y_2\)`
-  
-  - In panel C: positive deviations in `\(y_1\)` are associated with negative deviations in `\(y_2\)`, and vice versa
-  
----
+- How do we work with probabilities in this setting?
 
-# Covariance
-
-- How can we summarize these conclusions more efficiently? Take the product of the `\(y_1\)` and `\(y_2\)` deviations
-
-  - `\((y_1 - \mu_1)(y_2 - \mu_2)\)`
+  - What is the probability that `\(Y\)` takes on values `\(y\)` that fall between `\(a\)` and `\(b\)`?
   
-  - In panel A, this product is sometimes positive and sometimes negative
+  - `\(P(a &lt; Y \leq b) = P(Y \leq B) - P(Y \leq a)\)`
   
-  - In panel B, this product is always positive
+  - `\(P(a &lt; Y \leq b) = F(b) - F(a)\)`
   
-  - In panel C, this product is always negative
+  - `\(P(a &lt; Y \leq b) = \int_{a}^b f(y)dy\)`
   
-- And how can we **further** summarize these conclusions?
-
-  - Take the **expectation**!
-  
-  - `\(\textit{COV}(Y_1,Y_2) = E[(Y_1 - \mu_1)(Y_2 - \mu_2)]\)`
-  
----
-
-# Covariance
-
-- Let's calculate!
-
-
-```r
-toplot %&gt;%
-  group_by(facet) %&gt;%
-  summarize(cov = mean((y1-mean(y1))*(y2-mean(y2))))
-```
-
-```
-## # A tibble: 3 × 2
-##   facet       cov
-##   &lt;chr&gt;     &lt;dbl&gt;
-## 1 Panel A  0.0865
-## 2 Panel B  0.978 
-## 3 Panel C -0.983
-```
+- NOTE: `\(P(a &lt; Y &lt; b) = P(a &lt; Y \leq b) = P(a \leq Y &lt; b) = P(a \leq Y \leq b)\)`. Why?
 
 ---
 
-# Covariance
+# Expectations
 
-- But what if we change the scale?
+- Recall that the expectation of a discrete random variable is `\(E(Y) \equiv \sum_y yp(y)\)`
 
-&lt;img src="Lecture_6_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+- For continuous RVs, the intuition is similar
+
+  - `\(E(Y) \equiv \int_{-\infty}^{\infty} yf(y)dy\)`
+  
+  - `\(E[g(Y)] = \int_{-\infty}^{\infty} g(y)f(y)dy\)`
+  
+  - `\(\textit{VAR}(Y) \equiv \int_{-\infty}^{\infty}(y - \mu)^2f(y)dy\)`
+  
+- Prove `\(\textit{VAR}(Y) = E(Y^2) - \mu^2\)`
+
+---
+
+# Theoretical models
+
+- We'll look at two commonly used to describe continuous random variables
+
+  - The **uniform**
+  
+  - The **Normal**
+  
+- And three distributions related to the Normal that we will use constantly in statistical tests
+
+  - The **Chi-squared** ( `\(\chi^2\)` ) distribution
+  
+  - The **t-distribution**
+  
+  - The **F-distribution**
+  
+---
+
+# The Uniform
+
+- A random variable that can take on any value in an interval between two other values, and the chances are equal for every value
+
+- We can visualize the density function like this:
+
+&lt;img src="Lecture_6_slides_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Uniform
+
+- The pdf is thus:
+
+  - `\(f(y) = \frac{1}{\theta_2 - \theta_1}\)` for `\(\theta_1 \leq y \leq \theta_2\)`
+  
+  - `\(f(y) = 0\)` otherwise
+  
+- Proof? Geometry!
+
+- The CDF can be derived:
+
+  - `\(F(y) = \int_{-\infty}^y f(t)dt\)`
+  
+  - `\(F(y) = \int_{\theta_1}^y \frac{1}{\theta_2 - \theta_1}dt\)`
+  
+  - `\(F(y) = \frac{t}{\theta_2 - \theta_1}\bigg|_{\theta_1}^y\)`
+  
+  - `\(F(y) = \frac{y - \theta_1}{\theta_2 - \theta_1}\)`
+  
+---
+
+# The Uniform
+
+- What is `\(E(Y)\)`?
+
+- What is `\(\textit{VAR}(Y)\)`?
+
+- What are some examples of uniformly distributed continuous random variables?
+
+---
+
+# The Normal
+
+- Many empirical distributions are closely approximated by a distribution that is:
+
+  1. symmetric
+  
+  2. has non-zero probability for all possible values of `\(y\)`
+  
+  3. is "bell shaped"
+  
+- These characteristics are embodied in the **normal distribution**
+
+---
+
+# The Normal
+
+- We won't get into the math of the normal, but it is an essential part of quantitative analysis!
+
+- SO just trust me:
+
+  - `\(f(y) = \frac{1}{\sigma \sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}\)` for `\(-\infty &lt; y &lt; \infty\)`
+  
+- Two parameters: `\(\mu\)` and `\(\sigma\)`
+
+  - `\(E(Y) = \mu\)`
+  
+  - `\(\textit{VAR}(Y) = \sigma^2\)`
+  
+---
+
+# The Normal
+  
+- What is the probability `\(Y\)` takes on some value `\(y\)` within an interval between `\(a = 62\)` and `\(b = 65\)`?
+
+  - `\(P(a \leq Y \leq b) = \int_{a}^bf(y)dy\)`
+  
+  - `\(P(a \leq Y \leq b) = \int_{a}^b\frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}dy\)`
 
 --
 
-.pull-left[
-
-```r
-res &lt;- toplot2 %&gt;%
-  group_by(facet) %&gt;%
-  summarize(cov = mean((y1-mean(y1))*(y2-mean(y2))))
-```
-]
-
-.pull-right[
-
-```
-## # A tibble: 2 × 2
-##   facet        cov
-##   &lt;chr&gt;      &lt;dbl&gt;
-## 1 Panel A.1 0.0865
-## 2 Panel A.2 1.30
-```
-]
+&lt;img src="Lecture_6_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Correlation
+# The Normal
 
-- We need to make this *scale invariant*
+- We typically **standardize** a normally distributed variable
 
-- **Standardize** by the product of the two RVs' standard deviations
+--
 
-  - `\(\rho(Y_1,Y_2) = \frac{\textit{COV}(Y_1,Y_2)}{\sigma_1\sigma_2}\)`
+  - Units measured in terms of standard deviations (instead of inches or whatever else)
   
-- Can you prove that `\(-1 \leq \rho \leq 1\)`?
+- `\(Z \equiv \frac{Y - \mu}{\sigma}\)`
 
-- Summing up:
+  - `\(Z\)` is a random variable with mean zero and standard deviation one
+  
+  - PDF simplifies to `\(f(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}\)`
+  
+- We use these so frequently in statistics we denote them with special symbols!
 
-  - Independence of `\(Y_1\)` and `\(Y_2\)` implies that `\(\textit{COV}(Y_1,Y_2) \approx 0\)`
+  - "Little phi of z" is the PDF of the standardized normal evaluated at `\(Z = z\)`: `\(\phi(z)\)`
   
-  - Or more accurately, `\(\rho(Y_1,Y_2) \approx 0\)`
+  - "Big phi of z" is the CDF of the standardized normal evaluated at `\(Z = z\)`: `\(\Phi(z)\)`
   
-- NB: these are useful tools for measuring the strength of a *linear* relationship
+---
 
-  - Not so good for other types of relationships, like **curvelinear**
+# Three Associated Distributions
+
+- We use the normal a **ton**
+
+- But we also use it with three other distributions
+
+--
+
+  1. The **Chi-squared** ( `\(\chi^2\)` ): `\(Y\)` is the sum of squares of a series of standard normal RVs
   
+  2. The **t-distribution**: `\(Y\)` is the ratio of the standard normal RV / the square root of the chi-squared RV
+  
+  3. The **F distribution**: `\(Y\)` is the ratio of two chi-squared RVs
+  
+--
+
+- We will return to these later, but I'm signposting them here
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

@@ -4,7 +4,7 @@
     <title>Lecture 8</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2023/09/26
-Slides Updated: 2023-09-27
+### Lecture Date: 2024/09/26
+Slides Updated: 2024-09-11
 ]
 
 ---
@@ -46,382 +46,231 @@ Slides Updated: 2023-09-27
 
 # Agenda
 
-1. Bias and intuition
+1. Independent random variables
 
-2. Confidence Intervals
+2. Covariance
 
-3. `\(\sigma^2\)`
-
----
-
-# Bias
-
-- Our gut tells us that `\(\bar{Y} \equiv \frac{1}{n}\sum_i^n (Y_i)\)` is not biased while `\(\bar{Y}_B \equiv \frac{1}{n}\sum_i^n (Y_i + 1)\)` is
-
-  - `\(\bar{Y}\)` is the mean of the sample, so intuition tells us it should be unbiased for `\(\mu\)`
-  
-- But the **intuitive** estimator is not always the **unbiased** estimator
-
---
-
-- Consider `\(S^2 = \frac{\sum_i (Y_i - \bar{Y})^2}{n}\)` as a potential estimator for the population variance `\(\sigma^2\)`
-
-- Prove that it is biased by taking its expectation
-
+3. Correlation
 
 ---
 
-# Bias
+# Independent Random Variables
 
-$$
-`\begin{aligned}
-E[S^2] &amp;= E\bigg[\frac{\sum_i (Y_i - \bar{Y})^2}{n}\bigg]\\
-&amp;= E\bigg[\frac{\sum_i (Y_i^2 - 2Y_i\bar{Y} + \bar{Y}^2)}{n}\bigg]\\
-&amp;= E\bigg[\frac{\sum_i Y_i^2 - \color{red}{2\bar{Y}\sum_iY_i} + \sum_i\bar{Y}^2}{n}\bigg]\\
-\end{aligned}`
-$$
----
+- Previous content was hurried in order to bring us here...**how to make inferences from samples**
 
-# Bias
+- Recall that independent events `\(A\)` and `\(B\)` imply `\(P(A \cap B) = P(A)P(B)\)`
 
-- Note that the definition of `\(\bar{Y} \equiv \frac{1}{n}\sum_i Y_i\)`
+- Also remember our example of an event involving two random variables: `\((a &lt; Y_1 \leq b) \cap (c &lt; Y_2 \leq d)\)`
 
-- Multiply both sides by `\(n\)` to yield `\(n\bar{Y} \equiv \sum_i Y_i\)`
+  - This event can be **decomposed** to two events: `\(a &lt; Y_1 \leq b\)` and `\(c &lt; Y_2 \leq d\)`
+  
+- If `\(Y_1\)` and `\(Y_2\)` are **independent**, then:
 
-- Thus:
-
-$$
-`\begin{aligned}
-E[S^2] &amp;= E\bigg[\frac{\sum_i Y_i^2 - \color{red}{2\bar{Y}\sum_iY_i} + \sum_i\bar{Y}^2}{n}\bigg]\\
-&amp;= E\bigg[\frac{\sum_i Y_i^2 - \color{red}{2\bar{Y}n\bar{Y}} + \sum_i\bar{Y}^2}{n}\bigg]\\
-&amp;= E\bigg[\frac{\sum_i Y_i^2 - 2n\bar{Y}^2 + n\bar{Y}^2}{n}\bigg]\\
-&amp;= E\bigg[\frac{\sum_i Y_i^2 - n\bar{Y}^2}{n}\bigg]\\
-\end{aligned}`
-$$
+  - `\(P(a &lt; Y_1 \leq b,\; c &lt; Y_2 \leq d) = P(a &lt; Y_1 \leq b)P(c &lt; Y_2 \leq d)\)`
+  
+- The joint probability of two independent RVs can be written as the **product of their marginal probabilities**
 
 ---
 
-# Bias
+# Independent Random Variables
 
-$$
-`\begin{aligned}
-E[S^2] &amp;= E\bigg[\frac{\sum_i Y_i^2 - n\bar{Y}^2}{n}\bigg]\\
-&amp;= \frac{1}{n}E\bigg[\sum_i Y_i^2 - n\bar{Y}^2\bigg]\\
-&amp;= \frac{1}{n}\bigg(\sum_i E[Y_i^2] - nE[\bar{Y}^2]\bigg)\\
-&amp;= \frac{1}{n}\bigg(\sum_i (E[Y_i^2] \color{red}{- E[Y_i]^2 + E[Y_i]^2}) - nE[\bar{Y}^2]\color{red}{- E[\bar{Y}]^2 + E[\bar{Y}]^2}\bigg)\\
-&amp;= \frac{1}{n}\bigg(\sum_i (VAR(Y_i) + E[Y_i]^2) - nVAR(\bar{Y}) + E[\bar{Y}]^2\bigg)
-\end{aligned}`
-$$
+- Generalizing to `\(F(y_1,y_2) = F_1(y_1)F_2(y_2)\;\forall\;(y_1,y_2)\)`
 
----
-
-# Bias
-
-$$
-`\begin{aligned}
-E[S^2] &amp;= \frac{1}{n}\bigg(\sum_i (\sigma^2 + \mu^2) - n(\frac{\sigma^2}{n} + \mu^2)\bigg)\\
-&amp;= \frac{1}{n}\bigg(n(\sigma^2 + \mu^2) - \sigma^2 - n\mu^2\bigg)\\
-&amp;= \frac{1}{n}\bigg(n\sigma^2 + n\mu^2 - \sigma^2 - n\mu^2\bigg)\\
-&amp;= \frac{1}{n}\bigg(n\sigma^2 - \sigma^2\bigg)\\
-&amp;= \frac{n-1}{n}\sigma^2 \neq \sigma^2
-\end{aligned}`
-$$
-
----
-
-# Bias
-
-- So it turns out the intuitive estimator is **not** the unbiased estimator!
-
-  - Note that `\(S^2 \equiv \frac{1}{n}\sum_i (Y_i - \bar{Y})^2\)` is the appropriate formula for calculating the variance of a sample
+  - where `\(F(y_1,y_2)\)` is the joint CDF for `\(Y_1\)` and `\(Y_2\)`
   
-  - But it is **not** the appropriate estimator for calculating the variance of a population!
+  - and `\(F_1(y_1)\)` is the CDF for `\(Y_1\)`, and `\(F_2(y_2)\)` is the CDF for `\(Y_2\)`
   
-- Although how bad are we messing up if we make this mistake?
+- Thus, if `\(Y_1\)` and `\(Y_2\)` are independent:
 
-$$
-`\begin{aligned}
-B(S^2) &amp;= E[S^2] - \sigma^2 \\
-&amp;= \frac{n-1}{n}\sigma^2 - \sigma^2\\
-&amp;= \bigg(\frac{n-1}{n} - 1\bigg)\sigma^2\\
-&amp;= \frac{-\sigma^2}{n}
-\end{aligned}`
-$$
-
-- As `\(n \rightarrow \infty\)`, `\(B(S^2) \rightarrow 0\)`
-
----
-
-# Interval Estimators
-
-- So we've covered two dimensions of the quality of a **point estimate**: bias and variance
-
-- Recall that we also are interested in **interval estimates**: two numbers that capture the true population parameter
-
-- Specifically, an **interval estimator** is:
-
-  1. A rule...
+  - **Discrete RVs**: `\(p(y_1,y_2) = p_1(y_1)p_2(y_2)\)`
   
-  2. ...specifying how we use a sample to calculate numbers...
+  - **Continuous RVs**: `\(f(y_1,y_2) = f_1(y_1)f_2(y_2)\)`
   
-  3. ...that form the endpoints of an interval...
-  
-  4. ...containing the parameter of interest `\(\theta\)`
+- Thus, further, `\(f(y_1,y_2) = g(y_1)h(y_2)\)`
 
-- We again are interested in the quality of this concept
-
-  - Want it to contain `\(\theta\)`
+  - where `\(g(\cdot)\)` and `\(h(\cdot)\)` are non-negative functions
   
-  - Want it to be narrow
+  - In English, if we want to prove two RVs are independent, we can do so by finding two functions that satisfy these properties
   
 ---
 
-# Confidence Intervals
+# Expectations of functions of RVs
 
-- Interval estimators are commonly called **confidence intervals (CIs)**
+- Recall from the univariate world that we can show the expected value of a function of a random variable `\(g(Y)\)` was
 
-- CIs constructed of **upper and lower confidence bounds**
-
-- Probability that CI contains `\(\theta\)` is **the confidence coefficient**
-
-  - The fraction of the time...
+  - **Discrete RVs**: `\(E[g(Y)] = \sum_y g(y)p(y)\)`
   
-  - ...in repeated sampling...
+  - **Continuous RVs**: `\(E[g(Y)] = \int_{-\infty}^{\infty}g(y)f(y)dy\)`
   
-  - ...that the CI will contain `\(\theta\)`
+- We can do the same in the multivariate world with a function of several random variables
+
+  - **Discrete**: `\(E[g(Y_1,Y_2,\dots,Y_k)] = \sum_{y_k}\dots\sum_{y_2}\sum_{y_1}g(y_1,y_2,\dots,y_k)p(y_1,y_2,\dots,y_k)\)`
   
-- Thus we want the confidence coefficient to be **high**
-
-- Denoted as `\(1 - \alpha\)`
-
-- Formally:
-
-$$
-P(\hat{\theta}_L \leq \theta \leq \hat{\theta}_H) = (1-\alpha)
-$$
+  - **Continuous**: `\(E[g(Y_1,Y_2,\dots,Y_k)] = \int_{-\infty}^\infty \dots \int_{-\infty}^\infty \int_{-\infty}^\infty g(y_1,y_2,\dots,y_k)f(y_1,y_2,\dots,y_k)dy_1dy_2\dots dy_k\)`
+  
 ---
 
-# Confidence Intervals
+# Expectations of functions of RVs
 
-- Let's figure out how to construct a CI for a sample statistic `\(\hat{\theta}\)` that is normally distributed with mean `\(\mu\)` and standard error `\(\sigma_{\hat{\theta}}\)`
+- Rules of expectations also work here
 
-  - Formally, `\(\hat{\theta} \sim \mathcal{N}(\mu,\sigma_{\hat{\theta}})\)`
+  - Pull out constants: `\(E[cg(Y_1,Y_2)] = cE[g(Y_1,Y_2)]\)`
   
-- Standardize the statistic as `\(Z = \frac{\hat{\theta} - \theta}{\sigma_{\hat{\theta}}}\)`
+  - Distribute expectations: `\(E[g_1(Y_1,Y_2) + \dots + g_k(Y_1,Y_2)] = E[g_1(Y_1,Y_2)] + \dots + E[g_k(Y_1,Y_2)]\)`
+  
+- These allow a powerful result in which
 
-- To construct the CI, choose two **critical values** `\(-z_{\alpha/2}\)` and `\(z_{\alpha/2}\)` such that
-
-$$
-`\begin{aligned}
-P(-z_{\alpha/2} \leq Z \leq z_{\alpha/2}) &amp;= \int_{-z_{\alpha/2}}^{z_{\alpha/2}} \frac{1}{\sqrt{2\pi}}e^{-t^2/2}dt\\
-&amp;= 1-\alpha\\
-\end{aligned}`
-$$
-
+  - If `\(Y_1\)` and `\(Y_2\)` are independent
+  
+  - And if `\(g(Y_1)\)` and `\(h(Y_2)\)` are functions of only `\(Y_1\)` and `\(Y_2\)`
+  
+  - Then `\(E[g(Y_1)h(Y_2)] = E[g(Y_1)]E[h(Y_2)]\)`
+  
 ---
 
-# Confidence Intervals
+# Covariance of Two RVs
 
-$$
-`\begin{aligned}
-P(-z_{\alpha/2} \leq \frac{\hat{\theta}-\theta}{\sigma_{\hat{\theta}}} \leq z_{\alpha/2}) &amp;= 1-\alpha\\
-P(-z_{\alpha/2\sigma_{\hat{\theta}}} \leq \hat{\theta}-\theta \leq z_{\alpha/2\sigma_{\hat{\theta}}}) &amp;= 1-\alpha\\
-P(\hat{\theta}-z_{\alpha/2\sigma_{\hat{\theta}}} \leq \theta \leq \hat{\theta}+z_{\alpha/2\sigma_{\hat{\theta}}}) &amp;= 1-\alpha
-\end{aligned}`
-$$
+- If we say that `\(Y_1\)` and `\(Y_2\)` are **independent**, we are saying
 
-- Thus `\(\hat{\theta}_L = \hat{\theta}-z_{\alpha/2\sigma_{\hat{\theta}}}\)` and `\(\hat{\theta}_H = \hat{\theta}+z_{\alpha/2\sigma_{\hat{\theta}}}\)`
+  - **Discrete**: joint probability is equal to *the product of their individual probability functions*
+  
+  - **Continuous**: joint PDF is equal to *the product of their individual PDFs*
+  
+- But what if `\(Y_1\)` and `\(Y_2\)` **are** related?
 
-- But how do we determine `\(z_{\alpha/2}\)`
+  - That is, given what we know about the value of `\(Y_1\)`, we can make better than a random guess about `\(Y_2\)`
+  
+- We can **describe** how much the two processes are related with the property of **covariance**
 
-- CLT to the rescue!
-
+  - `\(\textit{COV}(Y_1,Y_2) \equiv E[(Y_1 - \mu_1)(Y_2 - \mu_2)]\)`
+  
 ---
 
-# Confidence Intervals
-
-- CLT to the rescue!
-
-- Sampling distribution approximates the normal as `\(n\rightarrow \infty\)`
+# Examples
 
 &lt;img src="Lecture_8_slides_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Confidence Intervals
+# Covariance
 
-- CLT to the rescue!
-
-- Standardized sampling distribution simplifies!
+- Let's think about two quantities: `\((y_1 - \mu_1)\)` and `\((y_2 - \mu_2)\)`
 
 &lt;img src="Lecture_8_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
-# Confidence Intervals
+# Covariance
 
-- CLT to the rescue!
+- Think through what these lines represent
 
-- Define our **confidence** with `\(1-\alpha\)` where `\(\alpha \in [0,1]\)`
+  - How much a randomly chosen point **deviates** from its mean
+  
+- Note two patterns from the points chosen in each panel
 
-&lt;img src="Lecture_8_slides_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+  - In panel A: bigger deviations in `\(y_1\)` are sometimes associated with bigger deviations in `\(y_2\)`, but not always
+  
+  - In panel A: in some cases the `\(y_1\)` deviation is positive and the `\(y_2\)` deviation is negative, but not always
+  
+  - In panels B and C: bigger deviations in `\(y_1\)` are consistently associated with bigger deviations in `\(y_2\)`
+  
+  - In panel B: positive deviations in `\(y_1\)` are associated with positive deviations in `\(y_2\)`, and negative deviations in `\(y_1\)` are associated with negative deviations in `\(y_2\)`
+  
+  - In panel C: positive deviations in `\(y_1\)` are associated with negative deviations in `\(y_2\)`, and vice versa
+  
+---
+
+# Covariance
+
+- How can we summarize these conclusions more efficiently? Take the product of the `\(y_1\)` and `\(y_2\)` deviations
+
+  - `\((y_1 - \mu_1)(y_2 - \mu_2)\)`
+  
+  - In panel A, this product is sometimes positive and sometimes negative
+  
+  - In panel B, this product is always positive
+  
+  - In panel C, this product is always negative
+  
+- And how can we **further** summarize these conclusions?
+
+  - Take the **expectation**!
+  
+  - `\(\textit{COV}(Y_1,Y_2) = E[(Y_1 - \mu_1)(Y_2 - \mu_2)]\)`
+  
+---
+
+# Covariance
+
+- Let's calculate!
+
+
+``` r
+toplot %&gt;%
+  group_by(facet) %&gt;%
+  summarize(cov = mean((y1-mean(y1))*(y2-mean(y2))))
+```
+
+```
+## # A tibble: 3 × 2
+##   facet       cov
+##   &lt;chr&gt;     &lt;dbl&gt;
+## 1 Panel A  0.0865
+## 2 Panel B  0.978 
+## 3 Panel C -0.983
+```
 
 ---
 
-# Confidence Intervals
+# Covariance
 
-- CLT to the rescue!
-
-- Then use easy functions (or lookup tables in ye olden days) to get critical values!
+- But what if we change the scale?
 
 &lt;img src="Lecture_8_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
----
+--
 
-# Critical Values
+.pull-left[
 
-- The functions to yield `\(z_{\alpha/2} = -\Phi^{-1}(\frac{\alpha}{2})\)` and `\(-z_{\alpha/2} = \Phi^{-1}(\frac{\alpha}{2})\)` are in `R`
-
-- Say I want to calculate a 0.95 CI = `\(1-\alpha\)`
-
-```r
-qnorm(.025)
+``` r
+res &lt;- toplot2 %&gt;%
+  group_by(facet) %&gt;%
+  summarize(cov = mean((y1-mean(y1))*(y2-mean(y2))))
 ```
+]
 
-```
-## [1] -1.959964
-```
-
-- Say I want to calculate a 0.90 CI = `\(1-\alpha\)`
-
-```r
-qnorm(.05)
-```
+.pull-right[
 
 ```
-## [1] -1.644854
+## # A tibble: 2 × 2
+##   facet        cov
+##   &lt;chr&gt;      &lt;dbl&gt;
+## 1 Panel A.1 0.0865
+## 2 Panel A.2 1.30
 ```
-
-- Say I want to calculate a 0.99 CI = `\(1-\alpha\)`
-
-```r
-qnorm(.005)
-```
-
-```
-## [1] -2.575829
-```
+]
 
 ---
 
-# Calculating CIs
+# Correlation
 
-- So if we want to define the CI for an estimator `\(\hat{\theta}\)` whose sampling distribution is normally distributed, we can write `\([\hat{\theta} - 1.96\sigma_{\hat{\theta}},\ \hat{\theta} + 1.96\sigma_{\hat{\theta}}]\)`
+- We need to make this *scale invariant*
 
-- But what is `\(\sigma_{\hat{\theta}}\)`?
+- **Standardize** by the product of the two RVs' standard deviations
 
-  - We know it is `\(\sqrt{VAR(\hat{\theta})} = \sqrt{\frac{\sigma^2}{n}} = \frac{\sigma}{\sqrt{n}}\)`
+  - `\(\rho(Y_1,Y_2) = \frac{\textit{COV}(Y_1,Y_2)}{\sigma_1\sigma_2}\)`
   
-- But then what is `\(\sigma^2\)`?
+- Can you prove that `\(-1 \leq \rho \leq 1\)`?
 
-- We've been kicking this can down the road for a while now...using CLT to construct CIs for `\(\mu\)`, but defined in terms of `\(\sigma^2\)` -- the population standard variance
+- Summing up:
 
-- Very unusual to know `\(\sigma^2\)` in practice. Homeworks and exercises will tell you, but in practice we don't know
-
-- So we need to approximate `\(\sigma^2\)` using `\(S^2_U \equiv \frac{\sum_i (Y_i - \bar{Y})^2}{n-1}\)`, our **unbiased** estimator for `\(\sigma^2\)`
-
----
-
-# Consistency
-
-- But wait! Before we can plug in `\(S_U\)`, we need to prove it is both unbiased and **consistent**
-
-- We already know how to prove unbiasedness
-
-- Consistency: as the sample size used to construct the estimator gets large, the probability of it being measured with error gets small
-
-- Denote `\(\hat{\theta}_n\)` as the estimate for a given sample size `\(n\)`
-
-  - In the extreme: `\(\underset{n\rightarrow \infty}\lim P(|\hat{\theta} - \theta| &gt; \epsilon)  = 0\)` where `\(\epsilon\)` is any positive number
+  - Independence of `\(Y_1\)` and `\(Y_2\)` implies that `\(\textit{COV}(Y_1,Y_2) \approx 0\)`
   
-  - Can also express as " `\(\hat{\theta}_n\)` converges in probability to `\(\theta\)` ", or `\(\hat{\theta}_n \overset{p}{\to} \theta\)`
+  - Or more accurately, `\(\rho(Y_1,Y_2) \approx 0\)`
   
-- In practice, we can evaluate this property by checking whether `\(VAR(\hat{\theta})\)` approaches zero as `\(n\)` gets large (see pg. 450 for proof)
+- NB: these are useful tools for measuring the strength of a *linear* relationship
 
-  - `\(\underset{n\rightarrow \infty}\lim VAR(\hat{\theta}) = 0\)`
-
----
-
-# Consistency
-
-- Apply to `\(\bar{Y}\)` for intuition
-
-$$
-`\begin{aligned}
-VAR(\bar{Y}) &amp;= \frac{\sigma^2}{n}\\
-\underset{n\rightarrow \infty}\lim \frac{\sigma^2}{n} &amp;= 0
-\end{aligned}`
-$$
-
-- Note that this **by itself** is insufficient to claim `\(\bar{Y} \overset{p}{\to} \mu\)`...we need to also prove unbiasedness (which we did last class)
-
-- In other words, an estimator might be **consistent** but **biased**
-
-- Or an estimator might be **unbiased** but not **consistent**
-
-- Need to check both!
-
----
-
-# `\(\sigma^2\)`
-
-- Remember what we're doing here!
-
-  - We know that `\(U_n \equiv \frac{\bar{Y} - \mu}{\sqrt{\sigma^2/n}} \sim \mathcal{N}(\mu,\sigma^2\)`)
-
-  - But can we be sure that `\(\hat{\theta} \equiv \frac{\bar{Y} - \mu}{\sqrt{S^2_U/n}} \sim \mathcal{N}(\mu,\sigma^2)\)`?
-  
-- Note that, in the original setting, `\(\sigma^2\)` is a **parameter** whereas in our sample setting `\(S^2_U\)` is a **random variable**
-
-$$
-F\bigg(\frac{\bar{Y} - \mu}{S_U / \sqrt{n}}\bigg) \overset{p}{\to} \Phi
-$$
-
----
-
-# `\(\sigma^2\)`
-
-- So let's examine whether `\(S^2_U\)` is a **consistent** estimator for `\(\sigma^2\)`
-
-$$
-`\begin{aligned}
-S^2_U &amp;= \frac{\sum_i (Y_i - \bar{Y})^2}{n-1}\\
-&amp;= \frac{1}{n-1}\bigg(\sum_i Y_i^2 + \sum_i \bar{Y}^2 - \sum_i 2Y_i\bar{Y}\bigg)\\
-&amp;= \frac{1}{n-1}\bigg((\sum_i Y_i^2) + n\bar{Y}^2 - 2n\bar{Y}^2\bigg)\\
-&amp;= \frac{1}{n-1}\bigg((\sum_i Y_i^2) - n\bar{Y}^2\bigg)\\
-&amp;= \frac{n}{n-1}\bigg(\frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2\bigg)\\
-\end{aligned}`
-$$
-
----
-
-# `\(\sigma^2\)`
-
-- So let's examine whether `\(S^2_U\)` is a **consistent** estimator for `\(\sigma^2\)`
-$$
-`\begin{aligned}
-S^2_U &amp;= \frac{n}{n-1}\bigg(\color{red}{\frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2}\bigg)\\
-\underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2 &amp;= \underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i Y_i^2 - \underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i\bar{Y}^2\\
-&amp;= \mu_{Y^2} - \mu_Y^2\\
-&amp;= E[Y^2] - \mu^2\\
-&amp;= \sigma^2\\
-\text{So:}\ \ S^2_U &amp;= \frac{n}{n-1}(\sigma^2)
-\end{aligned}`
-$$
-
-- But `\(\underset{n\rightarrow \infty}\lim \frac{n}{n-1} = 1\)`, meaning `\(S^2_U \overset{p}{\to} \sigma^2\)`
-
-
+  - Not so good for other types of relationships, like **curvelinear**
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

@@ -1,9 +1,9 @@
 ---
-title: "Lecture 6"
+title: "Lecture 4"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2024/09/17\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2023/09/07\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
@@ -47,9 +47,24 @@ require(tidyverse)
 
 1. Continuous random variables
 
-2. Common examples of continuous RVs
+2. Density functions
 
+3. Two more theoretical probability models
+
+4. Three distributions related to the standard Normal
+
+---
+
+# Quick recap
+
+- Three discrete probability models
+
+  - The Bernoulli
   
+  - The Binomial
+  
+  - The Poisson
+
 ---
 
 # Continuous Random Variables
@@ -90,7 +105,7 @@ require(tidyverse)
 # create sample data
 sample_Data = rnorm(5000)
 # calculate CDF 
-CDF <- ecdf(sample_Data )
+CDF <- ecdf(sample_Data)
 # draw the cdf plot
 plot(CDF,main = 'CDF',ylab = 'F(y)',xlab = 'y')
 ```
@@ -324,4 +339,3 @@ data.frame(y = seq(50,75,length.out = 1000)) %>%
 --
 
 - We will return to these later, but I'm signposting them here
-

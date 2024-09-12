@@ -1,9 +1,9 @@
 ---
-title: "Lecture 9"
+title: "Lecture 7"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2024/10/01\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2023/09/21\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
@@ -509,3 +509,12 @@ $$
 - (Notation reminder! 
 
   - $Y \sim \mathcal{N}(\mu,\sigma^2)$ is how we write "is distributed normal with mean $\mu$ and standard deviation $\sigma^2$)
+
+```{r,message=F,echo=F,warning=F,results='hide'}
+dir <- getwd()
+type <- 'pdf'
+format <- 'landscape'
+f <- 'Lecture_7_slides'
+
+system(paste('Rscript ../NFGH/chromeprint.R',dir,type,format,f),wait = F)
+```

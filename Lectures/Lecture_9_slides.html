@@ -4,7 +4,7 @@
     <title>Lecture 9</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2023/09/28
-Slides Updated: 2023-09-27
+### Lecture Date: 2024/10/01
+Slides Updated: 2024-09-11
 ]
 
 ---
@@ -46,342 +46,440 @@ Slides Updated: 2023-09-27
 
 # Agenda
 
-1. Recap of where we are
+1. Sampling
 
-2. `\(\sigma^2\)` and consistency
+2. The Central Limit Theorem
 
-3. Slutzky's Theorem
+3. Estimation
 
-4. Fun example time!
-
+4. An example
 
 ---
 
-# Where we started
+# Our journey thus far
 
-- Wanted to identify a "good" estimator for the population mean `\(\mu\)`...
+- Overarching goal: find the **best possible way** to make inferences about populations from samples
 
-- ...based on a **random sample** of data from that population
+--
 
-- We proposed `\(\bar{Y} \equiv \frac{1}{n}\sum_i Y_i\)` which seemed intuitive
-
-- We redefined the sampling process for a size `\(n\)` as a series of random variables `\(Y_1, Y_2, \dots, Y_n\)`
-
-- Crucially, these are IID, meaning that they all have the same:
-
-  1. CDF `\(F()\)`
+- Defined social phenomena as **experiments** that yield observations
   
-  2. Mean `\(\mu\)`
-  
-  3. Variance `\(\sigma^2\)`
-  
-- This allowed us to establish that `\(\bar{Y}\)` is an **unbiased estimator** of `\(\mu\)`: `\(E(\bar{Y}) = \mu\)`
+  - Outcomes defined as **events**
+    
+  - Defined **sample space** as the set of all possible events
+    
+  - Used **set theory** to guide how we assign probabilities to events
+    
+--
 
-- And that `\(VAR(\bar{Y}) = \frac{\sigma^2}{n}\)`, and thus `\(\sigma_{\bar{Y}} = \frac{\sigma}{\sqrt{n}}\)`
+- Then defined a **random variable** as a function mapping sample space to real numbers
+  
+  - Built on set theory to describe the **probability distribution** of an RV
+    
+  - And the probability distribution of a **function** of RVs
+    
+---
+
+# "Random" variables
+
+- All observed social phenomena are **realizations of random variables**
+
+- Put differently, political scientists study **random events**
+  
+- We mean "random" differently from the layperson
+
+  - Layperson: "Random" `\(\Rightarrow\)` something that cannot be anticipated
+  
+  - Us: an event that is **probabilistic** instead of deterministic
+
+- In sum, **random variables** means we expect that the values we observe to be draws from an associated probability distribution
   
 ---
 
-# Where we went
+# Expectations
 
-- We wanted to know how close, on average, `\(\bar{Y}\)` is to `\(\mu\)`
+- Powerful result: if the probability distribution is an accurate representation of the population frequency distribution, then the expected value of an RV is the population mean `\(\mu\)`
 
-- CLT tells us that the **sampling distribution** of `\(\bar{Y}\)` is distributed Normal as `\(n \rightarrow \infty\)`
-
-- We also know that the standardized version of `\(U_n \equiv Z \equiv \frac{\bar{Y} - \mu}{\sigma_{\bar{Y}}}\)` converges to the *standard* Normal distribution
-
-- This allowed us to find values of `\(\alpha\)` and `\(z_{\alpha/2}\)` which satisfy
-
+Discrete case:
 $$
-P(\bar{Y} - z_{\alpha / 2}\sigma_{\bar{Y}} \leq \mu \leq \bar{Y} + z_{\alpha/2}\sigma_{\bar{Y}}) = 1 - \alpha
+E(Y) \equiv \sum_y yp(y)
 $$
-- And since we know that `\(\sigma_{\bar{Y}} \equiv \frac{\sigma}{\sqrt{n}}\)`, we should be good to go! Right?
+
+Continuous case:
+$$
+E(Y) \equiv \int_y yf(y)dy
+$$
 
 ---
 
-# Where we are now
+# Putting this to work
 
-- Not quite! We need to confront the fact that we don't know `\(\sigma\)`!
+- Fundamental challenge: **inference**
 
-- This is something of a Catch-22
+- What can we say about the **data we don't have**?
 
-  - We want to describe an interval estimate that contains the true population parameter `\(\mu\)`
+- Typically want to say something that **summarizes** the population
+
+  - Central tendency is a very common target!
   
-  - We have an estimator `\(\bar{Y}\)`, a standard normal distribution which gives us `\(z_{\alpha / 2}\)`, and the sample size `\(n\)`
+- These "things" we want to say are **parameters**
+
+  - And we "estimate" them with **estimators**
+
+- Definition: **Estimator**
+
+  - A *rule* (often a formula) that tells us how to calculate an **estimate** from a sample
   
-  - But we need `\(\frac{\sigma}{\sqrt{n}}\)`!
-  
-- We propose using `\(S^2_U \equiv \frac{\sum_i (Y_i - \bar{Y})^2}{n-1}\)`, our **unbiased** estimator for `\(\sigma^2\)`
-  
----
-
-# Consistency
-
-- But wait! Before we can plug in `\(S_U\)`, we need to prove it is both unbiased and **consistent**
-
-- We already know how to prove unbiasedness
-
-- Consistency: as the sample size used to construct the estimator gets large, the probability of it being measured with error gets small
-
-- Denote `\(\hat{\theta}_n\)` as the estimate for a given sample size `\(n\)`
-
-  - In the extreme: `\(\underset{n\rightarrow \infty}\lim P(|\hat{\theta} - \theta| &gt; \epsilon)  = 0\)` where `\(\epsilon\)` is any positive number
-  
-  - Can also express as " `\(\hat{\theta}_n\)` converges in probability to `\(\theta\)` ", or `\(\hat{\theta}_n \overset{p}{\to} \theta\)`
-  
-- In practice, we can evaluate this property by checking whether `\(VAR(\hat{\theta})\)` approaches zero as `\(n\)` gets large (see pg. 450 for proof)
-
-  - `\(\underset{n\rightarrow \infty}\lim VAR(\hat{\theta}) = 0\)`
+- We can come up with many of these, but how do we know if they're any good?
 
 ---
 
-# Consistency
+# Estimates and Estimators
 
-- Apply to `\(\bar{Y}\)` for intuition
+- What do we mean by "good"?
+
+- Example: the observed sample mean
+
+  - Draw random sample of `\(n\)` observations from a random variable `\(Y\)`
+  
+$$
+\bar{Y} \equiv \frac{y_1 + y_2 + \dots + y_n}{n} = \frac{1}{n}\sum_i y_i
+$$
+
+- Is this "good"?
+
+  - Be precise! Is this a "good" estimate of the population parameter `\(\mu\)`?
+  
+- It feels good...but why?
+
+---
+
+# Simple Example
+
+- Want to know the mean income of the American population
+
+  - `\(\mu\)`: Average income of **all** Americans
+  
+- But we can't ask everybody (takes too long, too expensive), so we run an **experiment** where we sample Americans **at random** and ask their income
+
+- The response for the first person I ask is `\(y_1\)`
+  
+  - **NOTE:** `\(y_1\)` is one of literally millions of responses I might have recorded
+
+  - Thus it is **probabilistic**
+  
+  - Thus we can think of it as a realization of the random variable `\(Y_1\)`
+  
+- Denote response of second person I ask as `\(y_2\)`
+
+  - AGAIN... `\(y_2\)` is probabilistic and can be thought of as the realization of the random variable `\(Y_2\)`
+  
+---
+
+# Simple Example Cont'd
+
+- Thus let observed sample of `\(n\)` observations be realizations of `\(n\)` random variables: `\(Y_1, Y_2, \dots, Y_n\)`
+
+- So what is `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)`?
+
+  - One realization of many possible `\(\bar{Y}\)` values
+  
+  - `\(\bar{Y}\)` is a **function** of random variables, and therefore **itself** a random variable (recall definition of RV)
+  
+  - In other words, our observed sample produces `\(\bar{y}\)`, a realization of the random variable `\(\bar{Y}\)`
+  
+- Since `\(\bar{Y}\)` is a random variable, it has a theoretical probability distribution
+
+  - What does the probability distribution look like?
+  
+---
+
+# Magic time
+
+- Thus far, we have being pretty **sketchy** about our distributions
+
+  - Talked about *some* in concrete terms (Bernoulli, Binomial, Poisson, Uniform, Normal)
+  
+  - But mostly been **very** agnostic with our notation: `\(f(y)\)`; `\(F(y)\)` could be (almost) anything
+  
+- But, thanks to a carefully defined experiment, we be **concrete** about the probability distribution of `\(\bar{Y}\)`
+
+- Specifically, we are working with a **random sample**
+
+  - Choose a set of `\(n\)` observations from a population of size `\(N\)`, producing `\(N \choose n\)` possible samples
+  
+  - And each of these samples is **equiprobable**
+  
+- A random sample allows us to assume that the random variables `\(Y_1, Y_2, \dots, Y_n\)` are "i.i.d."
+
+  - **I**ndependent and **I**dentically **D**istributed
+
+---
+
+# IID
+
+- **Independent**: `\(F(y_1,y_2,\dots,y_n) = F_1(y_1)*F_2(y_2)*\dots*F_n(y_n)\)`
+
+- **Identically Distributed**: `\(F_1(y_1) = F_2(y_2) = \dots = F_n(y_n) = F(y)\)`
+
+---
+
+# How good is `\(\bar{Y}\)`?
+
+- We will refer to `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)` as a **sample statistic**
+
+  - A function of the random variables `\(Y_1,Y_2,\dots,Y_n\)` and "known constants" (in this case, `\(\frac{1}{n}\)`)
+  
+- We can prove that `\(E(\bar{Y}) = \mu\)` thanks to the **identicality assumption**
+
+  - So we can say `\(\bar{Y}\)` is "good" on average because it will be `\(\mu\)` on average
+  
+- But how far off might a given sample's `\(\bar{Y}\)` be?
+
+  - This is just the standard deviation of `\(\bar{Y}\)`, or `\(\sigma_{\bar{Y}}\)`
+  
+  - `\(\sigma_{\bar{Y}} = \sqrt{VAR(\bar{Y})} = \frac{\sigma}{\sqrt{n}}\)` (we can prove with **identicality and independence**)
+  
+---
+
+# How good is `\(\bar{Y}\)`?
+
+- Remember that `\(\bar{Y}\)` is a random variable and thus it has a probability distribution?
+
+- In general, any **sample statistic** is a random variable and has a probability distribution
+
+- We call these probability distributions **sampling distributions**
+
+  - Literally just the probability distribution for a sample statistic
+  
+  - They are **theoretical models** for the possible values of the sample statistic we would expect to see through repeated random sampling
+  
+- We might have one sampling distribution for `\(\bar{Y}\)` and another for `\(\bar{Y'}\)`
+
+  - The "better" sampling distribution is the one whose estimates are closer to the true parameter of interest `\(\mu\)`
+  
+  - I.e., the one whose variance is **smaller**
+
+---
+
+# How good is `\(\bar{Y}\)`?
+
+
+&lt;img src="Lecture_9_slides_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Shapes
+
+- But the previous was just an example, wasn't it? There's no way the **sampling distribution** would look like that
+
+  - After all, other random variables can have *any* shape
+  
+&lt;img src="Lecture_9_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Central Limit Theorem
+
+- We can rely on a **powerful** result of the math thus far:
+
+- If `\(Y_1, Y_2, \dots, Y_n\)` are i.i.d., then `\(\bar{Y}\)`'s sampling distribution is approximately normal
+
+- See some examples in the handout!
+
+- Formally, let `\(Y_1, Y_2, \dots, Y_n\)` be i.i.d. random variables with:
+
+  - `\(E(Y_i) = \mu\)`
+  
+  - `\(VAR(Y_i) = \sigma^2\)`
+  
+- Define `\(U_n \equiv \frac{\bar{Y} - \mu}{\sigma / \sqrt{n}}\)` as the standardized `\(\bar{Y}\)`, and denote `\(F_{U_n}(u)\)` as the CDF of this standardized random variable
+
+- We know that `\(\lim_{n \rightarrow \infty} F_{U_n}(u) \int_{-\infty}^u \frac{1}{\sqrt{2\pi}}e^{-t^2/2} dt\;\; \forall\; u\)`
+
+  - You don't need to know this proof, but see Section 7.4 in WMS if interested
+  
+---
+
+# Central Limit Theorem
+
+- In plain language: We know the (asymptotic) sampling distribution of `\(\bar{Y}\)` **without requiring any assumptions about the probability distribution of `\(Y\)`**
+
+- We can now actually **calculate** probabilities!
+
+- This is inference!
+
+- This is magic!
+
+- THIS IS SPARTA!
+
+---
+
+# Estimation
+
+- With the CLT in hand, let's return to **estimators**
+
+  - Remember the definition?
+  
+  - A rule (often a formula) that tells us how to calculate an estimate of a population parameter
+  
+- Two types:
+
+  1. **Point Estimates**: a single value (i.e., a "point") is given as the estimate of the parameter of interest
+  
+  2. **Interval Estimates**: two values are used to construct an range (i.e., an "interval") in which the parameter of interest exists
+
+---
+
+# Estimation
+
+- What is `\(\bar{Y} = \frac{1}{n}\sum_i Y_i\)`?
+
+--
+
+  - A point estimate
+  
+- But there are many other candidates
+
+- Consider `\(\bar{Y}_B = \frac{1}{n} \sum_i(Y_i + 1)\)`
+
+- Is this "good"? No...why not?
+
+- It is "biased"
+
+---
+
+# Aside on notation
+
+- We have been interested in `\(\mu\)` which is a population parameter
+
+- But there are other quantities of the population that we might be interested in
+
+  - Central tendency parameters: median, mode
+  
+  - Dispersion parameters: range, variance
+  
+  - (Preview) Relationship parameters: coefficients
+  
+- Generically, denote a population parameter with `\(\theta\)` and the proposed estimator for this parameter as `\(\hat{\theta}\)`
+
+---
+
+# Bias
+
+- Math of expectations can help us formalize bias
+
+- Define "bias" as an estimator that is equal to the parameter it claims to estimate **in expectation**
+
+  - `\(\hat{\theta}\)` is unbiased for `\(\theta\)` if `\(E(\hat{\theta}) = \theta\)`
+  
+    - (i.e., `\(E(\bar{Y}) = \mu\)`)
+    
+  - If `\(E(\hat{\theta}) \neq \theta\)`, then `\(\hat{\theta}\)` is **biased**
+  
+  - Denote bias as `\(B(\hat{\theta}) = E(\hat{\theta}) - \theta\)`
+  
+- We can prove an estimator is unbiased using expectations!
+
+---
+
+# Bias
+
+- Does `\(E(\hat{Y}_B) = \mu\)`?
 
 $$
 `\begin{aligned}
-VAR(\bar{Y}) &amp;= \frac{\sigma^2}{n}\\
-\underset{n\rightarrow \infty}\lim \frac{\sigma^2}{n} &amp;= 0
+E(\hat{Y}_B) &amp;= E\bigg[\frac{1}{n}\sum_i^n(Y_i + 1)\bigg]\\
+&amp;= \frac{1}{n}\bigg[ \sum_i^n E(Y_i + 1)\bigg]\\
+&amp;= \frac{1}{n}\bigg[\bigg(\sum_i^n E(Y_i)\bigg) + \bigg(\sum_i^nE(1)\bigg)\bigg]\\
+&amp;= \frac{1}{n}\bigg[\sum_i^n \mu + \sum_i^n 1\bigg]\\
+&amp;= \frac{1}{n}(n\mu + n)\\
+&amp;= \mu + 1\\
+&amp;\neq \mu
 \end{aligned}`
 $$
 
-- Note that this **by itself** is insufficient to claim `\(\bar{Y} \overset{p}{\to} \mu\)`...we need to also prove unbiasedness (which we did last class)
+---
 
-- In other words, an estimator might be **consistent** but **biased**
+# Variance
 
-- Or an estimator might be **unbiased** but not **consistent**
+- Recall from earlier when we talked about how close a random sample's `\(\bar{Y}\)` would be to `\(\mu\)`
 
-- Need to check both!
+- This is equivalent to saying we want to minimize the variance of the sampling distribution
+
+- Recall the definition of variance of a random variable
+
+$$
+VAR(\hat{\theta}) = E[(\hat{\theta} - E(\hat{\theta}))^2]
+$$
+
+- We want to make this as small as possible
 
 ---
 
-# `\(\sigma^2\)`
+# "Good" is bias and variance
 
-- Remember what we're doing here!
+- **Bias-variance tradeoff**: we often will find ourselves caught between wanting to reduce the bias of an estimator and reducing its variance
 
-  - We know that `\(U_n \equiv \frac{\bar{Y} - \mu}{\sqrt{\sigma^2/n}} \sim \mathcal{N}(\mu,\sigma^2\)`)
+- Evaluate this tradeoff using the **mean squared error (MSE)**
 
-  - But can we be sure that `\(\hat{\theta} \equiv \frac{\bar{Y} - \mu}{\sqrt{S^2_U/n}} \sim \mathcal{N}(\mu,\sigma^2)\)`?
+$$
+MSE(\hat{\theta}) = E[(\hat{\theta} - \theta)^2]
+$$
+
+- MSE can be rewritten in terms of both bias and variance
+
+$$
+MSE(\hat{\theta}) = VAR(\hat{\theta}) + B(\hat{\theta})^2
+$$
+
+- (Ideas on why this includes the square of the estimator's bias?)
+
+---
+
+# Example
+
+- Consider a new parameter of interest, defined as `\(\theta = \mu_1 - \mu_2\)`
+
+  - We are interested in **the difference in means of two different populations**
   
-- Note that, in the original setting, `\(\sigma^2\)` is a **parameter** whereas in our sample setting `\(S^2_U\)` is a **random variable**
+  - Note that we are using `\(Y_1\)` and `\(Y_2\)` to represent random variables from **different populations** here (don't get confused from the notation above)
+  
+- Is `\(\hat{\theta} = \bar{Y}_1 - \bar{Y}_2\)` unbiased?
 
-$$
-F\bigg(\frac{\bar{Y} - \mu}{S_U / \sqrt{n}}\bigg) \overset{p}{\to} \Phi
-$$
+  - Easy proof!
 
 ---
 
-# `\(\sigma^2\)`
+# Example
 
-- So let's examine whether `\(S^2_U\)` is a **consistent** estimator for `\(\sigma^2\)`
+- What is `\(\hat{\theta}\)`'s variance?
 
 $$
 `\begin{aligned}
-S^2_U &amp;= \frac{\sum_i (Y_i - \bar{Y})^2}{n-1}\\
-&amp;= \frac{1}{n-1}\bigg(\sum_i Y_i^2 + \sum_i \bar{Y}^2 - \sum_i 2Y_i\bar{Y}\bigg)\\
-&amp;= \frac{1}{n-1}\bigg((\sum_i Y_i^2) + n\bar{Y}^2 - 2n\bar{Y}^2\bigg)\\
-&amp;= \frac{1}{n-1}\bigg((\sum_i Y_i^2) - n\bar{Y}^2\bigg)\\
-&amp;= \frac{n}{n-1}\bigg(\frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2\bigg)\\
+VAR(\bar{Y}_1 - \bar{Y}_2) &amp;= VAR(\bar{Y}_1) + VAR(\bar{Y}_2) + 2COV(\bar{Y}_1,\bar{Y}_2)\\
+&amp;= VAR(\bar{Y}_1) + VAR(\bar{Y}_2) + 2*0 \;\; \text{(bc} \; \bar{Y}_1,\bar{Y}_2\;\text{are indep)} \\
+&amp;= \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}
 \end{aligned}`
 $$
 
----
+- We denote the standard error of the estimator `\(\hat{\theta}\)` with `\(\sigma_{\hat{\theta}}\)`, which is just the square root of the variance
 
-# `\(\sigma^2\)`
-
-- So let's examine whether `\(S^2_U\)` is a **consistent** estimator for `\(\sigma^2\)`
-$$
-`\begin{aligned}
-S^2_U &amp;= \frac{n}{n-1}\bigg(\color{red}{\frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2}\bigg)\\
-\underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i Y_i^2 - \bar{Y}^2 &amp;= \underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i Y_i^2 - \underset{n\rightarrow \infty}\lim \frac{1}{n}\sum_i\bar{Y}^2\\
-&amp;= \mu_{Y^2} - \mu_Y^2\\
-&amp;= E[Y^2] - \mu^2\\
-&amp;= \sigma^2\\
-\text{So:}\ \ S^2_U &amp;= \frac{n}{n-1}(\sigma^2)
-\end{aligned}`
-$$
-
-- But `\(\underset{n\rightarrow \infty}\lim \frac{n}{n-1} = 1\)`, meaning `\(S^2_U \overset{p}{\to} \sigma^2\)`
-
----
-
-# Consistency
-
-- Why did we need "consistency"?
-
-- We know from the CLT that the standardized version of `\(\bar{Y}\)` converges in probability to the standard Normal
-
-$$
-F\bigg(\frac{\bar{Y} - \mu}{\sigma / \sqrt{n}}\bigg) \overset{p}{\to} \Phi
-$$
-
-- We need to prove that the logic of the CLT works when we replace `\(\sigma\)` with `\(S_U\)`
-
-
-$$
-F\bigg(\frac{\bar{Y} - \mu}{S_U / \sqrt{n}}\bigg) \overset{p}{\to} \Phi
-$$
-
----
-
-# Slutzky's Theorem
-
-- If:
-
-  1. `\(F(U_n) \overset{p}{\to} \Phi\)`
-  
-  2. `\(F(W_n) \overset{p}{\to} 1\)`
-  
-- Then:
-
-  - `\(F\bigg(\frac{U_n}{W_n}\bigg) \overset{p}{\to} \Phi\)`
-  
-- In words: the ratio of a function that converges to the Standard Normal over a function that converges to 1 itself converges to the Standard Normal
-
-- **OUR GOAL**: Prove `\(F\bigg(\frac{\bar{Y} - \mu}{S_U / \sqrt{n}}\bigg) \overset{p}{\to} \Phi\)`
-
----
-
-# Proof 
-
-- Start by re-writing our standardized sampling distribution as follows (dropping the `\(F(\cdot)\)` for legibility):
-
-$$
-`\begin{aligned}
-\frac{\bar{Y} - \mu}{S_U / \sqrt{n}} &amp;= \sqrt{n}\bigg(\frac{\bar{Y} - \mu}{S_U}\bigg)\\
-&amp;= \sqrt{n}\bigg(\frac{\bar{Y} - \mu}{S_U}\bigg) \frac{\sigma}{\sigma}\\
-&amp;= \sqrt{n}\bigg(\frac{\bar{Y} - \mu}{\sigma}\bigg) \frac{\sigma}{S_U}\\
-&amp;= \frac{\sqrt{n}\bigg(\frac{\bar{Y} - \mu}{\sigma}\bigg)}{\frac{S_U}{\sigma}}\\
-\end{aligned}`
-$$
-
-- From CLT: `\(\sqrt{n}\bigg(\frac{\bar{Y} - \mu}{\sigma}\bigg) \overset{p}{\to} \Phi\)`
-
-- So need to prove that `\(\frac{S_U}{\sigma} \overset{p}{\to} 1\)`
-
----
-
-# Proof
-
-$$
-`\begin{aligned}
-\frac{S_U}{\sigma} &amp;= \sqrt{\frac{S_U^2}{\sigma^2}}\\
-&amp;= \sqrt{\frac{S_U^2 \overset{p}{\to} \sigma^2}{\sigma^2 \overset{p}{\to} \sigma^2}}\\
-&amp;= \sqrt{1}\\
-&amp;= 1
-\end{aligned}`
-$$
-- Thus!
-
-$$
-`\begin{aligned}
-\frac{\bar{Y} - \mu}{S_U / \sqrt{n}} &amp;= \frac{\sqrt{n}\bigg(\frac{\bar{Y} - \mu}{\sigma}\bigg)\overset{p}{\to}\Phi}{\frac{S_U}{\sigma} \overset{p}{\to} 1}\\
-\frac{\bar{Y} - \mu}{S_U / \sqrt{n}} &amp;\overset{p}{\to} \Phi
-\end{aligned}`
-$$
-
----
-
-# Large-Sample CI
-
-- So we can use `\(S_U\)` in the standard sampling distribution!
-
-  - (When `\(n\)` is large...if `\(n\)` isn't large, then these asymptotic properties don't hold)
-
-- Therefore: `\(P\bigg(\bar{Y} - z_{\alpha/2} \frac{S_U}{\sqrt{n}} \leq \mu \leq \bar{Y} + z_{\alpha/2}\frac{S_U}{\sqrt{n}}\bigg) \approx 1-\alpha\)`
-
-- Quiz: why did we spend that time with **consistency**?
-
----
-
-# Example Time!
-
-- American Community Study (ACS) sampled 350,000 NY households with a sample mean of 76,247 household income and an unbiased sample standard deviation (i.e., the unbiased estimate of the population standard deviation) of `\(S_U = 61,427\)`. What is the 90% CI associated with this estimate?
-
---
-
-- We want to write our 90% CI as `\(\bar{Y} \pm z_{\alpha/2} \sigma_{\bar{Y}}\)`
-
---
-
-  - What is `\(\bar{Y}\)`?
-  
---
-
-  - What is `\(z_{\alpha/2}\)`?
-  
---
-
-  - What is `\(\sigma_{\bar{Y}}\)`?
-  
---
-
-  - What can we replace `\(\sigma\)` with in `\(\frac{\sigma}{\sqrt{n}}\)`?
+  - Thus `\(\sigma_{\bar{Y}_1 - \bar{Y}_2} = \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_{2}^2}{n_2}}\)`
   
 ---
 
-# Example Time!
+# Final CLT Variant
 
-- CNN poll of 1,038 randomly sampled adults revealing that Biden's approval rating is at 41%, meaning of those asked if they approve of Biden's performance as president, 41% said yes. What is the 95% CI associated with this estimate?
-
---
-
-- Trickier! Still want to write `\(\hat{\theta} \pm z_{\alpha/2} \sigma_{\hat{\theta}}\)`
-
-- Our parameter of interest `\(\theta\)` is no longer `\(\mu\)` but `\(p\)`
-
-- Our estimator `\(\hat{\theta}\)` is no longer `\(\bar{Y}\)` but `\(\hat{p} = \frac{Y}{n} = 0.41\)`
-
-- So we have `\(\hat{p}\)` and we can get `\(z_{\alpha/2}\)` the standard way (i.e., using `qnorm(.025) = 1.96`)
-
-- What about `\(\sigma_{\hat{p}}\)`?
-
---
-
-- Recall that `\(VAR(\hat{p}) = VAR\bigg(\frac{Y}{n}\bigg) = \frac{1}{n^2} VAR(Y) = \frac{np(1-p)}{n^2} = \frac{p(1-p)}{n}\)`
-
-- So `\(\sigma_{\hat{p}} = \sqrt{\frac{p(1-p)}{n}}\)`
-
----
-
-# Example Time!
-
-- Poll of 1,006 adults between Sep. 15 and 20, 2023 asking about a hypothetical vote choice if the election were held tomorrow, found that 50% of respondents indicated they would support Trump, and 46% indicated they would support Biden. This marks a reduction in Trump support from a previous tracking poll fielded a week earlier of 1,203 adults who indicated 52% support for Trump and 46% support for Biden. 
-
-- How confident are we that the change in Trump's support over this period is not due to sampling error?
-
-- Parameter we seek is `\(p_1 - p_2\)` where `\(p_1\)` is Trump's **true** support in the first poll and `\(p_2\)` is his **true** support in the second poll. Consider the polls as binomial experiments in which `\(Y_1\)` is the number of "successes" (here, the # favoring Trump) in the first poll and `\(Y_2\)` is the number of "successes" in the second poll.
-
-- Intuitive estimator: `\(\hat{p}_1 - \hat{p}_2\)`. Is this unbiased?
-
-- Calculate estimator's standard errors: `\(\sqrt{VAR(\hat{p}_1 - \hat{p}_2)} = \sqrt{VAR(\hat{p}_1) + VAR(\hat{p}_2)} = \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}\)`
-
----
-
-# Example Time!
-
-- Continuing from the previous example, what is the 95% confidence interval for this estimator?
-
-- Does this interval include zero? How can we interpret that?
-
-- What about the 90% confidence interval? Does it still include zero?
-
-- At what level of confidence would we conclude Trump's support changed between the two surveys?
-
---
-
-- **Think**: want to find `\(\alpha\)` (call it `\(\alpha^*\)`) s.t. the *lower bound of the CI is greater than zero*
+- Turns out (beyond the scope of this class) that a variant of the CLT tells us
 
 $$
-`\begin{aligned}
-\hat{p}_1 - \hat{p}_2 - z_{\alpha^*/2}\bigg(\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}\bigg) &amp;&gt; 0\\
--z_{\alpha^*/2}\bigg(\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}\bigg) &amp;&gt; -(\hat{p}_1 - \hat{p}_2)\\
-z_{\alpha^*/2} &amp;&lt; \frac{\hat{p}_1 - \hat{p}_2}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}
-\end{aligned}`
+\bar{Y}_1 - \bar{Y}_2 \sim \mathcal{N}\bigg(\mu_1 - \mu_2, \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}\bigg)\;\; \text{as}\;\; n_1,n_2 \rightarrow \infty
 $$
 
+- (Notation reminder! 
 
-
+  - `\(Y \sim \mathcal{N}(\mu,\sigma^2)\)` is how we write "is distributed normal with mean `\(\mu\)` and standard deviation `\(\sigma^2\)`)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>

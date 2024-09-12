@@ -279,10 +279,17 @@ require(tidyverse)
 
 ```{r,echo=F,message=F,warning=F}
 require(tidyverse)
-p <- data.frame(y = 2:12,
+p <- data.frame(Y = 2:12,
            samples = c(1:6,5:1)) %>%
   mutate(Pr_y = samples / sum(samples))
-p
+p %>%
+  mutate(Pr_y_X_y = Y * Pr_y) %>% # yp(y)
+  mutate(E_Y = sum(Pr_y_X_y)) # E[Y] = \sum yp(y)
+
+p %>%
+  mutate(g_Y = Y*100) %>%
+  mutate(Pr_gy_X_y = g_Y * Pr_y) %>% # yp(y)
+  mutate(E_g_Y = sum(Pr_gy_X_y)) # E[Y] = \sum yp(y)
 ```
 
 ---

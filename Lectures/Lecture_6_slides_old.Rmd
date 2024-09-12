@@ -1,9 +1,9 @@
 ---
-title: "Lecture 8"
+title: "Lecture 6"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2024/09/26\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2023/09/19\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
@@ -45,11 +45,151 @@ require(tidyverse)
 
 # Agenda
 
-1. Independent random variables
+1. Finishing up Marginal and Conditional Probability Distributions
 
-2. Covariance
+3. Independent Random Variables
 
-3. Correlation
+4. The EV of a function of RVs
+
+5. Covariance of two RVs
+
+---
+
+# Joint Probability Distribution
+
+- $P(House) = .73$, $P(Sen) = .18$
+
+--
+
+- An example of two independent events
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       Totals        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       0.22        |       0.60        |       0.82        |
+|       $Y_2 = 1$     |       0.05        |       0.13        |       0.18        |
+|       Totals     |       0.27        |       0.73        |       1        |
+
+--
+
+- An example of two **dependent events**
+
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       Totals        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       0.25        |       0.57        |       0.82        |
+|       $Y_2 = 1$     |       0.02        |       0.16        |       0.18        |
+|       Totals     |       0.27        |       0.73        |       1        |
+
+
+---
+
+# Joint Probability Distribution
+
+- Just as we did with univariate probability distributions, **joint probability distributions** are the probabilities associated with all possible values of $Y_1$ and $Y_2$
+
+  - Denote as $P(Y_1 = y_1,Y_2 = y_2)$ or just $P(y_1,y_2)$
+  
+  - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
+  
+- Note that the axioms from the univariate world apply here
+
+  - Axiom 1: $p(y_1,y_2) \geq 0\;\forall\;y_1,y_2$
+  
+  - Axiom 2: $\sum_{y1,y2}p(y_1,y_2) = 1$
+  
+- Joint probability distributions can have **distribution functions**
+
+  - $F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty < y_1 < \infty, -\infty < y_2 < \infty$
+  
+  - Often referred to as the **joint cumulative distribution function** or **joint CDF**
+  
+---
+
+# Joint CDFs
+
+- For two discrete RVs like in our example, this is $F(y_1,y_2) = \sum_{t_1 \leq y_1} \sum_{t_2\leq y_2} p(t_1,t_2)$
+  
+- For two continuous RVs, we say they are **jointly continuous** if their *joint distribution function is continuous in both arguments*
+
+--
+
+  - That is, if there exists a nonnegative function $f(y_1,y_2)$ such that:
+
+  - $F(y_1,y_2) = \int_{-\infty}^{y_1} \int_{-\infty}^{y_2} f(t_1,t_2)dt_2dt_1$ for $-\infty < y_1 < \infty,\; -\infty < y_2 < \infty$
+  
+  - then $Y_1$ and $Y_2$ are jointly continuous and the function $f(y_1,y_2)$ is the **joint probability density function** or **joint PDF**
+  
+---
+
+# Example
+
+- Let's say we want to calculate the probability that two jointly continuous random variables fall into particular intervals
+
+- $P(a < Y_1 \leq b,\; c < Y_2 \leq d) = \int_c^d\int_a^bf(y_1,y_2)dy_1dy_2$
+
+- Show that this is equivalent to $F(b,d) - F(b,c) - F(a,d) + F(a,c)$
+
+---
+
+# Marginal Probability Distributions
+
+- NB: all **bivariate** events ( $Y_1 = y_1, Y_2 = y_2$ ) are **mutually exclusive**
+
+- Thus, the **univariate** event $Y_1 = y_1$ can be thought of as the **union** of bivariate events
+
+  - The union is taken *over all possible values for $y_2$ *
+  
+- Example: let's roll two 6-sided dice
+
+  - $P(Y_1 = 1) = p(1,1) + p(1,2) + \dots + p(1,6)$
+  
+  - $P(Y_1 = 1) = 6*\frac{1}{36} = \frac{1}{6}$
+  
+- Generically: $P(Y_1 = y_1) = \sum_{\forall y_2} p(y_1,y_2)$
+
+- Test: What is the marginal probability for $Y_2 = y_2$?
+
+--
+
+  - $P(Y_2 = y_2) = \sum_{\forall y_1} p(y_1,y_2)$
+  
+- Denote $p_1(y_1)$ as the **marginal probability function** of the *discrete* random variable $Y_1$
+
+---
+
+# Continuous Case
+
+- **Marginal density function** for continuous RV $Y_1$ is:
+
+  - $f_1(y_1) = \int_{-\infty}^\infty f(y_1,y_2)dy_2$
+  
+- Test: what is the marginal density function for $Y_2$?
+
+--
+
+  - $f_2(y_2) = \int_{-\infty}^\infty f(y_1,y_2)dy_1$
+  
+---
+
+# Conditional Probability Distributions: Discrete
+
+- Recall: $P(A \cap B) = P(A)P(B|A)$ due to the **multiplicative law**
+
+- The bivariate event ( $y_1,y_2$ ) can be re-written as the **intersection** of two events: $Y_1 = y_1$ and $Y_2 = y_2$
+
+  - Thus: $p(y_1,y_2) = p_1(y_1)p(y_2|y_1)$
+  
+  - or $p(y_1,y_2) = p_2(y_2)p(y_1|y_2)$
+  
+- NB: $p(y_1|y_2) = P(Y_1 = y_1|Y_2 = y_2)$
+
+  - or $p(y_1|y_2) = \frac{P(Y_1 = y_1,Y_2 = y_2)}{P(Y_2 = y_2)}$
+  
+  - or $p(y_1|y_2) = \frac{p(y_1,y_2)}{p_2(y_2)}$ for $p_2(y_2) > 0$ (why?)
+
+- The **conditional distribution function** of $Y_1$ given $Y_2 = y_2$ is $P(Y_1 \leq y_1|Y_2 = y_2) = F(y_1|y_2)$
+
+- The associated CDF is $f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}$
 
 ---
 
@@ -312,3 +452,12 @@ res
 - NB: these are useful tools for measuring the strength of a *linear* relationship
 
   - Not so good for other types of relationships, like **curvelinear**
+  
+```{r,message=F,echo=F,warning=F,results='hide'}
+dir <- getwd()
+type <- 'pdf'
+format <- 'landscape'
+f <- 'Lecture_6_slides'
+
+system(paste('Rscript ../NFGH/chromeprint.R',dir,type,format,f),wait = F)
+```
