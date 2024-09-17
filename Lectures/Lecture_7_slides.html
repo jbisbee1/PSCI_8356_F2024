@@ -4,7 +4,7 @@
     <title>Lecture 7</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 ]
 .date[
 ### Lecture Date: 2024/09/24
-Slides Updated: 2024-09-11
+Slides Updated: 2024-09-16
 ]
 
 ---
@@ -171,19 +171,21 @@ Slides Updated: 2024-09-11
 
 - In the first table, each cell divided by either the row or column total is the same as the marginal probability (subject to rounding)
   
-  - `\(0.22 / 0.27 \approx 0.82\)`
+  - `\(0.22 / 0.27 \approx 0.82\)` and `\(0.60/0.73 \approx 0.82\)`
   
-  - `\(0.05 / 0.27 \approx 0.18\)`
+  - `\(0.05 / 0.27 \approx 0.18\)` and `\(0.13/0.73 \approx 0.18\)`
   
-  - `\(0.22 / 0.82 \approx 0.27\)`
+  - `\(0.22 / 0.82 \approx 0.27\)` and `\(0.05/0.18 \approx 0.27\)`
   
-  - `\(0.13 / 0.18 \approx 0.82\)`
+  - `\(0.60 / 0.82 \approx 0.73\)` and `\(0.13 / 0.18 \approx 0.73\)`
   
 --
 
-- In the second table, this relationship **broke**
+- In the second table, this relationship **broke** ( `\(0.25/0.27 \approx 0.93\)`, etc.)
 
   - Relate back to the definitions!
+  
+  - `\(P(A | B) = P(A)\)` iff `\(A \perp\!\!\!\!\perp B\)`
 
 ---
 
