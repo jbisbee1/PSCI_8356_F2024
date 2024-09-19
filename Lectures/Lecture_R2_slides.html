@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Review Session 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Prof. Bisbee" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/lexis.css" type="text/css" />
+    <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Review Session 2
+]
+.subtitle[
+## Quantitative Political Science
+]
+.author[
+### Prof. Bisbee
+]
+.institute[
+### Vanderbilt University
+]
+.date[
+### Lecture Date: 2024/09/19
+Slides Updated: 2024-09-18
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.small .remark-code { /*Change made here*/
+  font-size: 85% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 50% !important;
+}
+&lt;/style&gt;
+
+
+
+# Agenda
+
+2. Calculating areas under curves
+
+1. Probability distributions
+
+3. Putting the two together
+
+4. The Normal
+
+---
+
+# Areas under curves
+
+- Let's draw some generic function `\(y = 100 - X^2\)`
+
+
+```r
+p &lt;- data.frame(X = -10:10) %&gt;%
+  mutate(Y = 100 - X^2) %&gt;%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- Let's draw some generic function `\(y = 100 - X^2\)`
+
+
+```r
+p
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- What is the total area under the curve between `\(-10 \leq X \leq 10\)`?
+
+- We could divide this up into 20 bars
+
+
+```r
+p + 
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3)
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- These are just a bunch of rectangles, right?
+
+- The base of each is 1, and the height is `\(100 - X^2\)`
+
+--
+
+  - Thus the first rectangle at `\(X = -10\)` is `\(1*(100 - (-10^2)) = 1*(100 - 100) = 1*0 = 0\)`
+  
+  - The second rectangle at `\(X = -9\)` is `\(1*(100 - (-9^2)) = 1*(100 - 81) = 1*19 = 19\)`
+  
+--
+
+- Just keep on calculating each rectangle and then add them all up when done!
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Areas under curves
+
+- We can keep on narrowing the widths until they infinitesimally small
+
+- In math, we call this "integration" and denote it `\(\int y dy\)`
+
+--
+
+  - Note that `\(y\)` is the output of our function `\(f(x) = y = 100 - X^2\)`, so we can instead write `\(\int f(x) dx\)`
+  
+  - And `\(dx\)` literally represents narrowing the width of `\(X\)` to a vanishingly small value
+
+--
+
+- To calculate this, following the three-step process
+
+  1. Figure out the **anti-derivative** of our function
+  
+  2. Evaluate this anti-derivative at the maximum value and the minimum values we want to integrate over
+  
+  3. Subtract the value at the minimum from the value at the maximum
+  
+---
+
+# Areas under curves
+
+$$
+`\begin{aligned}
+\int_{-5}^5 f(x)dx &amp;= \int_{-5}^5 (100 - X^2) dx\\
+&amp;= 100X-\frac{X^3}{3} \bigg|_{-5}^5\\
+&amp;= 100*5 - \frac{5^3}{3} - \bigg(100*-5 - \frac{-5^3}{3}\bigg)\\
+&amp;= 458.33 - -458.33\\
+&amp;= 916.67
+\end{aligned}`
+$$
+
+---
+
+# Areas under curves
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+
+  
+---
+
+# Probability Distributions
+
+- A discrete random variable `\(Y\)` can take on either:
+
+--
+
+  - A countably infinite number of values `\(y\)`
+  
+  - A finite number of values `\(y\)`
+  
+--
+
+- Each of these values `\(y\)` has some probability `\(p(y)\)` of appearing
+
+---
+
+# Probability Distributions
+
+- Imagine a random variable that can take on the values 1, 2, or 3
+
+- Assume further that the probability of `\(Y = 1\)` is 0.3, `\(Y = 2\)` is 0.5, and `\(Y = 3\)` is 0.2
+
+--
+
+- This is a discrete random variable with a probability distribution of `\(0.3, 0.5, 0.2\)`
+
+---
+
+# Probability Distributions
+
+- Let's draw some observations from it!
+
+
+```r
+require(tidyverse)
+sample(1:3,replace = T,prob = c(.3,.5,.2))
+```
+
+```
+## [1] 2 1 2
+```
+
+```r
+sample(1:3,replace = T,prob = c(.3,.5,.2))
+```
+
+```
+## [1] 3 3 2
+```
+
+---
+
+# Probability Distributions
+
+- Let's draw 10,000 observations!
+
+
+```r
+Y &lt;- sample(1:3,size = 10000,replace = T,prob = c(.3,.5,.2))
+data.frame(Y = Y) %&gt;%
+  as_tibble()
+```
+
+```
+## # A tibble: 10,000 × 1
+##        Y
+##    &lt;int&gt;
+##  1     1
+##  2     3
+##  3     1
+##  4     2
+##  5     3
+##  6     2
+##  7     1
+##  8     1
+##  9     2
+## 10     3
+## # ℹ 9,990 more rows
+```
+
+---
+
+# Probability Distributions
+
+- Let's now count up the number of times each `\(y\)` outcome is realized, and calculate their proportions
+
+```r
+df &lt;- data.frame(Y = Y) %&gt;%
+  as_tibble() %&gt;%
+  count(Y) %&gt;%
+  mutate(p_y = n / sum(n))
+```
+
+--
+
+- Not exactly right, but pretty close
+
+---
+
+# Probability Distributions
+
+- This vector of `\(p(y)\)` is the **probability distribution** for this random variable
+
+- We can visualize it
+
+
+```r
+p &lt;- df %&gt;%
+  ggplot(aes(x = Y,y = p_y)) + 
+  geom_bar(stat = 'identity')
+```
+
+---
+
+# Probability Distributions
+
+
+```r
+p
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Expectations
+
+- Recall the expectation of a discrete random variable?
+
+--
+
+- `\(E[Y] = \sum y p(y)\)`
+
+--
+
+
+```r
+sum(1*.3,2*.5,3*.2)
+```
+
+```
+## [1] 1.9
+```
+
+---
+
+# Expectations
+
+- Could also calculate it from our sample of 10,000 observations
+
+
+```r
+df %&gt;%
+  mutate(y_X_py = Y*p_y) %&gt;%
+  summarise(E_Y = sum(y_X_py))
+```
+
+```
+## # A tibble: 1 × 1
+##     E_Y
+##   &lt;dbl&gt;
+## 1  1.90
+```
+
+---
+
+# Probabilities
+
+- What if we wanted to know the probability that `\(Y = 3\)`?
+
+--
+
+- Just look it up! `\(p(Y=3) = 0.2\)`
+
+--
+
+- What if we wanted to know the probability that `\(Y &lt; 3\)`?
+
+--
+
+- `\(P(Y=1 \cup Y=2) = ?\)`
+
+--
+
+- Recall that random variables take on values that are **mutually exclusive**
+
+$$
+`\begin{aligned}
+P(Y=1 \cup Y=2) &amp;= P(Y=1) + P(Y=2)\\
+&amp;= 0.3 + 0.5\\
+&amp;= 0.8
+\end{aligned}`
+$$
+
+---
+
+# Probability Distributions
+
+- For continuous random variables, `\(p(Y=y) = 0\)`
+
+--
+
+
+```r
+Y &lt;- rgamma(1000,shape = 1)
+(df &lt;- data.frame(Y = Y) %&gt;%
+  as_tibble() %&gt;%
+  count(Y) %&gt;%
+  mutate(p_y = n / sum(n)))
+```
+
+```
+## # A tibble: 1,000 × 3
+##           Y     n   p_y
+##       &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+##  1 0.000233     1 0.001
+##  2 0.000516     1 0.001
+##  3 0.000899     1 0.001
+##  4 0.00198      1 0.001
+##  5 0.00277      1 0.001
+##  6 0.00326      1 0.001
+##  7 0.00355      1 0.001
+##  8 0.00449      1 0.001
+##  9 0.00456      1 0.001
+## 10 0.00458      1 0.001
+## # ℹ 990 more rows
+```
+
+---
+
+# Probability Distributions
+
+- But `\(p(Y=y)\)` is not zero!
+
+--
+
+- Sure, but this is because I have drawn a **finite sample**. If I increase `\(n\)`, `\(p(Y=y)\)` will get smaller
+
+
+```r
+Y &lt;- rbeta(n = 100000,2,3)
+(df &lt;- data.frame(Y = Y) %&gt;%
+  as_tibble() %&gt;%
+  count(Y) %&gt;%
+  mutate(p_y = n / sum(n)))
+```
+
+```
+## # A tibble: 99,993 × 3
+##          Y     n     p_y
+##      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;
+##  1 0.00163     1 0.00001
+##  2 0.00165     1 0.00001
+##  3 0.00171     1 0.00001
+##  4 0.00179     1 0.00001
+##  5 0.00209     1 0.00001
+##  6 0.00209     1 0.00001
+##  7 0.00233     1 0.00001
+##  8 0.00251     1 0.00001
+##  9 0.00272     1 0.00001
+## 10 0.00278     1 0.00001
+## # ℹ 99,983 more rows
+```
+
+---
+
+# Probability Distributions
+
+- However, even though any individual `\(P(Y = y) = 0\)`, this distribution still has a shape
+
+--
+
+- We can **bin** the random variable and then count the number of observations in bins
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+
+```r
+df %&gt;%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 10)
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+
+```r
+df %&gt;%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 100)
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+
+```r
+df %&gt;%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 20)
+```
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Probability Distributions
+
+- Nevertheless, we would like to imagine that we can define a **function** which will draw this shape
+
+--
+
+  - This function is called the probability distribution function, or PDF, and is denoted `\(f(y)\)`
+  
+  - `\(f(y) \geq 0~ \forall ~y: -\infty &lt; y &lt; \infty\)`
+  
+  - `\(\int_{-\infty}^\infty f(y)dy = 1\)`
+
+---
+
+# Probability Distributions
+
+- Since the area under the curve of a PDF has to sum to 1 (axioms!), subsets are probabilities
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-24-1.png" style="display: block; margin: auto;" /&gt;
+
+
+--
+
+- I.e., What is the probability that the random variable is between 0.1 and 0.3?
+
+--
+
+- Integrate! Except...what is the function?
+
+---
+
+# Probability Distributions
+
+- "Easy" functions include Bernoulli, Binomial, and Poisson (discrete) and the uniform (continuous)
+
+- But we wind up spending most of our time with the Normal
+
+- Why?
+
+--
+
+- Basic answer: "it appears in nature a lot!"
+
+- Galaxy brain answer: "ALL DISTRIBUTIONS BECOME NORMAL VIA THE CENTRAL LIMIT THEOREM!"
+
+---
+
+# Central Limit Theorem
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Central Limit Theorem
+
+
+```
+## [1] 0.971959
+```
+
+
+```
+## [1] 1.023629
+```
+
+
+```
+## [1] 0.9836386
+```
+
+--
+
+- Do this many times!
+
+
+```r
+means &lt;- NULL
+for(i in 1:1000) {
+  means &lt;- c(means,mean(sample(Y,size = 1000)))
+}
+```
+
+---
+
+# Central Limit Theorem
+
+- What does the distribution of the repeatedly randomly sampled means look like? **THE NORMAL BABY!**
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-30-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# The Normal
+
+- We won't get into the math of the normal, but it is an essential part of quantitative analysis!
+
+- SO just trust me:
+
+  - `\(f(y) = \frac{1}{\sigma \sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}\)` for `\(-\infty &lt; y &lt; \infty\)`
+  
+- Two parameters: `\(\mu\)` and `\(\sigma\)`
+
+  - `\(E(Y) = \mu\)`
+  
+  - `\(\textit{VAR}(Y) = \sigma^2\)`
+  
+---
+
+# The Normal
+  
+- What is the probability `\(Y\)` takes on some value `\(y\)` within an interval between `\(a = 62\)` and `\(b = 65\)`?
+
+  - `\(P(a \leq Y \leq b) = \int_{a}^b\frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}dy\)`
+
+--
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Normal
+
+- We typically **standardize** a normally distributed variable
+
+--
+
+  - Units measured in terms of standard deviations (instead of inches or whatever else)
+  
+- `\(Z \equiv \frac{Y - \mu}{\sigma}\)`
+
+  - `\(Z\)` is a random variable with mean zero and standard deviation one
+  
+  - PDF simplifies to `\(f(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}\)`
+  
+- We use these so frequently in statistics we denote them with special symbols!
+
+  - "Little phi of z" is the PDF of the standardized normal evaluated at `\(Z = z\)`: `\(\phi(z)\)`
+  
+  - "Big phi of z" is the CDF of the standardized normal evaluated at `\(Z = z\)`: `\(\Phi(z)\)`
+  
+---
+
+# The Normal
+
+- `R` has some handy functions that we can use to calculate:
+
+--
+
+  1. The probability that a standard Normal is less than some number of standard deviations: `pnorm()`
+  
+  2. The number of standard deviations that enclose some probability of a standard Normal: `rnorm()`
+  
+---
+
+# The Normal
+
+- Consider a Normal with mean = 63 and standard deviation = 3
+
+- In math: `\(\mathcal{N}(\mu,\sigma) = \mathcal{N}(63,3)\)`
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-32-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Normal
+
+- What is the probability that `\(Y \leq 66\)`?
+
+--
+
+
+```r
+pnorm(1)
+```
+
+```
+## [1] 0.8413447
+```
+
+--
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# The Normal
+
+- What is the probability that `\(60 \leq Y \leq 66\)`?
+
+--
+
+
+```r
+pnorm(1) - pnorm(-1)
+```
+
+```
+## [1] 0.6826895
+```
+
+--
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Normal
+
+- What is the probability that `\(Y \leq 63\)`?
+
+--
+
+
+```r
+pnorm(0)
+```
+
+```
+## [1] 0.5
+```
+
+--
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# The Normal
+
+- What is the value of `\(y\)` below which 60% of the data is contained?
+
+--
+
+
+```r
+qnorm(.6)
+```
+
+```
+## [1] 0.2533471
+```
+
+--
+
+- Think about this for a second! This is **in terms of the standardized Normal**
+
+- This literally means "0.25335 standard deviations away from the mean"
+
+- What is our standard deviation?
+
+--
+
+- `\(\sigma = 3\)`
+
+- What is our mean?
+
+--
+
+- `\(\mu = 63\)`
+
+--
+
+- (Does "away" mean above or below?)
+
+
+---
+
+# The Normal
+
+- So to translate back to the unstandardized Normal random variable?
+
+$$
+`\begin{aligned}
+Z &amp;= \frac{Y - \mu}{\sigma}\\
+\sigma*Z &amp;= Y - \mu\\
+\sigma*Z + \mu &amp;= Y\\
+Y &amp;= 3*0.25335 + 63\\
+&amp;= 63.76
+\end{aligned}`
+$$
+
+---
+
+# The Normal
+
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-40-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# The Normal
+
+- What values of `\(y\)` contain 95% of the data?
+
+--
+
+
+```r
+qnorm(.975)
+```
+
+```
+## [1] 1.959964
+```
+
+--
+
+&lt;img src="Lecture_R2_slides_files/figure-html/unnamed-chunk-42-1.png" style="display: block; margin: auto;" /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

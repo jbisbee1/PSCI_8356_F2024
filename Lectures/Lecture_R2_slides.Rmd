@@ -1,0 +1,870 @@
+---
+title: "Review Session 2"
+subtitle: "Quantitative Political Science"
+author: "Prof. Bisbee"
+institute: "Vanderbilt University"
+date: "Lecture Date: 2024/09/19\n Slides Updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    # self_contained: true
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css:
+      - default
+      - css/lexis.css
+      - css/lexis-fonts.css
+    #seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+
+---
+
+```{css,echo = F}
+.small .remark-code { /*Change made here*/
+  font-size: 85% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 50% !important;
+}
+```
+
+```{r,include=F}
+set.seed(123)
+options(width=60)
+knitr::opts_chunk$set(fig.align='center',fig.width=9,fig.height=5)
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+require(tidyverse)
+```
+
+# Agenda
+
+2. Calculating areas under curves
+
+1. Probability distributions
+
+3. Putting the two together
+
+4. The Normal
+
+---
+
+# Areas under curves
+
+- Let's draw some generic function $y = 100 - X^2$
+
+```{r}
+p <- data.frame(X = -10:10) %>%
+  mutate(Y = 100 - X^2) %>%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- Let's draw some generic function $y = 100 - X^2$
+
+```{r}
+p
+```
+
+---
+
+# Areas under curves
+
+- What is the total area under the curve between $-10 \leq X \leq 10$?
+
+- We could divide this up into 20 bars
+
+```{r}
+p + 
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3)
+```
+
+---
+
+# Areas under curves
+
+- These are just a bunch of rectangles, right?
+
+- The base of each is 1, and the height is $100 - X^2$
+
+--
+
+  - Thus the first rectangle at $X = -10$ is $1*(100 - (-10^2)) = 1*(100 - 100) = 1*0 = 0$
+  
+  - The second rectangle at $X = -9$ is $1*(100 - (-9^2)) = 1*(100 - 81) = 1*19 = 19$
+  
+--
+
+- Just keep on calculating each rectangle and then add them all up when done!
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+```{r,echo=F}
+data.frame(X = seq(-10,10,by = 1)) %>%
+  mutate(Y = 100 - X^2) %>%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3) + 
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+```{r,echo=F}
+data.frame(X = seq(-10,10,by = .5)) %>%
+  mutate(Y = 100 - X^2) %>%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3) + 
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+```{r,echo=F}
+data.frame(X = seq(-10,10,by = .25)) %>%
+  mutate(Y = 100 - X^2) %>%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3) + 
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- But the preceding approach makes big mistakes...the rectangles don't fit perfectly under the curve!
+
+- Solution? Make the rectangles less wide!
+
+```{r,echo=F}
+data.frame(X = seq(-10,10,by = .1)) %>%
+  mutate(Y = 100 - X^2) %>%
+  ggplot(aes(x = X,y = Y)) + 
+  # geom_bar(stat = 'identity')
+  geom_bar(stat = 'identity',color = 'black',fill = 'white',alpha = .3) + 
+  geom_line()
+```
+
+---
+
+# Areas under curves
+
+- We can keep on narrowing the widths until they infinitesimally small
+
+- In math, we call this "integration" and denote it $\int y dy$
+
+--
+
+  - Note that $y$ is the output of our function $f(x) = y = 100 - X^2$, so we can instead write $\int f(x) dx$
+  
+  - And $dx$ literally represents narrowing the width of $X$ to a vanishingly small value
+
+--
+
+- To calculate this, following the three-step process
+
+  1. Figure out the **anti-derivative** of our function
+  
+  2. Evaluate this anti-derivative at the maximum value and the minimum values we want to integrate over
+  
+  3. Subtract the value at the minimum from the value at the maximum
+  
+---
+
+# Areas under curves
+
+$$
+\begin{aligned}
+\int_{-5}^5 f(x)dx &= \int_{-5}^5 (100 - X^2) dx\\
+&= 100X-\frac{X^3}{3} \bigg|_{-5}^5\\
+&= 100*5 - \frac{5^3}{3} - \bigg(100*-5 - \frac{-5^3}{3}\bigg)\\
+&= 458.33 - -458.33\\
+&= 916.67
+\end{aligned}
+$$
+
+---
+
+# Areas under curves
+
+```{r,echo=F}
+data.frame(X = seq(-10,10,by = .1)) %>%
+  mutate(Y = 100 - X^2) %>%
+  mutate(fl = X > -5 & X < 5) %>%
+  ggplot(aes(x = X,y = Y,color = fl)) + 
+  geom_line() + 
+  geom_bar(stat = 'identity') + 
+  theme(legend.position = 'none')
+```
+
+  
+---
+
+# Probability Distributions
+
+- A discrete random variable $Y$ can take on either:
+
+--
+
+  - A countably infinite number of values $y$
+  
+  - A finite number of values $y$
+  
+--
+
+- Each of these values $y$ has some probability $p(y)$ of appearing
+
+---
+
+# Probability Distributions
+
+- Imagine a random variable that can take on the values 1, 2, or 3
+
+- Assume further that the probability of $Y = 1$ is 0.3, $Y = 2$ is 0.5, and $Y = 3$ is 0.2
+
+--
+
+- This is a discrete random variable with a probability distribution of $0.3, 0.5, 0.2$
+
+---
+
+# Probability Distributions
+
+- Let's draw some observations from it!
+
+```{r,warning=F,message=F}
+require(tidyverse)
+sample(1:3,replace = T,prob = c(.3,.5,.2))
+sample(1:3,replace = T,prob = c(.3,.5,.2))
+```
+
+---
+
+# Probability Distributions
+
+- Let's draw 10,000 observations!
+
+```{r}
+Y <- sample(1:3,size = 10000,replace = T,prob = c(.3,.5,.2))
+data.frame(Y = Y) %>%
+  as_tibble()
+```
+
+---
+
+# Probability Distributions
+
+- Let's now count up the number of times each $y$ outcome is realized, and calculate their proportions
+```{r}
+df <- data.frame(Y = Y) %>%
+  as_tibble() %>%
+  count(Y) %>%
+  mutate(p_y = n / sum(n))
+```
+
+--
+
+- Not exactly right, but pretty close
+
+---
+
+# Probability Distributions
+
+- This vector of $p(y)$ is the **probability distribution** for this random variable
+
+- We can visualize it
+
+```{r}
+p <- df %>%
+  ggplot(aes(x = Y,y = p_y)) + 
+  geom_bar(stat = 'identity')
+```
+
+---
+
+# Probability Distributions
+
+```{r}
+p
+```
+
+
+---
+
+# Expectations
+
+- Recall the expectation of a discrete random variable?
+
+--
+
+- $E[Y] = \sum y p(y)$
+
+--
+
+```{r}
+sum(1*.3,2*.5,3*.2)
+```
+
+---
+
+# Expectations
+
+- Could also calculate it from our sample of 10,000 observations
+
+```{r}
+df %>%
+  mutate(y_X_py = Y*p_y) %>%
+  summarise(E_Y = sum(y_X_py))
+```
+
+---
+
+# Probabilities
+
+- What if we wanted to know the probability that $Y = 3$?
+
+--
+
+- Just look it up! $p(Y=3) = 0.2$
+
+--
+
+- What if we wanted to know the probability that $Y < 3$?
+
+--
+
+- $P(Y=1 \cup Y=2) = ?$
+
+--
+
+- Recall that random variables take on values that are **mutually exclusive**
+
+$$
+\begin{aligned}
+P(Y=1 \cup Y=2) &= P(Y=1) + P(Y=2)\\
+&= 0.3 + 0.5\\
+&= 0.8
+\end{aligned}
+$$
+
+---
+
+# Probability Distributions
+
+- For continuous random variables, $p(Y=y) = 0$
+
+--
+
+```{r}
+Y <- rgamma(1000,shape = 1)
+(df <- data.frame(Y = Y) %>%
+  as_tibble() %>%
+  count(Y) %>%
+  mutate(p_y = n / sum(n)))
+```
+
+---
+
+# Probability Distributions
+
+- But $p(Y=y)$ is not zero!
+
+--
+
+- Sure, but this is because I have drawn a **finite sample**. If I increase $n$, $p(Y=y)$ will get smaller
+
+```{r}
+Y <- rbeta(n = 100000,2,3)
+(df <- data.frame(Y = Y) %>%
+  as_tibble() %>%
+  count(Y) %>%
+  mutate(p_y = n / sum(n)))
+```
+
+---
+
+# Probability Distributions
+
+- However, even though any individual $P(Y = y) = 0$, this distribution still has a shape
+
+--
+
+- We can **bin** the random variable and then count the number of observations in bins
+
+```{r,message=F,echo=F}
+df %>%
+  ggplot(aes(x = Y)) + 
+  geom_histogram()
+```
+
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+```{r}
+df %>%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 10)
+```
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+```{r}
+df %>%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 100)
+```
+
+---
+
+# Probability Distributions
+
+- But what "shape" does this binning reveal? It depends on the number of bins!
+
+```{r}
+df %>%
+  ggplot(aes(x = Y)) + 
+  geom_histogram(bins = 20)
+```
+
+---
+
+# Probability Distributions
+
+- Nevertheless, we would like to imagine that we can define a **function** which will draw this shape
+
+--
+
+  - This function is called the probability distribution function, or PDF, and is denoted $f(y)$
+  
+  - $f(y) \geq 0~ \forall ~y: -\infty < y < \infty$
+  
+  - $\int_{-\infty}^\infty f(y)dy = 1$
+
+---
+
+# Probability Distributions
+
+- Since the area under the curve of a PDF has to sum to 1 (axioms!), subsets are probabilities
+
+```{r,echo = F}
+df %>%
+  mutate(Y = round(Y*30,0)/30) %>%
+  group_by(Y) %>%
+  summarise(p_y = sum(p_y)) %>%
+  ggplot(aes(x = Y,y = p_y)) + 
+  geom_bar(stat = 'identity',color = 'black',alpha = .3) + 
+  geom_line()
+```
+
+
+--
+
+- I.e., What is the probability that the random variable is between 0.1 and 0.3?
+
+--
+
+- Integrate! Except...what is the function?
+
+---
+
+# Probability Distributions
+
+- "Easy" functions include Bernoulli, Binomial, and Poisson (discrete) and the uniform (continuous)
+
+- But we wind up spending most of our time with the Normal
+
+- Why?
+
+--
+
+- Basic answer: "it appears in nature a lot!"
+
+- Galaxy brain answer: "ALL DISTRIBUTIONS BECOME NORMAL VIA THE CENTRAL LIMIT THEOREM!"
+
+---
+
+# Central Limit Theorem
+
+```{r,echo = F,message=F}
+set.seed(123)
+Y <- rexp(1000000)
+data.frame(Y = Y) %>%
+  as_tibble() %>%
+  ggplot(aes(x = Y)) + 
+  geom_histogram()
+```
+
+---
+
+# Central Limit Theorem
+
+```{r,echo = F}
+mean(sample(Y,size = 1000))
+```
+
+```{r,echo = F}
+mean(sample(Y,size = 1000))
+```
+
+```{r,echo = F}
+mean(sample(Y,size = 1000))
+```
+
+--
+
+- Do this many times!
+
+```{r}
+means <- NULL
+for(i in 1:1000) {
+  means <- c(means,mean(sample(Y,size = 1000)))
+}
+```
+
+---
+
+# Central Limit Theorem
+
+- What does the distribution of the repeatedly randomly sampled means look like? **THE NORMAL BABY!**
+
+```{r,echo=F,message=F}
+data.frame(means = means) %>%
+  ggplot(aes(x = means)) + 
+  geom_histogram()
+```
+
+
+---
+
+# The Normal
+
+- We won't get into the math of the normal, but it is an essential part of quantitative analysis!
+
+- SO just trust me:
+
+  - $f(y) = \frac{1}{\sigma \sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}$ for $-\infty < y < \infty$
+  
+- Two parameters: $\mu$ and $\sigma$
+
+  - $E(Y) = \mu$
+  
+  - $\textit{VAR}(Y) = \sigma^2$
+  
+---
+
+# The Normal
+  
+- What is the probability $Y$ takes on some value $y$ within an interval between $a = 62$ and $b = 65$?
+
+  - $P(a \leq Y \leq b) = \int_{a}^b\frac{1}{\sigma\sqrt{2\pi}}e^{\frac{-(y-\mu)^2}{2\sigma^2}}dy$
+
+--
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y >= 62 & y <= 65) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  geom_vline(xintercept = c(62,65),linetype = 'dashed')
+```
+
+---
+
+# The Normal
+
+- We typically **standardize** a normally distributed variable
+
+--
+
+  - Units measured in terms of standard deviations (instead of inches or whatever else)
+  
+- $Z \equiv \frac{Y - \mu}{\sigma}$
+
+  - $Z$ is a random variable with mean zero and standard deviation one
+  
+  - PDF simplifies to $f(z) = \frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}$
+  
+- We use these so frequently in statistics we denote them with special symbols!
+
+  - "Little phi of z" is the PDF of the standardized normal evaluated at $Z = z$: $\phi(z)$
+  
+  - "Big phi of z" is the CDF of the standardized normal evaluated at $Z = z$: $\Phi(z)$
+  
+---
+
+# The Normal
+
+- `R` has some handy functions that we can use to calculate:
+
+--
+
+  1. The probability that a standard Normal is less than some number of standard deviations: `pnorm()`
+  
+  2. The number of standard deviations that enclose some probability of a standard Normal: `rnorm()`
+  
+---
+
+# The Normal
+
+- Consider a Normal with mean = 63 and standard deviation = 3
+
+- In math: $\mathcal{N}(\mu,\sigma) = \mathcal{N}(63,3)$
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y >= 62 & y <= 65) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py)) + 
+  # geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  labs(y = 'f(y)') + 
+  geom_vline(xintercept = 63,linetype = 'dashed') + 
+  geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  # geom_vline(xintercept = c(62,65),linetype = 'dashed')
+```
+
+---
+
+# The Normal
+
+- What is the probability that $Y \leq 66$?
+
+--
+
+```{r}
+pnorm(1)
+```
+
+--
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y <= 66) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  labs(y = 'f(y)') + 
+  # geom_vline(xintercept = 63,linetype = 'dashed') + 
+  # geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  geom_vline(xintercept = c(66),linetype = 'dashed') + 
+  annotate(geom = 'label',x = 63,y = .05,label = '84%')
+```
+
+
+---
+
+# The Normal
+
+- What is the probability that $60 \leq Y \leq 66$?
+
+--
+
+```{r}
+pnorm(1) - pnorm(-1)
+```
+
+--
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y >= 60 & y <= 66) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+    labs(y = 'f(y)') + 
+  # geom_vline(xintercept = 63,linetype = 'dashed') + 
+  # geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  geom_vline(xintercept = c(60,66),linetype = 'dashed') + 
+  annotate(geom = 'label',x = 63,y = .05,label = '68%')
+```
+
+---
+
+# The Normal
+
+- What is the probability that $Y \leq 63$?
+
+--
+
+```{r}
+pnorm(0)
+```
+
+--
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y <= 63) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  labs(y = 'f(y)') + 
+  # geom_vline(xintercept = 63,linetype = 'dashed') + 
+  # geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  geom_vline(xintercept = c(63),linetype = 'dashed') + 
+  annotate(geom = 'label',x = 61,y = .05,label = '50%')
+```
+
+
+---
+
+# The Normal
+
+- What is the value of $y$ below which 60% of the data is contained?
+
+--
+
+```{r}
+qnorm(.6)
+```
+
+--
+
+- Think about this for a second! This is **in terms of the standardized Normal**
+
+- This literally means "0.25335 standard deviations away from the mean"
+
+- What is our standard deviation?
+
+--
+
+- $\sigma = 3$
+
+- What is our mean?
+
+--
+
+- $\mu = 63$
+
+--
+
+- (Does "away" mean above or below?)
+
+
+---
+
+# The Normal
+
+- So to translate back to the unstandardized Normal random variable?
+
+$$
+\begin{aligned}
+Z &= \frac{Y - \mu}{\sigma}\\
+\sigma*Z &= Y - \mu\\
+\sigma*Z + \mu &= Y\\
+Y &= 3*0.25335 + 63\\
+&= 63.76
+\end{aligned}
+$$
+
+---
+
+# The Normal
+
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y <= 63+(.2533471*3)) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  labs(y = 'f(y)') + 
+  # geom_vline(xintercept = 63,linetype = 'dashed') + 
+  # geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  geom_vline(xintercept = c(63+(.2533471*3)),linetype = 'dashed') + 
+  annotate(geom = 'label',x = 62,y = .05,label = '60%')
+```
+
+---
+
+# The Normal
+
+- What values of $y$ contain 95% of the data?
+
+--
+
+```{r}
+qnorm(.975)
+```
+
+--
+
+```{r,echo=F,message=F,warning=F}
+require(tidyverse)
+data.frame(y = seq(50,75,length.out = 1000)) %>%
+  mutate(py = dnorm(y,mean = 63,sd = 3)) %>%
+  mutate(area = y >= 63-(1.96*3) & y <= 63+(1.96*3)) %>%
+  ggplot(aes(x = y,ymin = 0,ymax = py,fill = area)) + 
+  geom_ribbon() +
+  geom_ribbon(fill = NA,color = 'black') + 
+  scale_fill_manual(guide = 'none',values = c('white','grey70')) + 
+  theme_bw() + 
+  labs(y = 'f(y)') + 
+  # geom_vline(xintercept = 63,linetype = 'dashed') + 
+  # geom_vline(xintercept = c(60,66),linetype = 'dotted')
+  geom_vline(xintercept = c(63-(1.96*3),63+(1.96*3)),linetype = 'dashed') + 
+  annotate(geom = 'label',x = 63,y = .05,label = '95%')
+```
