@@ -204,6 +204,31 @@ data.frame(X = seq(-10,10,by = .1)) %>%
 
 # Areas under curves
 
+```{r}
+# Original function
+f_x <- function(x) {
+  return(100 - x^2)
+}
+
+# Anti-derivative of the function
+F_x <- function(x) {
+  return(100*x - (x^3)/3)
+}
+
+# Evaluate at upper and lower bounds of the integral
+ub <- F_x(10)
+lb <- F_x(-10)
+
+# Area under the curve is upper minus lower
+ub - lb
+
+
+# Weird sampling stuff
+sample(x = 1:5,size = 10,replace = T)
+
+```
+
+
 $$
 \begin{aligned}
 \int_{-5}^5 f(x)dx &= \int_{-5}^5 (100 - X^2) dx\\
@@ -278,7 +303,16 @@ sample(1:3,replace = T,prob = c(.3,.5,.2))
 ```{r}
 Y <- sample(1:3,size = 10000,replace = T,prob = c(.3,.5,.2))
 data.frame(Y = Y) %>%
-  as_tibble()
+  as_tibble() %>%
+  count(Y) %>%
+  mutate(p_y = n / sum(n)) %>%
+  mutate(y_times_py = Y * p_y) %>%
+  summarise(expected_value = sum(y_times_py))
+
+data.frame(Y = Y) %>%
+  as_tibble() %>%
+  summarise(expected_value = mean(Y))
+
 ```
 
 ---
