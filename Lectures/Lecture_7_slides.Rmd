@@ -137,28 +137,44 @@ require(tidyverse)
 
 # Joint Probability Distribution
 
-- So...*are* these independent events?
+- So...*are* these independent events? It depends on the probabilities of their intersections
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       $P(Y_1,Y_2)$        |       $P(Y_1,Y_2)$        |       0.82        |
+|       $Y_2 = 1$     |       $P(Y_1,Y_2)$        |       $P(Y_1,Y_2)$        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
 
 --
 
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       $P(Y_1 = 0 \cap Y_2 = 0)$        |       $P(Y_1 = 1 \cap Y_2 = 0)$        |       0.82        |
+|       $Y_2 = 1$     |       $P(Y_1 = 0 \cap Y_2 = 1)$        |       $P(Y_1 = 1 \cap Y_2 = 1)$        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
+
+---
+
+# Joint Probability Distribution
+
 - An example of two independent events
 
-|       |       $Y_1 = 0$       | $Y_1 = 1$     |       Totals        |
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
 |-------|-------|-------|-------:|
 |       $Y_2 = 0$     |       0.22        |       0.60        |       0.82        |
 |       $Y_2 = 1$     |       0.05        |       0.13        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
 
 --
 
 - An example of two **dependent events**
 
 
-|       |       $Y_1 = 0$       | $Y_1 = 1$     |       Totals        |
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
 |-------|-------|-------|-------:|
 |       $Y_2 = 0$     |       0.25        |       0.57        |       0.82        |
 |       $Y_2 = 1$     |       0.02        |       0.16        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
 
 ---
 
@@ -195,13 +211,17 @@ require(tidyverse)
   - Denote as $P(Y_1 = y_1,Y_2 = y_2)$ or just $P(y_1,y_2)$
   
   - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
-  
+
+--
+
 - Note that the axioms from the univariate world apply here
 
   - Axiom 1: $p(y_1,y_2) \geq 0\;\forall\;y_1,y_2$
   
   - Axiom 2: $\sum_{y1,y2}p(y_1,y_2) = 1$
-  
+
+--
+
 - Joint probability distributions can have **distribution functions**
 
   - $F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty < y_1 < \infty, -\infty < y_2 < \infty$
@@ -296,3 +316,274 @@ require(tidyverse)
 
 - The associated CDF is $f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}$
 
+---
+
+# R to the visual rescue
+
+```{r,message=F,warning=F}
+require(tidyverse)
+require(ggExtra)
+Y1 <- rnorm(1000)
+Y2 <- rnorm(1000)
+
+p <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+---
+
+# R to the visual rescue
+```{r}
+ggMarginal(p,type = 'histogram')
+```
+
+---
+
+# R to the visual rescue
+
+- What does a conditional probability look like? What about $P(Y_1 \leq 0 | Y_2)$
+
+```{r}
+# P(Y_1 < 0 | Y_2)
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  mutate(Y_1_LT_0 = Y1 < 0) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','tomato'))
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+mean(Y1 < 0)
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 0)
+mean(Y1[which(Y2 < 0)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 0,'NA',
+                                  Y1 < 0 & Y2 < 0)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 1)
+mean(Y1[which(Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 1,'NA',
+                                  Y1 < 0 & Y2 < 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < -1)
+mean(Y1[which(Y2 < -1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > -1,'NA',
+                                  Y1 < 0 & Y2 < -1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 > -1 & Y_2 < 1)
+mean(Y1[which(Y2 > -1 & Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 < -1 | Y2 > 1,'NA',
+                                  Y1 < 0 & (Y2 > -1 | Y2 < 1))) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependence look like?
+
+```{r,echo = F}
+Y1 <- rnorm(1000)
+Y2 <- 1*Y1 + rnorm(1000)
+p <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+```{r}
+ggMarginal(p,type = 'histogram')
+```
+
+
+---
+
+# What does dependence look like?
+
+```{r,echo = F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  mutate(Y_1_LT_0 = Y1 < 0) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','tomato'))
+
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 1)
+mean(Y1[which(Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 1,'NA',
+                                  Y1 < 0 & Y2 < 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 0)
+mean(Y1[which(Y2 < 0)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 0,'NA',
+                                  Y1 < 0 & Y2 < 0)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < -1)
+mean(Y1[which(Y2 < -1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > -1,'NA',
+                                  Y1 < 0 & Y2 < -1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 > 1)
+mean(Y1[which(Y2 > 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 < 1,'NA',
+                                  Y1 < 0 & Y2 > 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```

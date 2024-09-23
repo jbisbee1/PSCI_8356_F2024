@@ -4,7 +4,7 @@
     <title>Lecture 7</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 ]
 .date[
 ### Lecture Date: 2024/09/24
-Slides Updated: 2024-09-18
+Slides Updated: 2024-09-22
 ]
 
 ---
@@ -138,28 +138,44 @@ Slides Updated: 2024-09-18
 
 # Joint Probability Distribution
 
-- So...*are* these independent events?
+- So...*are* these independent events? It depends on the probabilities of their intersections
+
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       `\(P(Y_2 = y)\)`        |
+|-------|-------|-------|-------:|
+|       `\(Y_2 = 0\)`     |       `\(P(Y_1,Y_2)\)`        |       `\(P(Y_1,Y_2)\)`        |       0.82        |
+|       `\(Y_2 = 1\)`     |       `\(P(Y_1,Y_2)\)`        |       `\(P(Y_1,Y_2)\)`        |       0.18        |
+|       `\(P(Y_1 = y)\)`     |       0.27        |       0.73        |       1        |
 
 --
 
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       `\(P(Y_2 = y)\)`        |
+|-------|-------|-------|-------:|
+|       `\(Y_2 = 0\)`     |       `\(P(Y_1 = 0 \cap Y_2 = 0)\)`        |       `\(P(Y_1 = 1 \cap Y_2 = 0)\)`        |       0.82        |
+|       `\(Y_2 = 1\)`     |       `\(P(Y_1 = 0 \cap Y_2 = 1)\)`        |       `\(P(Y_1 = 1 \cap Y_2 = 1)\)`        |       0.18        |
+|       `\(P(Y_1 = y)\)`     |       0.27        |       0.73        |       1        |
+
+---
+
+# Joint Probability Distribution
+
 - An example of two independent events
 
-|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       `\(P(Y_2 = y)\)`        |
 |-------|-------|-------|-------:|
 |       `\(Y_2 = 0\)`     |       0.22        |       0.60        |       0.82        |
 |       `\(Y_2 = 1\)`     |       0.05        |       0.13        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
+|       `\(P(Y_1 = y)\)`     |       0.27        |       0.73        |       1        |
 
 --
 
 - An example of two **dependent events**
 
 
-|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       Totals        |
+|       |       `\(Y_1 = 0\)`       | `\(Y_1 = 1\)`     |       `\(P(Y_2 = y)\)`        |
 |-------|-------|-------|-------:|
 |       `\(Y_2 = 0\)`     |       0.25        |       0.57        |       0.82        |
 |       `\(Y_2 = 1\)`     |       0.02        |       0.16        |       0.18        |
-|       Totals     |       0.27        |       0.73        |       1        |
+|       `\(P(Y_1 = y)\)`     |       0.27        |       0.73        |       1        |
 
 ---
 
@@ -196,13 +212,17 @@ Slides Updated: 2024-09-18
   - Denote as `\(P(Y_1 = y_1,Y_2 = y_2)\)` or just `\(P(y_1,y_2)\)`
   
   - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
-  
+
+--
+
 - Note that the axioms from the univariate world apply here
 
   - Axiom 1: `\(p(y_1,y_2) \geq 0\;\forall\;y_1,y_2\)`
   
   - Axiom 2: `\(\sum_{y1,y2}p(y_1,y_2) = 1\)`
-  
+
+--
+
 - Joint probability distributions can have **distribution functions**
 
   - `\(F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty &lt; y_1 &lt; \infty, -\infty &lt; y_2 &lt; \infty\)`
@@ -297,6 +317,220 @@ Slides Updated: 2024-09-18
 
 - The associated CDF is `\(f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}\)`
 
+---
+
+# R to the visual rescue
+
+
+``` r
+require(tidyverse)
+require(ggExtra)
+Y1 &lt;- rnorm(1000)
+Y2 &lt;- rnorm(1000)
+
+p &lt;- data.frame(Y1 = Y1,
+           Y2 = Y2) %&gt;%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+---
+
+# R to the visual rescue
+
+``` r
+ggMarginal(p,type = 'histogram')
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R to the visual rescue
+
+- What does a conditional probability look like? What about `\(P(Y_1 \leq 0 | Y_2)\)`
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2)
+p2 &lt;- data.frame(Y1 = Y1,
+           Y2 = Y2) %&gt;%
+  mutate(Y_1_LT_0 = Y1 &lt; 0) %&gt;%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','tomato'))
+```
+
+---
+
+# R to the visual rescue
+
+
+``` r
+mean(Y1 &lt; 0)
+```
+
+```
+## [1] 0.495
+```
+
+``` r
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R to the visual rescue
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; 0)
+mean(Y1[which(Y2 &lt; 0)] &lt; 0)
+```
+
+```
+## [1] 0.5296524
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R to the visual rescue
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; 1)
+mean(Y1[which(Y2 &lt; 1)] &lt; 0)
+```
+
+```
+## [1] 0.5072816
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R to the visual rescue
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; -1)
+mean(Y1[which(Y2 &lt; -1)] &lt; 0)
+```
+
+```
+## [1] 0.5157233
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# R to the visual rescue
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &gt; -1 &amp; Y_2 &lt; 1)
+mean(Y1[which(Y2 &gt; -1 &amp; Y2 &lt; 1)] &lt; 0)
+```
+
+```
+## [1] 0.5052632
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What does dependence look like?
+
+
+
+
+``` r
+ggMarginal(p,type = 'histogram')
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# What does dependence look like?
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What does dependent look like?
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; 1)
+mean(Y1[which(Y2 &lt; 1)] &lt; 0)
+```
+
+```
+## [1] 0.6351876
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What does dependent look like?
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; 0)
+mean(Y1[which(Y2 &lt; 0)] &lt; 0)
+```
+
+```
+## [1] 0.7754319
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+# What does dependent look like?
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &lt; -1)
+mean(Y1[which(Y2 &lt; -1)] &lt; 0)
+```
+
+```
+## [1] 0.9045643
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# What does dependent look like?
+
+
+``` r
+# P(Y_1 &lt; 0 | Y_2 &gt; 1)
+mean(Y1[which(Y2 &gt; 1)] &lt; 0)
+```
+
+```
+## [1] 0.1277533
+```
+
+&lt;img src="Lecture_7_slides_files/figure-html/unnamed-chunk-25-1.png" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
