@@ -452,6 +452,20 @@ mean(Y1[which(Y2 &gt; -1 &amp; Y2 &lt; 1)] &lt; 0)
 # What does dependence look like?
 
 
+``` r
+Y1 &lt;- rnorm(1000)
+Y2 &lt;- 1*Y1 + rnorm(1000)
+p &lt;- data.frame(Y1 = Y1,
+           Y2 = Y2) %&gt;%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+---
+
+# What does dependence look like?
+
 
 
 ``` r

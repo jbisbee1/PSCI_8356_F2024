@@ -463,7 +463,7 @@ ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T
 
 # What does dependence look like?
 
-```{r,echo = F}
+```{r}
 Y1 <- rnorm(1000)
 Y2 <- 1*Y1 + rnorm(1000)
 p <- data.frame(Y1 = Y1,
@@ -472,6 +472,11 @@ p <- data.frame(Y1 = Y1,
              y = Y2)) + 
   geom_point()
 ```
+
+---
+
+# What does dependence look like?
+
 
 ```{r}
 ggMarginal(p,type = 'histogram')
