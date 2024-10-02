@@ -2,7 +2,7 @@
 title: "Probability Distributions of $Y$"
 subtitle: "and Simulated Sampling Distributions of $\\bar{Y}$"
 output: html_document
-date: "2023-09-20"
+date: "2024-10-01"
 ---
 
 ```{r setup, include=FALSE}
@@ -70,10 +70,11 @@ toplot %>%
   group_by(size) %>%
   summarise(mu = mean(ybar))
 
-# Std Dev: \sigma_Y-bar = sqrt(var(y-bar)) = sqrt(\sigma^2 / n) approx \sqrt(3) / n
+# Std Dev: \sigma_Y-bar = sqrt(var(y-bar)) = sqrt(\sigma^2 / n) approx \sqrt(3) / \sqrt(n)
 toplot %>%
   group_by(size) %>%
-  summarise(sigma = sqrt(3/size)) %>%
+  summarise(sigma = sqrt(3)/sqrt(size),
+            sigma_p = sd(ybar)) %>%
   distinct()
 ```
 
@@ -122,15 +123,15 @@ toplot %>%
 ```
 
 ```{r}
-# Mean: E(Y-bar) = \mu = 5
+# Mean: E(Y-bar) = \mu = 4.5
 toplot %>%
   group_by(size) %>%
   summarise(mu = mean(ybar))
 
-# Std Dev: \sigma_Y-bar = sqrt(var(y-bar)) = sqrt(\sigma^2 / n) approx \sqrt(3) / n
+# Std Dev: \sigma_Y-bar
 toplot %>%
   group_by(size) %>%
-  summarise(sigma = sqrt(3/size)) %>%
+  summarise(sigma = sd(ybar)) %>%
   distinct()
 ```
 
@@ -180,15 +181,15 @@ toplot %>%
 ```
 
 ```{r}
-# Mean: E(Y-bar) = \mu = 5
+# Mean: E(Y-bar) = 1
 toplot %>%
   group_by(size) %>%
   summarise(mu = mean(ybar))
 
-# Std Dev: \sigma_Y-bar = sqrt(var(y-bar)) = sqrt(\sigma^2 / n) approx \sqrt(3) / n
+# Std Dev: \sigma_Y-bar = 1
 toplot %>%
   group_by(size) %>%
-  summarise(sigma = sqrt(3/size)) %>%
+  summarise(sigma = sd(ybar)) %>%
   distinct()
 ```
 

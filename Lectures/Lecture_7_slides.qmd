@@ -1,0 +1,594 @@
+---
+title: "Lecture 7"
+subtitle: "Quantitative Political Science"
+author: "Prof. Bisbee"
+institute: "Vanderbilt University"
+date: "Lecture Date: 2024/09/24\n Slides Updated: `r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    # self_contained: true
+    chakra: libs/remark-latest.min.js
+    lib_dir: libs
+    css:
+      - default
+      - css/lexis.css
+      - css/lexis-fonts.css
+    #seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+
+---
+
+```{css,echo = F}
+.small .remark-code { /*Change made here*/
+  font-size: 85% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 50% !important;
+}
+```
+
+```{r,include=F}
+set.seed(123)
+options(width=60)
+knitr::opts_chunk$set(fig.align='center',fig.width=9,fig.height=5)
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\n \\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+require(tidyverse)
+```
+
+# Agenda
+
+1. Multivariate analysis
+
+2. Joint probability distributions
+
+3. Independence revisited
+
+---
+
+# Multivariate Analysis
+
+- First part of course focuses on univariate analysis
+
+- However, multivariate is helpful to develop a **theory**
+
+--
+
+  - How can we draw **inferences** about a *population* from a *sample*?
+  
+--
+
+- To answer, let's consider a multivariate probability distribution
+
+- Running example: hypothetical congressional election
+
+--
+
+  - GOP has a 73% chance of winning control of the House
+  
+  - GOP has an 18% chance of winning control of the Senate
+  
+- Two random variables, $Y_1$ and $Y_2$, one for each chamber
+  
+---
+
+# Multivariate Example
+
+- $Y_1$ and $Y_2$ take on the value 1 if the GOP wins control of the associated chamber, and 0 otherwise
+
+  - Refresher: what type of RVs are these?
+  
+--
+
+  - Bernoulli experiments where "success" is GOP winning control
+  
+- Denote any particular realization of these RVs as the "ordered pair" $(y_1,y_2)$
+
+--
+
+  - $(y_1,y_2) = (y_2,y_1)$ iff $y_1 = y_2$
+  
+- What is $P(Y_1 = 1)$? What about $P(Y_2 = 1)$?
+
+--
+
+  - $P(Y_1 = 1) = 0.73$; $P(Y_2 = 1) = 0.18$
+  
+---
+
+# Multivariate Example
+  
+- What is the probability that Republicans win both chambers?
+
+- Use set notation! $A$ is the **intersection** of the events $Y_1 = 1$ and $Y_2 = 1$
+
+--
+
+  - $A = (Y_1 = 1 \cap Y_2 = 1)$
+  
+- So what is $P(A)$?
+
+  - 0.73*0.18 = 0.1314?
+  
+--
+
+- Not necessarily! Use the multiplicative law
+
+--
+
+  - $P(A) = P(Y_1 = 1)P(Y_2 = 1 | Y_1 = 1)$
+  
+  - If $P(A) = 0.73*0.18$, it must be that control of the two chambers are **independent events**
+  
+  - Refresh: definition of an independent event?
+
+--
+
+  - $P(Y_1 = 1 \cap Y_2 = 1) = P(Y_1 = 1)P(Y_2 = 1)$
+  
+---
+
+# Joint Probability Distribution
+
+- So...*are* these independent events? It depends on the probabilities of their intersections
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       $P(Y_1,Y_2)$        |       $P(Y_1,Y_2)$        |       0.82        |
+|       $Y_2 = 1$     |       $P(Y_1,Y_2)$        |       $P(Y_1,Y_2)$        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
+
+--
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       $P(Y_1 = 0 \cap Y_2 = 0)$        |       $P(Y_1 = 1 \cap Y_2 = 0)$        |       0.82        |
+|       $Y_2 = 1$     |       $P(Y_1 = 0 \cap Y_2 = 1)$        |       $P(Y_1 = 1 \cap Y_2 = 1)$        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
+
+---
+
+# Joint Probability Distribution
+
+- An example of two independent events
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       0.22        |       0.60        |       0.82        |
+|       $Y_2 = 1$     |       0.05        |       0.13        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
+
+--
+
+- An example of two **dependent events**
+
+
+|       |       $Y_1 = 0$       | $Y_1 = 1$     |       $P(Y_2 = y)$        |
+|-------|-------|-------|-------:|
+|       $Y_2 = 0$     |       0.25        |       0.57        |       0.82        |
+|       $Y_2 = 1$     |       0.02        |       0.16        |       0.18        |
+|       $P(Y_1 = y)$     |       0.27        |       0.73        |       1        |
+
+---
+
+# Joint Probability Distribution
+
+- Why was one **independent** and the other **dependent**?
+
+--
+
+- In the first table, each cell divided by either the row or column total is the same as the marginal probability (subject to rounding)
+  
+  - $0.22 / 0.27 \approx 0.82$ and $0.60/0.73 \approx 0.82$
+  
+  - $0.05 / 0.27 \approx 0.18$ and $0.13/0.73 \approx 0.18$
+  
+  - $0.22 / 0.82 \approx 0.27$ and $0.05/0.18 \approx 0.27$
+  
+  - $0.60 / 0.82 \approx 0.73$ and $0.13 / 0.18 \approx 0.73$
+  
+--
+
+- In the second table, this relationship **broke** ( $0.25/0.27 \approx 0.93$, etc.)
+
+  - Relate back to the definitions!
+  
+  - $P(A | B) = P(A)$ iff $A \perp\!\!\!\!\perp B$
+
+---
+
+# Joint Probability Distribution
+
+- Just as we did with univariate probability distributions, **joint probability distributions** are the probabilities associated with all possible values of $Y_1$ and $Y_2$
+
+  - Denote as $P(Y_1 = y_1,Y_2 = y_2)$ or just $P(y_1,y_2)$
+  
+  - We can imagine these as functions, although in the preceding example, it is easier to just show as a table
+
+--
+
+- Note that the axioms from the univariate world apply here
+
+  - Axiom 1: $p(y_1,y_2) \geq 0\;\forall\;y_1,y_2$
+  
+  - Axiom 2: $\sum_{y1,y2}p(y_1,y_2) = 1$
+
+--
+
+- Joint probability distributions can have **distribution functions**
+
+  - $F(y_1,y_2) = P(Y_1 \leq y_1,Y_2\leq y_2),\;\; -\infty < y_1 < \infty, -\infty < y_2 < \infty$
+  
+  - Often referred to as the **joint cumulative distribution function** or **joint CDF**
+  
+---
+
+# Joint CDFs
+
+- For two discrete RVs like in our example, this is $F(y_1,y_2) = \sum_{t_1 \leq y_1} \sum_{t_2\leq y_2} p(t_1,t_2)$
+  
+- For two continuous RVs, we say they are **jointly continuous** if their *joint distribution function is continuous in both arguments*
+
+--
+
+  - That is, if there exists a nonnegative function $f(y_1,y_2)$ such that:
+
+  - $F(y_1,y_2) = \int_{-\infty}^{y_1} \int_{-\infty}^{y_2} f(t_1,t_2)dt_2dt_1$ for $-\infty < y_1 < \infty,\; -\infty < y_2 < \infty$
+  
+  - then $Y_1$ and $Y_2$ are jointly continuous and the function $f(y_1,y_2)$ is the **joint probability density function** or **joint PDF**
+  
+---
+
+# Example
+
+- Let's say we want to calculate the probability that two jointly continuous random variables fall into particular intervals
+
+- $P(a < Y_1 \leq b,\; c < Y_2 \leq d) = \int_c^d\int_a^bf(y_1,y_2)dy_1dy_2$
+
+- Show that this is equivalent to $F(b,d) - F(b,c) - F(a,d) + F(a,c)$
+
+---
+
+# Marginal Probability Distributions
+
+- NB: all **bivariate** events ( $Y_1 = y_1, Y_2 = y_2$ ) are **mutually exclusive**
+
+- Thus, the **univariate** event $Y_1 = y_1$ can be thought of as the **union** of bivariate events
+
+  - The union is taken *over all possible values for $y_2$ *
+  
+- Example: let's roll two 6-sided dice
+
+  - $P(Y_1 = 1) = p(1,1) + p(1,2) + \dots + p(1,6)$
+  
+  - $P(Y_1 = 1) = 6*\frac{1}{36} = \frac{1}{6}$
+  
+- Generically: $P(Y_1 = y_1) = \sum_{\forall y_2} p(y_1,y_2)$
+
+- Test: What is the marginal probability for $Y_2 = y_2$?
+
+--
+
+  - $P(Y_2 = y_2) = \sum_{\forall y_1} p(y_1,y_2)$
+  
+- Denote $p_1(y_1)$ as the **marginal probability function** of the *discrete* random variable $Y_1$
+
+---
+
+# Continuous Case
+
+- **Marginal density function** for continuous RV $Y_1$ is:
+
+  - $f_1(y_1) = \int_{-\infty}^\infty f(y_1,y_2)dy_2$
+  
+- Test: what is the marginal density function for $Y_2$?
+
+--
+
+  - $f_2(y_2) = \int_{-\infty}^\infty f(y_1,y_2)dy_1$
+  
+---
+
+# Conditional Probability Distributions: Discrete
+
+- Recall: $P(A \cap B) = P(A)P(B|A)$ due to the **multiplicative law**
+
+- The bivariate event ( $y_1,y_2$ ) can be re-written as the **intersection** of two events: $Y_1 = y_1$ and $Y_2 = y_2$
+
+  - Thus: $p(y_1,y_2) = p_1(y_1)p(y_2|y_1)$
+  
+  - or $p(y_1,y_2) = p_2(y_2)p(y_1|y_2)$
+  
+- NB: $p(y_1|y_2) = P(Y_1 = y_1|Y_2 = y_2)$
+
+  - or $p(y_1|y_2) = \frac{P(Y_1 = y_1,Y_2 = y_2)}{P(Y_2 = y_2)}$
+  
+  - or $p(y_1|y_2) = \frac{p(y_1,y_2)}{p_2(y_2)}$ for $p_2(y_2) > 0$ (why?)
+
+- The **conditional distribution function** of $Y_1$ given $Y_2 = y_2$ is $P(Y_1 \leq y_1|Y_2 = y_2) = F(y_1|y_2)$
+
+- The associated CDF is $f(y_1|y_2) = \frac{f(Y_1,y_2)}{f_2(y_2)}$
+
+---
+
+# R to the visual rescue
+
+```{r,message=F,warning=F}
+require(tidyverse)
+require(ggExtra)
+Y1 <- rnorm(1000)
+Y2 <- rnorm(1000)
+
+p <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+---
+
+# R to the visual rescue
+```{r}
+ggMarginal(p,type = 'histogram')
+```
+
+---
+
+# R to the visual rescue
+
+- What does a conditional probability look like? What about $P(Y_1 \leq 0 | Y_2)$
+
+```{r}
+# P(Y_1 < 0 | Y_2)
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  mutate(Y_1_LT_0 = Y1 < 0) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','tomato'))
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+mean(Y1 < 0)
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 0)
+mean(Y1[which(Y2 < 0)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 0,'NA',
+                                  Y1 < 0 & Y2 < 0)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 1)
+mean(Y1[which(Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 1,'NA',
+                                  Y1 < 0 & Y2 < 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 < -1)
+mean(Y1[which(Y2 < -1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > -1,'NA',
+                                  Y1 < 0 & Y2 < -1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# R to the visual rescue
+
+```{r}
+# P(Y_1 < 0 | Y_2 > -1 & Y_2 < 1)
+mean(Y1[which(Y2 > -1 & Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 < -1 | Y2 > 1,'NA',
+                                  Y1 < 0 & (Y2 > -1 | Y2 < 1))) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependence look like?
+
+```{r}
+Y1 <- rnorm(1000)
+Y2 <- 1*Y1 + rnorm(1000)
+p <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  ggplot(aes(x = Y1,
+             y = Y2)) + 
+  geom_point()
+```
+
+---
+
+# What does dependence look like?
+
+
+```{r}
+ggMarginal(p,type = 'histogram')
+```
+
+
+---
+
+# What does dependence look like?
+
+```{r,echo = F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  mutate(Y_1_LT_0 = Y1 < 0) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','tomato'))
+
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 1)
+mean(Y1[which(Y2 < 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 1,'NA',
+                                  Y1 < 0 & Y2 < 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < 0)
+mean(Y1[which(Y2 < 0)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > 0,'NA',
+                                  Y1 < 0 & Y2 < 0)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 < -1)
+mean(Y1[which(Y2 < -1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 > -1,'NA',
+                                  Y1 < 0 & Y2 < -1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
+
+---
+
+# What does dependent look like?
+
+```{r}
+# P(Y_1 < 0 | Y_2 > 1)
+mean(Y1[which(Y2 > 1)] < 0)
+```
+
+```{r,echo=F}
+p2 <- data.frame(Y1 = Y1,
+           Y2 = Y2) %>%
+  # filter(Y2 < 0) %>%
+  mutate(Y_1_LT_0_condY2 = ifelse(Y2 < 1,'NA',
+                                  Y1 < 0 & Y2 > 1)) %>%
+  ggplot(aes(x = Y1,
+             y = Y2,
+             color = Y_1_LT_0_condY2)) + 
+  geom_point() + 
+  scale_color_manual(values = c('cyan','grey70','tomato'))
+ggMarginal(p2 + theme(legend.position = 'none'),type = 'histogram',groupFill = T)
+```
