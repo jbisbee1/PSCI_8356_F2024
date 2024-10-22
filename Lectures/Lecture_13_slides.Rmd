@@ -215,7 +215,11 @@ $$
 $$
 \begin{aligned}
 \beta &= Pr(\hat{\theta} < \theta_0 + z_{\alpha}\sigma_{\hat{\theta}} | \theta = \theta_A)\\
+<<<<<<< HEAD
+&= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} < \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
+=======
 &= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} < \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}}}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 &= \Phi\bigg(\frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}}\bigg)\\
 &=\Phi\bigg(\frac{\theta_0 - \theta_A}{\sigma_{\hat{\theta}}} + z_{\alpha}\bigg)
 \end{aligned}
@@ -229,6 +233,23 @@ $$
 
 - We have also specified $\alpha$ and therefore $z_{\alpha}$
 
+<<<<<<< HEAD
+- And we can use the usual approach to show that $\sigma_{\hat{\theta}} = \frac{\sigma}{\sqrt{n}}$
+
+- Thus
+
+$$
+\begin{aligned}
+Power = 1 - \Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)
+\end{aligned}
+$$
+
+---
+
+# What are the trade-offs?
+
+=======
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 $$
 \begin{aligned}
 Power = 1 - \Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)
@@ -245,14 +266,24 @@ $$
 \end{aligned}
 $$
 
+<<<<<<< HEAD
+--
+
+- (Remember for these examples, we are assuming $\theta_0 - \theta_A < 0$)
+
+=======
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 ---
 
 # $\frac{\partial\text{Power}}{\partial \alpha}$
 
 - We know that $\frac{\partial z}{\partial \alpha} < 0$ so therefore $\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} < 0$ so $\frac{\partial\text{Power}}{\partial \alpha} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -322,8 +353,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 
 - We know that $\frac{\partial z}{\partial \alpha} < 0$ so therefore $\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} < 0$ so $\frac{\partial\text{Power}}{\partial \alpha} > 0$
   
+<<<<<<< HEAD
+=======
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -392,8 +426,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial \alpha}$
 
 - We know that $\frac{\partial z}{\partial \alpha} < 0$ so therefore $\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} < 0$ so $\frac{\partial\text{Power}}{\partial \alpha} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -463,8 +500,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} > 0$ (since $\theta_0 - \theta_A < 0$) so $\frac{\partial\text{Power}}{\partial \sigma} < 0$
   
+<<<<<<< HEAD
+=======
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -533,8 +573,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial \sigma}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} > 0$ (since $\theta_0 - \theta_A < 0$) so $\frac{\partial\text{Power}}{\partial \sigma} < 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -606,8 +649,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial \sigma}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} > 0$ (since $\theta_0 - \theta_A < 0$) so $\frac{\partial\text{Power}}{\partial \sigma} < 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -679,9 +725,12 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial n}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} < 0$ so $\frac{\partial\text{Power}}{\partial n} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -726,6 +775,10 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
        x = bquote(z),
        y = bquote(f(hat(theta))==phi)) +
   theme_minimal() + 
+<<<<<<< HEAD
+  ylim(c(0,.7)) + 
+=======
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
   geom_vline(xintercept = c(0,3.5),linetype = 'dashed') + 
   annotate(geom = 'segment',x = z0[2],y = 0,xend = z0[2],yend = .12,color = 'red') + 
   # annotate(geom = 'segment',x = 1.96,y = -.05,xend = Inf,yend = -.05,
@@ -753,8 +806,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial n}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} < 0$ so $\frac{\partial\text{Power}}{\partial n} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 
 ```{r,echo=F,warning=F,message=F}
@@ -800,6 +856,10 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
        x = bquote(z),
        y = bquote(f(hat(theta))==phi)) +
   theme_minimal() + 
+<<<<<<< HEAD
+  ylim(c(0,.7)) + 
+=======
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
   geom_vline(xintercept = c(0,3.5),linetype = 'dashed') + 
   annotate(geom = 'segment',x = z0[2],y = 0,xend = z0[2],yend = .07,color = 'red') + 
   # annotate(geom = 'segment',x = 1.96,y = -.05,xend = Inf,yend = -.05,
@@ -827,9 +887,12 @@ annotate(geom = 'label',x = mean0,y = -Inf,label = expression(theta[0]),vjust = 
 # $\frac{\partial\text{Power}}{\partial n}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} < 0$ so $\frac{\partial\text{Power}}{\partial n} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -874,6 +937,10 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
        x = bquote(z),
        y = bquote(f(hat(theta))==phi)) +
   theme_minimal() + 
+<<<<<<< HEAD
+  ylim(c(0,.7)) + 
+=======
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
   geom_vline(xintercept = c(0,3.5),linetype = 'dashed') + 
   annotate(geom = 'segment',x = z0[2],y = 0,xend = z0[2],yend = .021,color = 'red') + 
   # annotate(geom = 'segment',x = 1.96,y = -.05,xend = Inf,yend = -.05,
@@ -901,9 +968,12 @@ annotate(geom = 'label',x = mean0,y = -Inf,label = expression(theta[0]),vjust = 
 # $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} < 0$ so $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -975,9 +1045,12 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} < 0$ so $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
 
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -1049,8 +1122,11 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} < 0$ so $\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} > 0$
+<<<<<<< HEAD
+=======
   
 - Visually:
+>>>>>>> c86805864e1ae2bd94aebe73d7f3e5f265988ee3
 
 
 ```{r,echo=F,warning=F,message=F}

@@ -4,7 +4,7 @@
     <title>Lecture 13</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -27,7 +27,7 @@ class: center, middle, inverse, title-slide
 ]
 .date[
 ### Lecture Date: 2024/10/22
-Slides Updated: 2024-10-16
+Slides Updated: 2024-10-22
 ]
 
 ---
@@ -109,7 +109,7 @@ $$
 $$
 `\begin{aligned}
 \beta &amp;= Pr(\hat{\theta} &lt; \theta_0 + z_{\alpha}\sigma_{\hat{\theta}} | \theta = \theta_A)\\
-&amp;= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} &lt; \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}}}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
+&amp;= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} &lt; \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
 &amp;= \Phi\bigg(\frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}}\bigg)\\
 &amp;=\Phi\bigg(\frac{\theta_0 - \theta_A}{\sigma_{\hat{\theta}}} + z_{\alpha}\bigg)
 \end{aligned}`
@@ -122,6 +122,20 @@ $$
 - We know `\(\theta_0\)` and `\(\theta_A\)` (or we can specify them)
 
 - We have also specified `\(\alpha\)` and therefore `\(z_{\alpha}\)`
+
+- And we can use the usual approach to show that `\(\sigma_{\hat{\theta}} = \frac{\sigma}{\sqrt{n}}\)`
+
+- Thus
+
+$$
+`\begin{aligned}
+Power = 1 - \Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)
+\end{aligned}`
+$$
+
+---
+
+# What are the trade-offs?
 
 $$
 `\begin{aligned}
@@ -139,14 +153,15 @@ $$
 \end{aligned}`
 $$
 
+--
+
+- (Remember for these examples, we are assuming `\(\theta_0 - \theta_A &lt; 0\)`)
+
 ---
 
 # `\(\frac{\partial\text{Power}}{\partial \alpha}\)`
 
 - We know that `\(\frac{\partial z}{\partial \alpha} &lt; 0\)` so therefore `\(\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial \alpha} &gt; 0\)`
-  
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -156,8 +171,6 @@ $$
 
 - We know that `\(\frac{\partial z}{\partial \alpha} &lt; 0\)` so therefore `\(\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial \alpha} &gt; 0\)`
   
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -166,8 +179,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial \alpha}\)`
 
 - We know that `\(\frac{\partial z}{\partial \alpha} &lt; 0\)` so therefore `\(\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial \alpha} &gt; 0\)`
-  
-- Visually:
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -177,8 +188,6 @@ $$
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} &gt; 0\)` (since `\(\theta_0 - \theta_A &lt; 0\)`) so `\(\frac{\partial\text{Power}}{\partial \sigma} &lt; 0\)`
   
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -187,8 +196,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial \sigma}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} &gt; 0\)` (since `\(\theta_0 - \theta_A &lt; 0\)`) so `\(\frac{\partial\text{Power}}{\partial \sigma} &lt; 0\)`
-  
-- Visually:
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -197,8 +204,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial \sigma}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} &gt; 0\)` (since `\(\theta_0 - \theta_A &lt; 0\)`) so `\(\frac{\partial\text{Power}}{\partial \sigma} &lt; 0\)`
-  
-- Visually:
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -207,9 +212,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial n}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial n} &gt; 0\)`
-  
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -218,8 +220,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial n}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial n} &gt; 0\)`
-  
-- Visually:
 
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
@@ -229,9 +229,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial n}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial n} &gt; 0\)`
-  
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -240,9 +237,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} &gt; 0\)`
-  
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -251,9 +245,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} &gt; 0\)`
-  
-- Visually:
-
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -262,8 +253,6 @@ $$
 # `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)}\)`
 
 - We know that `\(\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial (|\theta_0 - \theta_A|)} &lt; 0\)` so `\(\frac{\partial\text{Power}}{\partial (|\theta_0 - \theta_A|)} &gt; 0\)`
-  
-- Visually:
 
 
 &lt;img src="Lecture_13_slides_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
