@@ -216,6 +216,7 @@ $$
 \begin{aligned}
 \beta &= Pr(\hat{\theta} < \theta_0 + z_{\alpha}\sigma_{\hat{\theta}} | \theta = \theta_A)\\
 &= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} < \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
+&= Pr\bigg(\frac{\hat{\theta} - \theta_A}{\sigma_{\hat{\theta}}} < \frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}}}{\sigma_{\hat{\theta}}} | \theta = \theta_A\bigg)\\
 &= \Phi\bigg(\frac{\theta_0 + z_{\alpha}\sigma_{\hat{\theta}} - \theta_A}{\sigma_{\hat{\theta}}}\bigg)\\
 &=\Phi\bigg(\frac{\theta_0 - \theta_A}{\sigma_{\hat{\theta}}} + z_{\alpha}\bigg)
 \end{aligned}
@@ -248,6 +249,7 @@ $$
 Power = 1 - \Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)
 \end{aligned}
 $$
+
 - Stare at this for a second: can you figure out the following signs?
 
 $$
@@ -268,6 +270,7 @@ $$
 # $\frac{\partial\text{Power}}{\partial \alpha}$
 
 - We know that $\frac{\partial z}{\partial \alpha} < 0$ so therefore $\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} < 0$ so $\frac{\partial\text{Power}}{\partial \alpha} > 0$
+
 
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
@@ -337,7 +340,6 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 
 - We know that $\frac{\partial z}{\partial \alpha} < 0$ so therefore $\frac{\partial\Phi\bigg(\frac{\theta_0 - \theta_A}{\frac{\sigma}{\sqrt{n}}} + z_{\alpha}\bigg)}{\partial \alpha} < 0$ so $\frac{\partial\text{Power}}{\partial \alpha} > 0$
   
-
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
 library(ggplot2)
@@ -543,6 +545,7 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial \sigma} > 0$ (since $\theta_0 - \theta_A < 0$) so $\frac{\partial\text{Power}}{\partial \sigma} < 0$
 
+
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
 library(ggplot2)
@@ -685,6 +688,7 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} < 0$ so $\frac{\partial\text{Power}}{\partial n} > 0$
 
+
 ```{r,echo=F,warning=F,message=F}
 # Load necessary library
 library(ggplot2)
@@ -756,6 +760,7 @@ ggplot(data.frame(x, y0), aes(x, y0)) +
 # $\frac{\partial\text{Power}}{\partial n}$
 
 - We know that $\frac{\partial\Phi\bigg(\frac{(\theta_0 - \theta_A)\sqrt{n}}{\sigma} + z_{\alpha}\bigg)}{\partial n} < 0$ so $\frac{\partial\text{Power}}{\partial n} > 0$
+
 
 
 ```{r,echo=F,warning=F,message=F}
