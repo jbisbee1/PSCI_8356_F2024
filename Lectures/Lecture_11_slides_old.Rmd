@@ -1155,11 +1155,3 @@ $$
 
 - Do the data present sufficient evidence to suggest a difference between true mean reaction times for men and women? Use $\alpha = 0.05$. Then, report the $p$-value associated with this conclusion.
 
-```{r,message=F,echo=F,warning=F,results='hide'}
-dir <- getwd()
-type <- 'pdf'
-format <- 'landscape'
-f <- 'Lecture_11_slides'
-
-system(paste('Rscript ../NFGH/chromeprint.R',dir,type,format,f),wait = F)
-```

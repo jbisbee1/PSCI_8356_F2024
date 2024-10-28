@@ -1,9 +1,9 @@
 ---
-title: "Lecture 13"
+title: "Lecture 15"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2023/10/24\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2024/10/29\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
@@ -322,7 +322,7 @@ dat %>%
 
   - Two samples are drawn **independently**
   
-- For inferences about differences in population means with **large** samples
+- For inferences about differences in population means with **small** samples
 
   - Two samples are drawn **independently**
   
@@ -437,12 +437,22 @@ data.frame(X = X,Y = Y) %>%
   xlim(c(0,100)) + ylim(c(0,100))
 ```
 
+---
 
-```{r,message=F,echo=F,warning=F,results='hide'}
-dir <- getwd()
-type <- 'pdf'
-format <- 'landscape'
-f <- 'Lecture_13_slides'
+# Finishing up correlation
 
-system(paste('Rscript ../NFGH/chromeprint.R',dir,type,format,f),wait = F)
-```
+- Recall the correlation measure:
+
+$$
+r = \frac{\sum_i(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_i (X_i - \bar{X})^2 \sum_i(Y_i - \bar{Y})^2}}
+$$
+
+- The quantities in this formula appear a **lot** in regression, so much that they have their own symbols
+
+  - $S_{xy} = \sum_i(X_i - \bar{X})(Y_i - \bar{Y})$
+  
+  - $S_{xx} = \sum_i (X_i - \bar{X})^2$
+  
+  - $S_{yy} = \sum_i(Y_i - \bar{Y})^2$
+  
+- Thus we can rewrite as $r = \frac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}$

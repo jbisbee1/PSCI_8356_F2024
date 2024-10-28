@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Lecture 15</title>
+    <title>Lecture 13</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -14,7 +14,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Lecture 15
+# Lecture 13
 ]
 .subtitle[
 ## Quantitative Political Science
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2024/10/29
-Slides Updated: 2024-10-28
+### Lecture Date: 2023/10/24
+Slides Updated: 2024-10-23
 ]
 
 ---
@@ -84,7 +84,7 @@ Slides Updated: 2024-10-28
 - Crosstab(ulation)s: `\(Y\)` typically in rows, `\(X\)` in columns
 
 
-``` r
+```r
 require(tidyverse)
 dat &lt;- read_rds('https://github.com/jbisbee1/PSCI_8356_F2024/raw/main/Lectures/Data/sc_debt.Rds')
 
@@ -106,7 +106,7 @@ t
 - Crosstab(ulation)s: `\(Y\)` typically in rows, `\(X\)` in columns
 
 
-``` r
+```r
 prop.table(t,margin = 1) # Rows
 ```
 
@@ -117,7 +117,7 @@ prop.table(t,margin = 1) # Rows
 ##   Bachelor's 0.6915942 0.3084058
 ```
 
-``` r
+```r
 prop.table(t,margin = 2) # Columns
 ```
 
@@ -135,7 +135,7 @@ prop.table(t,margin = 2) # Columns
 - Crosstab(ulation)s: `\(Y\)` typically in rows, `\(X\)` in columns...BAD FOR MANY CATEGORIES OR CONTINUOUS!
 
 
-``` r
+```r
 table(dat$md_earn_wne_p6,dat$sat_avg)
 ```
 
@@ -10094,7 +10094,7 @@ table(dat$md_earn_wne_p6,dat$sat_avg)
 - Use bins first
 
 
-``` r
+```r
 dat &lt;- dat %&gt;%
   mutate(earn_quartiles = cut(md_earn_wne_p6,breaks = quantile(md_earn_wne_p6,p = c(0,.25,.5,.75,1),na.rm=T),dig.lab = 10),
          sat_quartiles = cut(sat_avg,breaks = quantile(sat_avg,p = c(0,.25,.5,.75,1),na.rm=T),dig.lab = 10))
@@ -10139,13 +10139,13 @@ round(prop.table(t,margin = 2)*100,2)
 - Barplots (`geom_bar()`): `\(X\)` and `\(Y\)` are both categorical (including binary)
 
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = control,fill = preddeg)) + 
   geom_bar()
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10155,13 +10155,13 @@ dat %&gt;%
 - Densities / histograms (`geom_density()` / `geom_histogram()`): `\(X\)` is binary and `\(Y\)` is continuous
 
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = sat_avg,color = control)) + 
   geom_density()
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10171,13 +10171,13 @@ dat %&gt;%
 - Densities / histograms (`geom_density()` / `geom_histogram()`): `\(X\)` is binary and `\(Y\)` is continuous
 
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = sat_avg,fill = region)) + 
   geom_histogram(position = 'dodge')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10187,7 +10187,7 @@ dat %&gt;%
 - Boxplots / violin plots (`geom_boxplot()` / `geom_violin()`): `\(X\)` is categorical and `\(Y\)` is continuous
 
 
-``` r
+```r
 helper &lt;- dat %&gt;%
   group_by(region) %&gt;%
   summarise(medSAT = median(sat_avg,na.rm=T))
@@ -10197,7 +10197,7 @@ dat %&gt;%
   geom_boxplot(outlier.colour = 'red')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10207,13 +10207,13 @@ dat %&gt;%
 - Boxplots / violin plots (`geom_boxplot()` / `geom_violin()`): `\(X\)` is categorical and `\(Y\)` is continuous
 
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = sat_avg,y = reorder(region,sat_avg))) + 
   geom_violin()
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-11-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10223,7 +10223,7 @@ dat %&gt;%
 - Scatterplots (`geom_point()`): `\(X\)` and `\(Y\)` are both continuous
 
 
-``` r
+```r
 dat %&gt;%
   filter(md_earn_wne_p6 &gt; 70000,control == 'Public')
 ```
@@ -10245,14 +10245,14 @@ dat %&gt;%
 ## #   sat_quartiles &lt;fct&gt;
 ```
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = costt4_a,y = md_earn_wne_p6,color = control)) + 
   geom_point() + 
   geom_smooth(method = 'lm')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10263,7 +10263,7 @@ dat %&gt;%
   - What is the average value of `\(Y\)` for a given value of `\(X\)`?
   
 
-``` r
+```r
 dat %&gt;%
   drop_na(sat_avg) %&gt;%
   # mutate()
@@ -10297,7 +10297,7 @@ dat %&gt;%
   - What is the average value of `\(Y\)` for a given value of `\(X\)`?
   
 
-``` r
+```r
 p &lt;- dat %&gt;%
   drop_na(sat_quartiles) %&gt;%
   group_by(sat_quartiles) %&gt;%
@@ -10315,11 +10315,11 @@ p &lt;- dat %&gt;%
   - What is the average value of `\(Y\)` for a given value of `\(X\)`?
   
 
-``` r
+```r
 p
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10330,11 +10330,11 @@ p
   - What is the average value of `\(Y\)` for a given value of `\(X\)`?
   
 
-``` r
+```r
 p + geom_text(aes(label = scales::dollar(round(mean_earn))),vjust = -.5)
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10343,13 +10343,13 @@ p + geom_text(aes(label = scales::dollar(round(mean_earn))),vjust = -.5)
 - Smoothers
   
 
-``` r
+```r
 dat %&gt;%
   ggplot(aes(x = sat_avg,y = md_earn_wne_p6)) + 
   geom_point() + geom_smooth()
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10377,7 +10377,7 @@ dat %&gt;%
 
   - Two samples are drawn **independently**
   
-- For inferences about differences in population means with **small** samples
+- For inferences about differences in population means with **large** samples
 
   - Two samples are drawn **independently**
   
@@ -10426,7 +10426,7 @@ $$
 - How good is this? It depends on the underlying data
 
 
-``` r
+```r
 X &lt;- seq(-100,100,by = 1)
 ```
 
@@ -10438,13 +10438,13 @@ X &lt;- seq(-100,100,by = 1)
 - Works well with linear relationships
 
 
-``` r
+```r
 Y &lt;- X + rnorm(length(X),mean = 0,sd = 5)
 data.frame(X = X,Y = Y) %&gt;%
   ggplot(aes(x = X,y = Y)) + geom_point() + stat_cor(p.digits = NA,label.sep = '')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10453,13 +10453,13 @@ data.frame(X = X,Y = Y) %&gt;%
 - Still works ok with more noise
 
 
-``` r
+```r
 Y &lt;- X + rnorm(length(X),mean = 0,sd = 50)
 data.frame(X = X,Y = Y) %&gt;%
   ggplot(aes(x = X,y = Y)) + geom_point() + stat_cor(p.digits = NA,label.sep = '')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10468,13 +10468,13 @@ data.frame(X = X,Y = Y) %&gt;%
 - Doesn't work well with curvelinear relationships
 
 
-``` r
+```r
 Y &lt;- X^2 + rnorm(length(X),mean = 0,sd = 1000)
 data.frame(X = X,Y = Y) %&gt;%
   ggplot(aes(x = X,y = Y)) + geom_point() + stat_cor(p.digits = NA,label.sep = '')
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-21-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10483,14 +10483,14 @@ data.frame(X = X,Y = Y) %&gt;%
 - Very sensitive to outliers
 
 
-``` r
+```r
 X &lt;- rnorm(100,mean = 33,sd = 3)
 Y &lt;- rnorm(100,mean = 50,sd = 3)
 data.frame(X = X,Y = Y) %&gt;%
   ggplot(aes(x = X,y = Y)) + geom_point() + stat_cor(p.digits = NA,label.sep = '') + lims(x = c(0,100),y = c(0,100))
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -10499,34 +10499,17 @@ data.frame(X = X,Y = Y) %&gt;%
 - Very sensitive to outliers
 
 
-``` r
+```r
 X[75] &lt;- Y[75] &lt;- 75
 data.frame(X = X,Y = Y) %&gt;%
   ggplot(aes(x = X,y = Y)) + geom_point() + stat_cor(p.digits = NA,label.sep = '') + 
   xlim(c(0,100)) + ylim(c(0,100))
 ```
 
-&lt;img src="Lecture_15_slides_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Lecture_13_slides_old_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 
----
 
-# Finishing up correlation
 
-- Recall the correlation measure:
-
-$$
-r = \frac{\sum_i(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_i (X_i - \bar{X})^2 \sum_i(Y_i - \bar{Y})^2}}
-$$
-
-- The quantities in this formula appear a **lot** in regression, so much that they have their own symbols
-
-  - `\(S_{xy} = \sum_i(X_i - \bar{X})(Y_i - \bar{Y})\)`
-  
-  - `\(S_{xx} = \sum_i (X_i - \bar{X})^2\)`
-  
-  - `\(S_{yy} = \sum_i(Y_i - \bar{Y})^2\)`
-  
-- Thus we can rewrite as `\(r = \frac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}\)`
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
