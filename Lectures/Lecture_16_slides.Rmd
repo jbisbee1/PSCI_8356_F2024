@@ -1,9 +1,9 @@
 ---
-title: "Lecture 14"
+title: "Lecture 16"
 subtitle: "Quantitative Political Science"
 author: "Prof. Bisbee"
 institute: "Vanderbilt University"
-date: "Lecture Date: 2023/10/26\n Slides Updated: `r Sys.Date()`"
+date: "Lecture Date: 2024/10/31\n Slides Updated: `r Sys.Date()`"
 output:
   xaringan::moon_reader:
     # self_contained: true
