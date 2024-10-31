@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Lecture 16</title>
+    <title>Lecture 14</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.18/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -14,7 +14,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Lecture 16
+# Lecture 14
 ]
 .subtitle[
 ## Quantitative Political Science
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2023/11/02
-Slides Updated: 2023-12-23
+### Lecture Date: 2023/10/26
+Slides Updated: 2024-10-31
 ]
 
 ---
@@ -46,255 +46,632 @@ Slides Updated: 2023-12-23
 
 # Agenda
 
-1. Variance of OLS estimators
+1. Linear regression
 
-2. Heteroskedasticity
-
----
-
-# Recap
-
-- We went over 4 assumptions to characterize the bias of our OLS estimators
-
-1. Relationship between `\(x\)` and `\(y\)` is **linear in its parameters**
-
-2. `\(x\)` and `\(y\)` are drawn from a random sample, making them **i.i.d.**
-
-3. `\(VAR(X) \neq 0\)`
-
-4. `\(E(u|x) = 0\)`
-
-- With these, we demonstrated that `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` are **unbiased** for `\(\beta_0\)` and `\(\beta_1\)`
+2. Sum of squares
 
 ---
 
-# Sampling Distributions
+# Linear Regression
 
-- `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` are statistics, just like `\(\bar{Y}\)`
+- Want to say something about the line itself
 
-- When we evaluate statistics, we care about both their **bias** (last class) and their **variance**
+- Start with **geometry**
 
-  - How far can we expect them to be from their true value (i.e., the population parameter) on average?
+  - `\(y = a + bx\)` or `\(y = \beta_0 + \beta_1 x\)` or `\(y = \alpha + \beta_1 x\)`
   
-- In the univariate case, we were interested in the **sampling distribution** of `\(\bar{Y}\)`
-
-- Here, we are also interested in the sampling distributions of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`
-
----
-
-# Variance
-
-- We already know the means of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`: they are `\(\beta_0\)` and `\(\beta_1\)` (from last class)
-
-- To compute the **variances** of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`, we need a **fifth assumption**
-
-Assumption 5: `\(VAR(u|x) = \sigma^2\)`
-
-  - The error has the **same variance** regardless of the value of `\(x\)`
+  - `\(a\)` or `\(\beta_0\)` or `\(\alpha\)` is the **intercept**
   
-- This is known as **homoskedasticity**
-
-- If this fails, we have **heteroskedasticity**
+  - `\(b\)` or `\(\beta_1\)` is the **slope**
+  
+- Many lines we could draw...we want the "best"
 
 ---
 
-# Variance
+# Linear Regression
 
 
-```r
-require(tidyverse)
-set.seed(123)
-X &lt;- rnorm(500,mean = 12,sd = 4)
-Y &lt;- rnorm(500,mean = X,sd = X/3)
-Y2 &lt;- rnorm(500,mean = X,sd = 2)
 
-p &lt;- data.frame(X = X,Heteroskedastic = Y,Homoskedastic = Y2) %&gt;%
-  gather(outcome,value,-X) %&gt;%
-  mutate(outcome = factor(outcome,levels = c('Homoskedastic','Heteroskedastic'))) %&gt;%
-  ggplot(aes(x = X,y = value)) + 
-  geom_point() + 
-  geom_smooth(method = 'lm') + 
-  facet_wrap(~outcome)
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_0.png" width = 80%&gt;&lt;/center&gt;
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_1.png" width = 80%&gt;&lt;/center&gt;
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_2.png" width = 80%&gt;&lt;/center&gt;
+
+- **Residual**: mistake made by a line `\(u_i = y_i - \hat{y}_i\)`
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_3.png" width = 80%&gt;&lt;/center&gt;
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_4.png" width = 80%&gt;&lt;/center&gt;
+
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_5.png" width = 80%&gt;&lt;/center&gt;
+
+---
+
+# Linear Regression
+
+
+
+&lt;center&gt;&lt;img src="./scaffolding/SSR.gif" width = 80%&gt;&lt;/center&gt;
+
+---
+
+# Linear Regression
+
+
+``` r
+summary(lm(Y~X))
+```
+
+```
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.02214 -0.51682  0.02647  0.51386  1.58939 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)   0.6405     0.3875   1.653    0.142
+## X             0.6237     0.4099   1.522    0.172
+## 
+## Residual standard error: 1.151 on 7 degrees of freedom
+## Multiple R-squared:  0.2486,	Adjusted R-squared:  0.1412 
+## F-statistic: 2.316 on 1 and 7 DF,  p-value: 0.1719
 ```
 
 ---
 
-# Variance
+# Linear Regression
 
 
-```r
-p
-```
 
-&lt;img src="Lecture_16_slides_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;center&gt;&lt;img src="./scaffolding/regPlotFirst_6.png" width = 80%&gt;&lt;/center&gt;
+
+
+
 
 ---
 
-# Variance
+# Residuals
 
-- Note the difference between Assumptions 4 and 5!
+- `\(u_i = y_i - \hat{y}_i\)`
 
-  - `\(E(u|x) = 0\)`
-  
-  - `\(VAR(u|x) = \sigma^2\)`
-  
-- We don't need assumption 5 for unbiasedness, but we do for variance!
+- Line of best fit is the one that minimizes these mistakes
 
-- What is `\(VAR(y|x)\)`?
+- Could minimize `\(|y_i - \hat{y}_i|\)` but absolute values are an absolute pain to work with
+
+- Instead, minimize `\((y_i - \hat{y}_i)^2\)`
+
+- Or more accurately, minimize all of them: `\(SSR = \sum_i (y_i - \hat{y}_i)^2\)`
+
+- **S**um of **S**quared **R**esiduals (**SSR**)
 
 ---
 
-# Variance
+# Regression Line
+
+- Add hats `\(\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1 x_i\)` to reflect **estimates** instead of population parameters (just like `\(\theta\)` versus `\(\hat{\theta}\)`)
+
+- Substitute this into our definition of `\(u_i\)`
 
 $$
 `\begin{aligned}
-VAR(y|x) &amp;= VAR(\beta_0 + \beta_1 x + u | x)\\
-&amp;= VAR(\beta_0 | x) + VAR(\beta_1 x | x) + VAR(u | x)\\
-&amp;= 0 + 0 + \sigma^2\\
-&amp;= \sigma^2
+u_i &amp;= y_i - \hat{y}_i \\
+&amp;= y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)\\
+(u_i)^2 &amp;= [y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)]^2 \\
+\sum_i(u_i)^2 &amp;= \sum_i[y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)]^2 \\
 \end{aligned}`
 $$
-- What is `\(\sigma^2\)`?
 
---
+- Values of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` that minimize SSR define the formula for the **least squares line**
 
-- It is a measure of the **extent to which unexplained factors are affecting `\(y\)`**
-
-  - These factors are not related to `\(x\)` (from assumption 4)
-  
-  - These factors are constant regardless of `\(x\)` (from assumption 5)
-  
-  - When `\(\sigma^2\)` is big, it means that other factors explain a lot of variation in `\(y\)` beyond just `\(x\)`
-  
-  - When `\(\sigma^2\)` is small, it means that `\(x\)` explains a lot of variation in `\(y\)`
-  
-- Note that `\(\sigma^2\)` is a **parameter**, something that exists in the population
-  
 ---
 
-# Variance of estimators
+# Regression Line
 
-- `\(VAR(\hat{\beta}_0) = \frac{\sigma^2 \frac{\sum x_i^2}{n}}{SST_x}\)` and `\(VAR(\hat{\beta}_1) = \frac{\sigma^2}{SST_x}\)`
-
-- I'll leave it to you to prove `\(VAR(\hat{\beta}_0)\)`, but let's dig into `\(VAR(\hat{\beta}_1)\)`
+- Values of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` that minimize SSR define the formula for the **least squares line**
 
 $$
 `\begin{aligned}
-\hat{\beta}_1 &amp;= \beta_1 + \frac{\sum(x_i - \bar{x})u_i}{SST_x} \\
-VAR(\hat{\beta}_1|x) &amp;= VAR\bigg[\beta_1 + \frac{\sum(x_i - \bar{x})u_i}{SST_x}~\bigg|~x\bigg]\\
-&amp;= VAR(\beta_1|x) + \frac{1}{SST_x^2}\sum(x_i-\bar{x})^2VAR(u_i~|~x)\\
-&amp;= 0 + \frac{SST_x}{SST_x^2}VAR(u_i|x)\\
-&amp;= \frac{\sigma^2}{SST_x}
+\frac{\partial SSR}{\partial \hat{\beta}_0} &amp;= \frac{\partial}{\partial \hat{\beta}_0} \sum_i[y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)]^2 \\
+&amp;= -2\sum_i y_i  - (\hat{\beta}_0 + \hat{\beta}_1 x_i)\\
+&amp;= -2 \bigg( \sum_i y_i - n \hat{\beta}_0 - \hat{\beta}_1 \sum_i x_i\bigg)
 \end{aligned}`
+$$
+- Set equal to zero to find the minimum
+
+$$
+-2 \bigg( \sum_i y_i - n \hat{\beta}_0 - \hat{\beta}_1 \sum_i x_i\bigg) = 0
 $$
 
 ---
 
-# Sampling Variance of `\(\hat{\beta}_1\)`
+# Regression Line
 
-- So `\(VAR(\hat{\beta}_1) = \frac{\sigma^2}{SST_x}\)`
-
-- Want this to be as small as possible (bias-variance tradeoff)
-
-- As `\(\sigma^2\)` gets smaller, so does `\(VAR(\hat{\beta}_1)\)`
-
-- As `\(SST_x\)` gets bigger, `\(VAR(\hat{\beta}_1)\)` gets smaller
-
-- Unpack `\(SST_x\)` for more insights!
-
----
-
-# Sampling Variance of `\(\hat{\beta}_1\)`
+- Values of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` that minimize SSR define the formula for the **least squares line**
 
 $$
 `\begin{aligned}
-SST_x &amp;= \sum(x_i - \bar{x})^2\\
-\frac{SST_x}{n} &amp;= \frac{\sum(x_i - \bar{x})^2}{n}\\
-&amp;= var(x) \text{ sample variance of }x\\
-SST_x &amp;= n*var\\
-VAR(\hat{\beta}_1) &amp;= \frac{\sigma^2}{n*var(x)}
+\frac{\partial SSR}{\partial \hat{\beta}_1} &amp;= \frac{\partial}{\partial \hat{\beta}_1} \sum_i[y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)]^2\\
+&amp;= -2\sum_i \bigg[y_i  - (\hat{\beta}_0 + \hat{\beta}_1 x_i)\bigg]x_i\\
+&amp;= -2 \bigg( \sum_i x_iy_i - \hat{\beta}_0\sum_i x_i - \hat{\beta}_1 \sum_i x^2_i\bigg)
 \end{aligned}`
 $$
-- What can we actually manipulate here as a researcher?
+- Set equal to zero to find the minimum
 
-  - `\(\sigma^2\)` is a parameter: it declines when `\(x\)` explains `\(y\)` well. But we don't have a lot of control over this.
-  
-  - `\(var(x)\)` is the empirical variance of `\(x\)` in our sample. It approximates the population variance, but we don't have a ton of control over this either.
-  
-  - `\(n\)`: we choose this!
-  
----
-
-# Heteroskedasticity
-
-- The preceding results rely on the assumption of `\(VAR(u|x) = \sigma^2\)`
-
-- What if this doesn't hold?
-
-
-```r
-p
-```
-
-&lt;img src="Lecture_16_slides_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+$$
+-2 \bigg( \sum_i x_iy_i - \hat{\beta}_0\sum_i x_i - \hat{\beta}_1 \sum_i x^2_i\bigg) = 0
+$$
 
 ---
 
-# Heteroskedasticity
+# Normal Equations
 
-- We would then say that the variance of the errors conditional on `\(x\)` is specific to that unit
-
-  - `\(VAR(u_i|x_i) = \sigma_i^2\)`
-  
-- Recall that `\(\hat{\beta}_1 = \frac{\sum(x_i - \bar{x})u_i}{\sum(x_i - \bar{x})^2}\)` and that 
+Solving for zero and rearranging yields the Normal Equations
 
 $$
 `\begin{aligned}
-VAR(\hat{\beta}_1) &amp;= VAR\bigg[\frac{\sum(x_i - \bar{x})u_i}{\sum(x_i - \bar{x})^2}\bigg]\\
-&amp;= \frac{1}{SST_x^2}\sum(x_i - \bar{x})^2 VAR(u_i|x_i)\\
-&amp;= \frac{\sum(x_i - \bar{x})^2\sigma_i^2}{SST_x^2}
+n\hat{\beta}_0 + \hat{\beta}_1 \sum_i x_i &amp;= \sum_i y_i\\
+\hat{\beta}_0 \sum_i x_i + \hat{\beta}_1 \sum_i x_i^2 &amp;= \sum_i x_iy_i
+\end{aligned}`
+$$
+
+- In matrix notation
+
+$$
+`\begin{bmatrix}
+n &amp; \sum\nolimits_{i}x_{i} \\ 
+\sum\nolimits_{i}x_{i} &amp; \sum\nolimits_{i}x_{i}^{2}
+\end{bmatrix}`
+`\begin{bmatrix}
+\widehat{\beta }_{0} \\ 
+\widehat{\beta }_{1}
+\end{bmatrix}`
+=
+`\begin{bmatrix}
+\sum\nolimits_{i}y_{i} \\ 
+\sum\nolimits_{i}x_{i}y_{i}
+\end{bmatrix}`
+$$
+- Rearranging 
+
+$$
+`\begin{bmatrix}
+\widehat{\beta }_{0} \\ 
+\widehat{\beta }_{1}
+\end{bmatrix}`
+=
+`\begin{bmatrix}
+n &amp; \sum\nolimits_{i}x_{i} \\ 
+\sum\nolimits_{i}x_{i} &amp; \sum\nolimits_{i}x_{i}^{2}
+\end{bmatrix}`
+^{-1}
+`\begin{bmatrix}
+\sum\nolimits_{i}y_{i} \\ 
+\sum\nolimits_{i}x_{i}y_{i}
+\end{bmatrix}`
+$$
+
+---
+
+# Aside on Matrix Math
+
+- Read chapter 6 in Brenton's [book](https://bkenkel.com/pdaps/matrix.html#matrix-operations)
+
+- For us today, you need to understand matrix **multiplication** and **inversion**
+
+- Multiplication: Let `\(\mathbf{A}\)` be an `\(n \times m\)` matrix and `\(\mathbf{B}\)` be an `\(m \times n\)` matrix.
+
+  - Denote elements in `\(\mathbf{A}\)` as `\(a_{ij}\)` and elements in `\(\mathbf{B}\)` as `\(b_{ij}\)`, where `\(i\)` index rows and `\(j\)` indexes columns
+  
+  - Matrix multiplication creates a new matrix `\(\mathbf{AB}\)` whose `\(ij\)`th element is the **dot product** of the `\(i\)`th row of `\(\mathbf{A}\)` and the `\(j\)`th column of `\(\mathbf{B}\)`.
+
+$$
+\mathbf{A}=
+`\begin{bmatrix}
+a_{11} &amp; a_{12} \\ 
+a_{21} &amp; a_{22}
+\end{bmatrix}`
+\text{ and }
+\mathbf{B=}
+`\begin{bmatrix}
+b_{11} &amp; b_{12} \\ 
+b_{21} &amp; b_{22}
+\end{bmatrix}`
+$$
+
+$$
+\mathbf{AB}=
+`\begin{bmatrix}
+a_{11}*b_{11} + a_{12}*b_{21} &amp; a_{11}*b_{12} + a_{12}*b_{22} \\ 
+a_{21}*b_{11} + a_{22}*b_{21} &amp; a_{21}*b_{12} + a_{22}*b_{22}
+\end{bmatrix}`
+$$
+
+---
+
+# Aside on Matrix Math
+
+- Do these:
+
+$$
+\mathbf{A}=
+`\begin{bmatrix}
+2 &amp; 0 \\ 
+-5 &amp; 3
+\end{bmatrix}`
+\text{ and }
+\mathbf{B=}
+`\begin{bmatrix}
+4 &amp; 10 \\ 
+1 &amp; 3
+\end{bmatrix}`
+$$
+
+$$
+\mathbf{AB}=
+`\begin{bmatrix}
+? &amp; ? \\ 
+? &amp; ?
+\end{bmatrix}`
+$$
+
+$$
+\mathbf{A}=
+`\begin{bmatrix}
+2 &amp; 10 \\ 
+0 &amp; 1 \\
+-1 &amp; 5
+\end{bmatrix}`
+\text{ and }
+\mathbf{B=}
+`\begin{bmatrix}
+1 &amp; 4 \\ 
+-1 &amp; 10
+\end{bmatrix}`
+$$
+
+$$
+\mathbf{AB}=
+`\begin{bmatrix}
+? &amp; ? \\ 
+? &amp; ? \\
+? &amp; ?
+\end{bmatrix}`
+$$
+
+---
+
+# Aside on Matrix Math
+
+The inverse of a 2x2 matrix 
+$$
+\mathbf{A=}
+`\begin{bmatrix}
+a &amp; b \\ 
+c &amp; d
+\end{bmatrix}`
+$$
+is 
+$$
+\mathbf{A}^{\mathbf{-1}}=\frac{1}{\det \mathbf{A}}
+`\begin{bmatrix}
+d &amp; -b \\ 
+-c &amp; a
+\end{bmatrix}`
+=\frac{1}{ad-bc}
+`\begin{bmatrix}
+d &amp; -b \\ 
+-c &amp; a
+\end{bmatrix}`
+$$
+
+so 
+
+$$
+`\begin{bmatrix}
+n &amp; \sum_ix_i \\ 
+\sum_ix_i &amp; \sum_ix_i^2
+\end{bmatrix}`
+^{-1}
+=
+\frac{1}{n\sum_ix_i^2 - (\sum_ix_i)^2}
+`\begin{bmatrix}
+\sum_ix_i^2 &amp; -\sum_ix_i \\ 
+-\sum_ix_i &amp; n
+\end{bmatrix}`
+$$
+
+---
+
+# Normal Equations
+
+$$
+`\begin{bmatrix}
+\widehat{\beta}_{0} \\ 
+\widehat{\beta}_{1}
+\end{bmatrix}`
+=
+\frac{1}{n\sum_ix_i^2 - (\sum_ix_i)^2}
+`\begin{bmatrix}
+\sum_ix_i^2 &amp; -\sum_ix_i \\ 
+-\sum_ix_i &amp; n
+\end{bmatrix}`
+`\begin{bmatrix}
+\sum_iy_i \\ 
+\sum_ix_iy_i
+\end{bmatrix}`
+$$
+
+- Which means
+
+$$
+\widehat{\beta }_0 = \frac{\sum_ix_i^2\sum_iy_i-\sum_ix_i\sum_ix_iy_i}{n\sum_ix_i^2-\left( \sum_ix_i\right)^2}
+$$
+
+- and
+
+$$
+\widehat{\beta }_{1}=\frac{n\sum_ix_iy_i-\sum_ix_i\sum_iy_i}{n\sum_ix_i^2-\left(\sum_ix_i\right)^2}
+$$
+
+---
+
+# Normal Equations
+
+- Simplifying
+
+$$
+`\begin{aligned}
+\widehat{\beta }_{0} &amp;= \frac{n\overline{y}\sum_ix_i^2-n\overline{x}\sum_ix_iy_i}{n\sum_ix_i^2-\left( n \overline{x}\right) ^2}\\
+&amp;=\frac{\overline{y}\sum_ix_i^2-\overline{x}\sum_ix_iy_i}{\sum_ix_i^2-n\left( \overline{x}\right) ^2}\\
+\widehat{\beta }_{1} &amp;= \frac{n\sum_ix_iy_i-n^2\overline{x}\overline{y}}{n\sum_ix_i^2-n^2\left(\overline{x}\right)^2}\\
+&amp;=\frac{\sum_ix_iy_i-n\overline{x}\overline{y}}{\sum_ix_i^2-n\left( \overline{x}\right) ^2}
+\end{aligned}`
+$$
+
+---
+
+# Normal Equations
+
+- Note that
+
+$$
+`\begin{aligned}
+S_{xx} &amp;=\sum_i\left( X_i-\bar{X}\right)^2\\
+&amp;=\sum_iX_i^2+\sum_i\bar{X}^2-\sum_i2X_i\bar{X} \\
+&amp;= \sum_iX_i^2+n\bar{X}^2-\bar{X}2n\frac{1}{n}\sum_iX_i \\
+&amp;= \sum_iX_i^2+n\bar{X}^2-\bar{X}2n\bar{X} \\
+&amp;= \sum_iX_i^2+n\bar{X}^2-2n\bar{X}^2 \\
+&amp;=\sum_iX_i^2-n\bar{X}^2
 \end{aligned}`
 $$
 
 
 ---
 
-# Heteroskedasticity
+# Normal Equations
 
-- What to do?
+- (Trivially, this also gives us `\(S_{yy} = \sum_i Y_i^2 - n\bar{Y}^2)\)`
 
-- In 1980, one of the most cited economics papers was written by Halbert White
+- Also note that
 
-- In it, he proposed calculating heteroskedastic robust standard errors as `\(\widehat{VAR(\hat{\beta}_1)} = \frac{\sum(x_i - \bar{x})^2\hat{u}_i^2}{SST_x^2}\)`
+$$
+`\begin{aligned}
+S_{xy} &amp;=\sum_i\left( X_i-\bar{X}\right) \left( Y_i-\bar{Y}\right)\\ &amp;=\sum_iX_iY_i-\sum_iX_i\bar{Y}-\sum_i\bar{X}Y_i+\sum_i\bar{X}\bar{Y} \\
+&amp;=\sum_iX_iY_i-n\sum_i\bar{X}\bar{Y}
+\end{aligned}`
+$$
 
-  - `\(\hat{u}_i^2\)` is just the squared residual associated with each observation `\(i\)`
+---
+
+# Normal Equations
+
+- Therefore
+
+$$
+`\begin{aligned}
+\hat{\beta}_1 &amp;= \frac{S_{xy}}{S_{xx}}
+\end{aligned}`
+$$
+- Note that `\(\frac{cov(x,y)}{var(x)} = \frac{\frac{S_{xy}}{n}}{\frac{S_{xx}}{n}}\)`
+
+- So
+
+$$
+\hat{\beta}_1 = \frac{cov(x,y)}{var(x)}
+$$
+
+---
+
+# Normal Equations
+
+- For `\(\hat{\beta}_0\)`, start with the derivative set to zero
+
+$$
+`\begin{aligned}
+-2\left( \sum_iy_i-n\widehat{\beta }_0-\widehat{\beta }_{1}\sum_ix_i\right) &amp;= 0 \\
+\sum_iy_i-n\widehat{\beta }_0-\widehat{\beta }_{1}\sum_ix_i &amp;= 0 \\
+n\bar{y}-n\widehat{\beta }_0-n\widehat{\beta }_{1}\bar{x} &amp;= 0 \\
+\widehat{\beta }_0 &amp;=\bar{y}-\widehat{\beta }_{1}\bar{x},\text{and so} \\
+\widehat{\beta }_0 &amp;=\bar{y}-\frac{S_{xy}}{S_{xx}}\bar{x}
+\end{aligned}`
+$$
+
+---
+
+# Properties of the Least Squares Line
+
+- Nothing we've done yet requires assumptions about distributions of `\(x\)` or `\(y\)`
+
+- Just straight math footwork
+
+- Some additional properties
+
+Prop 1. `\(\hat{\beta}_1 = \frac{\Delta\hat{y}}{\Delta x}\)`: 
+
+  - Take derivative of `\(\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x\)` with respect to `\(x\)`.
   
-- These standard errors have LOTS of different names:
+  - `\(\frac{d\hat{y}}{dx} = \hat{\beta}_1\)`. A one-unit change in `\(x\)` is associated with a `\(\hat{\beta}_1\)` unit change in `\(\hat{y}\)`. Or `\(\hat{\beta}_1 = \frac{\Delta\hat{y}}{\Delta x}\)`
+  
+Prop 2. `\(\sum_i \hat{u}_i = 0\)`: 
 
-  - "White standard errors"
+  - We define `\(\hat{u}_i = y_i - \hat{y}_i\)` and substitute in `\(\hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_i\)` to get `\(\hat{u}_i = y_i - (\hat{\beta}_0 + \hat{\beta}_1x_i)\)`. 
   
-  - "Huber-White standard errors"
-  
-  - "Robust standard errors"
-  
-  - "Heteroskedasticity-robust standard errors"
+  - Sum it to see `\(\sum_i\hat{u}_i = \sum_iy_i - (\hat{\beta}_0 + \hat{\beta}_1x_i)\)`, and recall from `\(\frac{\partial SSR}{\partial \hat{\beta}_0} = 0\)` that `\(\sum_i y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i) = 0\)`.
   
 ---
 
-# A Preview of What's to Come
+# Properties of the Least Squares Line
 
-- The easiest thing to do is just calculate robust standard errors with `\(\widehat{VAR(\hat{\beta}_1)} = \frac{\sum(x_i - \bar{x})^2\hat{u}_i^2}{SST_x^2}\)`
+Prop 3. `\(\bar{\hat{u}}_i = 0\)`:
 
-- However, if our fifth assumption fails (remember: `\(VAR(u|x) = \sigma^2\)`), it means that the OLS estimator is no longer the ``best'' estimator
-
-- What do we mean by ``best''? The lowest-variance!
-
-  - As an aside, **B**est **L**inear **U**nbiased **E**stimator or BLUE is a commonly used acronym for the OLS estimators. We will come back to this next week in more detail, but for now, note that we can prove **U**nbiasedness with the first four assumptions, and assumption 5 gives us **B**est
+  - From previous slide, `\(\sum_i \hat{u}_i = 0\)`.
   
+  - Thus `\(\frac{1}{n}n\sum_i \hat{u}_i = 0\)` and therefore `\(n\bar{\hat{u}}_i = 0\)` so `\(\bar{\hat{u}}_i = 0\)`
+  
+Prop 4. `\(cov(x,\hat{u}) = 0\)`:
 
+  - We know from F.O.C. for `\(\hat{\beta}_1\)` that `\(\sum_i \bigg[y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i)\bigg]x_i = 0\)`.
+  
+  - We defined `\(y_i - (\hat{\beta}_0 + \hat{\beta}_1 x_i) = \hat{u}_i\)` so we can rewrite as `\(\sum_i \hat{u}_ix_i = 0\)`
+  
+$$
+`\begin{aligned}
+cov(x,\hat{u}) &amp;= \frac{\sum_i(\hat{u}_i)(x_i - \bar{x})}{n}\\
+&amp;= \frac{\sum_i \hat{u}_ix_i}{n} - \frac{\bar{x}\sum_i\hat{u}_i}{n} \\
+&amp;= 0 - 0
+\end{aligned}`
+$$
+---
 
+# Properties of the Least Squares Line
 
+Prop 5. `\(\frac{1}{n}\sum_i \hat{y}_i = \frac{1}{n}\sum_i y_i\)`
 
+$$
+`\begin{aligned}
+y_i &amp;= \hat{y}_i + \hat{u}_i\\
+\sum\nolimits_i y_i &amp;= \sum\nolimits_i \hat{y}_i + \sum\nolimits_i \hat{u}_i\\
+\sum\nolimits_i y_i &amp;= \sum\nolimits_i \hat{y}_i + 0\\
+\frac{1}{n}\sum\nolimits_iy_i  &amp;= \frac{1}{n}\sum\nolimits_i \hat{y}_i
+\end{aligned}`
+$$
+
+Prop 6. The coordinate `\((\bar{x},\bar{y})\)` is always on the line of best fit
+
+  - Note that `\(\hat{\beta}_0 = \bar{y} - \hat{\beta}_1\bar{x}\)`
+
+$$
+`\begin{aligned}
+\hat{y} &amp;= \hat{\beta}_0 + \hat{\beta}_1 x_i\\
+\hat{y}(\bar{x}) &amp;= \bar{y} - \hat{\beta}_1 \bar{x} + \hat{\beta}_1 \bar{x}\\
+\hat{y}(\bar{x}) &amp;= \bar{y}
+\end{aligned}`
+$$
+
+---
+
+# Properties of the Least Squares Line
+
+Prop 7. `\(cov(\hat{y}_i,\hat{u}_i) = 0\)`
+
+$$
+`\begin{aligned}
+cov(\hat{y}_i,\hat{u}_i) &amp;= \frac{\sum(\hat{y}_i - \bar{\hat{y}})(\hat{u}_i - \bar{\hat{u}})}{n}\\
+&amp;= \frac{\sum(\hat{y}_i - \bar{y})\hat{u}_i}{n}\\
+&amp;= \frac{\sum\hat{y}_i\hat{u}_i}{n} - \frac{\bar{y}\sum\hat{u}_i}{n}\\
+&amp;= \frac{\sum(\hat{\beta}_0 + \hat{\beta}_1 x_i)\hat{u}_i}{n} - 0\\
+&amp;= \frac{\hat{\beta}_0\sum\hat{u}_i + \hat{\beta}_1\sum x_i\hat{u}_i}{n} - 0\\\
+&amp;= 0 - 0
+\end{aligned}`
+$$
+
+---
+
+# Sum of Squares
+
+- Process of fitting least squares is **decomposing** `\(y_i\)` into two parts: `\(\hat{y}_i\)` and `\(\hat{u}_i\)`
+
+- Total sum of squares (**SST**): `\(\sum_i(y_i - \bar{y})^2\)`
+
+- Explained sum of squares (**SSE**): `\(\sum_i(\hat{y}_i - \bar{y})^2\)`
+
+- Residual sum of squares (**SSR**): `\(\sum_i \hat{u}_i^2\)`
+
+- Prove: `\(SST = SSR + SSE\)`
+
+---
+
+# Sum of Squares
+
+$$
+`\begin{aligned}
+SST &amp;= \sum_i(y_i - \bar{y})^2\\
+&amp;= \sum_i(y_i - \hat{y}_i + \hat{y}_i + \bar{y})^2\\
+&amp;= \sum_i(\hat{u}_i + \hat{y}_i + \bar{y})^2\\
+&amp;= \sum_i(\hat{u}_i)^2 + \sum_i (\hat{y}_i - \bar{y})^2 + 2\sum_i (\hat{y}_i - \bar{y})\\
+&amp;= SSR + SSE + 2\sum_i (\hat{y}_i + \bar{y})\hat{u}_i
+\end{aligned}`
+$$
+
+- We just demonstrated that `\(cov(\hat{y}_i,\hat{u}_i) = \frac{\sum(\hat{y}_i - \bar{y})\hat{u}_i}{n} = 0\)`
+
+- Therefore `\(SST = SSR + SSE + 0\)`
+
+---
+
+# `\(R^2\)`
+
+- `\(SST = \sum_i(y_i - \bar{y})^2\)` is the sample variance of `\(y\)`. 
+
+- If `\(y\)` could be perfectly explained by a straight line over values of `\(x\)`, the `\(SSE = \sum_i(\hat{y}_i - \bar{y})^2\)` would be equal to the `\(SST\)`
+
+- Therefore `\(\frac{SSE}{SST} = 1\)`.
+
+- This never actually happens, but we can use this ratio to measure the "goodness of fit"
+
+  - `\(R^2 = \frac{SSE}{SST}\)`
+  
+  - The proportion of sample variation in `\(y\)` that is explained by `\(x\)`
+  
+  - `\(R^2 = \frac{SSE}{SST} = 1 - \frac{SSR}{SST}\)`
+  
+- The name comes from the fact that, in the bivariate context, `\(R^2 = (r)^2\)`
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
