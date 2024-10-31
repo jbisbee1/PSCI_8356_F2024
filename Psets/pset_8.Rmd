@@ -106,11 +106,11 @@ Now let's choose two ratio variables. What do you think the relationship between
 
   c. Calculate the linear regression of the form $y_i = \beta_0 + \beta_1 x_1 + \varepsilon$ in `R` using the `lm()` function. Write a short description of the results, making sure to express the coefficients appropriately given the units of the variables you've chosen.
   
-  d. Now recalculate $\hat{\beta}_0$ manually by using the equation on slide 23 of Lecture 16. Do the same for $\hat{\beta}_1$.
+  d. Now recalculate $\hat{\beta}_0$ manually by using the equation on slide 22 of Lecture 16. Do the same for $\hat{\beta}_1$.
   
-  e. Re-do the manual calculation for $\hat{\beta}_1$ using the equation found on slide 26 of Lecture 16. What does this remind you of?
+  e. Re-do the manual calculation for $\hat{\beta}_1$ using the equation found on slide 25 of Lecture 16. What does this remind you of?
   
-  f. Re-do the manual calculation for $\hat{\beta}_0$ using the equation found on slide 27 of Lecture 16.
+  f. Re-do the manual calculation for $\hat{\beta}_0$ using the equation found on slide 26 of Lecture 16.
   
 # Question 3
 
