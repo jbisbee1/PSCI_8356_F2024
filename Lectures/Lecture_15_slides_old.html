@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="" xml:lang="">
   <head>
-    <title>Lecture 17</title>
+    <title>Lecture 15</title>
     <meta charset="utf-8" />
     <meta name="author" content="Prof. Bisbee" />
-    <script src="libs/header-attrs-2.27/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/lexis.css" type="text/css" />
     <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
@@ -14,7 +14,7 @@
 class: center, middle, inverse, title-slide
 
 .title[
-# Lecture 17
+# Lecture 15
 ]
 .subtitle[
 ## Quantitative Political Science
@@ -26,8 +26,8 @@ class: center, middle, inverse, title-slide
 ### Vanderbilt University
 ]
 .date[
-### Lecture Date: 2024/11/05
-Slides Updated: 2024-11-05
+### Lecture Date: 2023/10/31
+Slides Updated: 2024-11-04
 ]
 
 ---
@@ -125,14 +125,14 @@ $$
 `\begin{aligned}
 \hat{\beta}_1 &amp;= \frac{\sum(x_i - \bar{x})y_i}{\sum(x_i - \bar{x})^2}\\
 &amp;= \frac{\sum(x_i - \bar{x})(\beta_0 + \beta_1 x_i + u_i)}{SST_x}\\
-&amp;= \frac{\beta_0\sum(x_i - \bar{x}) + \beta_1\sum(x_i - \bar{x}) x_i + \sum(x_i - \bar{x})u_i}{SST_x}\\
+&amp;= \frac{\beta_0\sum(x_i - \bar{x}) + \beta_1\sum(x_i - \bar{x}) x_i + \sum(x_i - \bar{x})u_i)}{SST_x}\\
 \end{aligned}`
 $$
-- Note that `\(\sum(x_i - \bar{x}) = 0\)`, so the first part of the numerator drops out.
+- Note that `\(\sum(x_i - \bar{x}) = \sum x_i - \sum \bar{x} = n\bar{x} - n\bar{x} = 0\)`, so the first part of the numerator drops out.
 
 $$
 `\begin{aligned}
-\hat{\beta}_1 &amp;= \frac{\beta_1\sum(x_i - \bar{x}) x_i + \sum(x_i - \bar{x})u_i}{SST_x}\\
+\hat{\beta}_1 &amp;= \frac{\beta_1\sum(x_i - \bar{x}) x_i + \sum(x_i - \bar{x})u_i)}{SST_x}\\
 \end{aligned}`
 $$
 
@@ -261,15 +261,18 @@ $$
 
 # OVB
 
-- Regress support for Harris ( `\(y\)` ) on Democratic PID ( `\(x\)` )
+- Regress support for Obama ($y$) on Democratic PID ($x$)
 
-  - Omit African-American race ( `\(z\)` )
+  - Omit African-American race ($z$)
   
 - `\(\beta_2\)`?
 
 - `\(cov(x,z)\)`?
 
 - OVB?
+
+
+
 
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
