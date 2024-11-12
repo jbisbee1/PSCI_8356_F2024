@@ -1,11 +1,12 @@
 ---
 title: "Problem Set 9"
-subtitle: "Quantitative Political Science"
-author: "[YOUR NAME]"
-institute: "Vanderbilt University"
+author: '[YOUR NAME]'
 date: "Due Date: 2024-11-11"
 output:
+  pdf_document: default
   html_document: default
+subtitle: Quantitative Political Science
+institute: Vanderbilt University
 ---
 
 ```{css,echo = F}
@@ -72,9 +73,9 @@ n. What is your overall conclusion about the claim of Congressperson Madeupname'
 Suppose we have country-level data that measures our dependent variable, the number of refugees that fled in 2020 (`REFOUT`), and the number of years since the formal end of the most recent civil war (`YRSSINCEWAR`).  Suppose also that we ran the following regression model:
 
 $$
-\begin{eqnarray*}
-REFOUT = A + B*\textit{YRSSINCEWAR}
-\end{eqnarray*}
+\begin{align*}
+REFOUT = A + B \cdot \textit{YRSSINCEWAR}
+\end{align*}
 $$
 
 a. Substantively, why might we think that the number of years since a civil war has to do with refugee outflows?
