@@ -190,7 +190,7 @@ All these can also be found on the [Campuswire calendar](https://campuswire.com/
 11/21 | Measurement | Measurement | [Slides 20](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_20_slides.html#1)<br/>[Notes 20](https://github.com/jbisbee1/PSCI_8356_F2024/blob/main/Lectures/Lecture_20_notes.pdf)<br/>[Recording]() | 
 **11/26** | **THANKSGIVING** | **EAT** |  | 
 **11/28** | **THANKSGIVING** | **EAT** |  | 
-**12/03** | Final Topics | [Slides 18](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_18_slides.html#1) |  | 
+**12/03** | Final Topics | Errors, FWL, FUN! | [Slides 18](https://www.jamesbisbee.com/PSCI_8356_F2024/Lectures/Lecture_18_slides.html#1) | 
 **12/05** | **Presentations 1** | Seungho, Will, Justin, Addison, Laura |  | 
 **12/10** | **Presentations 2** | Enes, Chesani, Sarah, Payge, Nick |  | 
 
