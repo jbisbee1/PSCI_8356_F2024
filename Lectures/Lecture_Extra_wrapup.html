@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture Wrapup</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Prof. Bisbee" />
+    <script src="libs/header-attrs-2.22/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/lexis.css" type="text/css" />
+    <link rel="stylesheet" href="css/lexis-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Lecture Wrapup
+]
+.subtitle[
+## Quantitative Political Science
+]
+.author[
+### Prof. Bisbee
+]
+.institute[
+### Vanderbilt University
+]
+.date[
+### Lecture Date: 2024/12/03
+Slides Updated: 2024-12-02
+]
+
+---
+
+
+&lt;style type="text/css"&gt;
+.small .remark-code { /*Change made here*/
+  font-size: 85% !important;
+}
+.tiny .remark-code { /*Change made here*/
+  font-size: 50% !important;
+}
+&lt;/style&gt;
+
+
+
+# Agenda
+
+1. Variance of OLS estimators
+
+2. Heteroskedasticity
+
+---
+
+# Recap
+
+- We went over 4 assumptions to characterize the bias of our OLS estimators
+
+1. Relationship between `\(x\)` and `\(y\)` is **linear in its parameters**
+
+2. `\(x\)` and `\(y\)` are drawn from a random sample, making them **i.i.d.**
+
+3. `\(VAR(X) \neq 0\)`
+
+4. `\(E(u|x) = 0\)`
+
+- With these, we demonstrated that `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` are **unbiased** for `\(\beta_0\)` and `\(\beta_1\)`
+
+---
+
+# Sampling Distributions
+
+- `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)` are statistics, just like `\(\bar{Y}\)`
+
+- When we evaluate statistics, we care about both their **bias** (last class) and their **variance**
+
+  - How far can we expect them to be from their true value (i.e., the population parameter) on average?
+  
+- In the univariate case, we were interested in the **sampling distribution** of `\(\bar{Y}\)`
+
+- Here, we are also interested in the sampling distributions of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`
+
+---
+
+# Variance
+
+- We already know the means of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`: they are `\(\beta_0\)` and `\(\beta_1\)` (from last class)
+
+- To compute the **variances** of `\(\hat{\beta}_0\)` and `\(\hat{\beta}_1\)`, we need a **fifth assumption**
+
+Assumption 5: `\(VAR(u|x) = \sigma^2\)`
+
+  - The error has the **same variance** regardless of the value of `\(x\)`
+  
+- This is known as **homoskedasticity**
+
+- If this fails, we have **heteroskedasticity**
+
+---
+
+# Variance
+
+
+```r
+require(tidyverse)
+set.seed(123)
+X &lt;- rnorm(500,mean = 12,sd = 4)
+Y &lt;- rnorm(500,mean = X,sd = X/3)
+Y2 &lt;- rnorm(500,mean = X,sd = 2)
+
+p &lt;- data.frame(X = X,Heteroskedastic = Y,Homoskedastic = Y2) %&gt;%
+  gather(outcome,value,-X) %&gt;%
+  mutate(outcome = factor(outcome,levels = c('Homoskedastic','Heteroskedastic'))) %&gt;%
+  ggplot(aes(x = X,y = value)) + 
+  geom_point() + 
+  geom_smooth(method = 'lm') + 
+  facet_wrap(~outcome)
+```
+
+---
+
+# Variance
+
+
+```r
+p
+```
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Variance
+
+- Note the difference between Assumptions 4 and 5!
+
+  - `\(E(u|x) = 0\)`
+  
+  - `\(VAR(u|x) = \sigma^2\)`
+  
+- We don't need assumption 5 for unbiasedness, but we do for variance!
+
+- What is `\(VAR(y|x)\)`?
+
+---
+
+# Variance
+
+$$
+`\begin{aligned}
+VAR(y|x) &amp;= VAR(\beta_0 + \beta_1 x + u | x)\\
+&amp;= VAR(\beta_0 | x) + VAR(\beta_1 x | x) + VAR(u | x)\\
+&amp;= 0 + 0 + \sigma^2\\
+&amp;= \sigma^2
+\end{aligned}`
+$$
+- What is `\(\sigma^2\)`?
+
+--
+
+- It is a measure of the **extent to which unexplained factors are affecting `\(y\)`**
+
+  - These factors are not related to `\(x\)` (from assumption 4)
+  
+  - These factors are constant regardless of `\(x\)` (from assumption 5)
+  
+  - When `\(\sigma^2\)` is big, it means that other factors explain a lot of variation in `\(y\)` beyond just `\(x\)`
+  
+  - When `\(\sigma^2\)` is small, it means that `\(x\)` explains a lot of variation in `\(y\)`
+  
+- Note that `\(\sigma^2\)` is a **parameter**, something that exists in the population
+  
+---
+
+# Variance of estimators
+
+- `\(VAR(\hat{\beta}_0) = \frac{\sigma^2 \frac{\sum x_i^2}{n}}{SST_x}\)` and `\(VAR(\hat{\beta}_1) = \frac{\sigma^2}{SST_x}\)`
+
+- I'll leave it to you to prove `\(VAR(\hat{\beta}_0)\)`, but let's dig into `\(VAR(\hat{\beta}_1)\)`
+
+$$
+`\begin{aligned}
+\hat{\beta}_1 &amp;= \beta_1 + \frac{\sum(x_i - \bar{x})u_i}{SST_x} \\
+VAR(\hat{\beta}_1|x) &amp;= VAR\bigg[\beta_1 + \frac{\sum(x_i - \bar{x})u_i}{SST_x}~\bigg|~x\bigg]\\
+&amp;= VAR(\beta_1|x) + \frac{1}{SST_x^2}\sum(x_i-\bar{x})^2VAR(u_i~|~x)\\
+&amp;= 0 + \frac{SST_x}{SST_x^2}VAR(u_i|x)\\
+&amp;= \frac{\sigma^2}{SST_x}
+\end{aligned}`
+$$
+
+---
+
+# Sampling Variance of `\(\hat{\beta}_1\)`
+
+- So `\(VAR(\hat{\beta}_1) = \frac{\sigma^2}{SST_x}\)`
+
+- Want this to be as small as possible (bias-variance tradeoff)
+
+- As `\(\sigma^2\)` gets smaller, so does `\(VAR(\hat{\beta}_1)\)`
+
+- As `\(SST_x\)` gets bigger, `\(VAR(\hat{\beta}_1)\)` gets smaller
+
+- Unpack `\(SST_x\)` for more insights!
+
+---
+
+# Sampling Variance of `\(\hat{\beta}_1\)`
+
+$$
+`\begin{aligned}
+SST_x &amp;= \sum(x_i - \bar{x})^2\\
+\frac{SST_x}{n} &amp;= \frac{\sum(x_i - \bar{x})^2}{n}\\
+&amp;= var(x) \text{ sample variance of }x\\
+SST_x &amp;= n*var\\
+VAR(\hat{\beta}_1) &amp;= \frac{\sigma^2}{n*var(x)}
+\end{aligned}`
+$$
+- What can we actually manipulate here as a researcher?
+
+  - `\(\sigma^2\)` is a parameter: it declines when `\(x\)` explains `\(y\)` well. But we don't have a lot of control over this.
+  
+  - `\(var(x)\)` is the empirical variance of `\(x\)` in our sample. It approximates the population variance, but we don't have a ton of control over this either.
+  
+  - `\(n\)`: we choose this!
+  
+---
+
+# Heteroskedasticity
+
+- The preceding results rely on the assumption of `\(VAR(u|x) = \sigma^2\)`
+
+- What if this doesn't hold?
+
+
+```r
+p
+```
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Heteroskedasticity
+
+- We would then say that the variance of the errors conditional on `\(x\)` is specific to that unit
+
+  - `\(VAR(u_i|x_i) = \sigma_i^2\)`
+  
+- Recall that `\(\hat{\beta}_1 = \frac{\sum(x_i - \bar{x})u_i}{\sum(x_i - \bar{x})^2}\)` and that 
+
+$$
+`\begin{aligned}
+VAR(\hat{\beta}_1) &amp;= VAR\bigg[\frac{\sum(x_i - \bar{x})u_i}{\sum(x_i - \bar{x})^2}\bigg]\\
+&amp;= \frac{1}{SST_x^2}\sum(x_i - \bar{x})^2 VAR(u_i|x_i)\\
+&amp;= \frac{\sum(x_i - \bar{x})^2\sigma_i^2}{SST_x^2}
+\end{aligned}`
+$$
+
+
+---
+
+# Heteroskedasticity
+
+- What to do?
+
+- In 1980, one of the most cited economics papers was written by Halbert White
+
+- In it, he proposed calculating heteroskedastic robust standard errors as `\(\widehat{VAR(\hat{\beta}_1)} = \frac{\sum(x_i - \bar{x})^2\hat{u}_i^2}{SST_x^2}\)`
+
+  - `\(\hat{u}_i^2\)` is just the squared residual associated with each observation `\(i\)`
+  
+- These standard errors have LOTS of different names:
+
+  - "White standard errors"
+  
+  - "Huber-White standard errors"
+  
+  - "Robust standard errors"
+  
+  - "Heteroskedasticity-robust standard errors"
+  
+---
+
+# Stepping Back
+
+- The easiest thing to do is just calculate robust standard errors with `\(\widehat{VAR(\hat{\beta}_1)} = \frac{\sum(x_i - \bar{x})^2\hat{u}_i^2}{SST_x^2}\)`
+
+- However, if our fifth assumption fails (remember: `\(VAR(u|x) = \sigma^2\)`), it means that the OLS estimator is no longer the ``best'' estimator
+
+- What do we mean by ``best''? The lowest-variance!
+
+  - As an aside, **B**est **L**inear **U**nbiased **E**stimator or BLUE is a commonly used acronym for the OLS estimators. Note that we can prove **U**nbiasedness with the first four assumptions, and assumption 5 gives us **B**est
+  
+---
+
+# Estimating Error Variance
+
+- So we have `\(VAR(\hat{\beta}_1) = \frac{\sigma^2}{SST_x}\)`
+
+  - This is a **conceptual** quantity
+  
+- How do we actually calculate it?
+
+  - Recall from the univariate case where we wrote `\(VAR(\bar{Y}) = \frac{\sigma^2}{n}\)`
+  
+  - We said it is rare that we actually know `\(\sigma^2\)`, but we still estimate it with `\(S_u^2 = \frac{\sum(y_i - \bar{y})^2}{n-1}\)`
+  
+- Here, we do something very similar: `\(\hat{\sigma}^2 = \frac{\sum(u_i)^2}{n-2} = \frac{SSR}{n-2}\)`
+
+  - Why `\(n-2\)`?
+  
+---
+
+# Estimating Error Variance
+
+- Thus we plug this into our two formulas for `\(VAR(\hat{\beta}_0)\)` and `\(VAR(\hat{\beta}_1)\)`
+
+$$
+`\begin{aligned}
+\widehat{VAR(\hat{\beta}_0)} &amp;= \frac{\hat{\sigma}^2 \frac{\sum x_i^2}{n}}{SST_x}\\
+&amp;= \frac{\frac{SSR}{n-2}\frac{\sum x_i^2}{n}}{SST_x}\\
+\widehat{VAR(\hat{\beta}_1)} &amp;= \frac{\hat{\sigma}^2}{SST_x}\\
+&amp;= \frac{\frac{SSR}{n-2}}{SST_x}\\
+\end{aligned}`
+$$
+
+---
+
+# Estimating Error Variance
+
+- As we discussed last week in the theoretical case, `\(\hat{\sigma}^2\)` is a very interesting quantity, because `\(\sqrt{\hat{\sigma}^2} = \hat{\sigma} \overset{p}\rightarrow \sigma\)`
+
+  - `\(\hat{\sigma}\)` is expressed in units of `\(y\)`
+  
+  - Tell us how far the typical fitted value of `\(y\)` is from the observed value
+  
+  - Theoretically, the extent to which unexplained factors are affecting the value of `\(y\)`
+  
+  - **VERY INFORMATIVE STATISTIC THAT NO ONE REALLY PAYS ATTENTION TO**
+  
+- Terms for `\(\hat{\sigma}\)`:
+
+  - Wooldridge: "standard error of regression" (SER)
+  
+  - Root MSE or RMSE
+  
+  - Standard error of the estimate (SEE)
+  
+  - `R`: Residual standard error
+
+
+
+---
+
+# Hypothesis Testing
+
+- Remember all these fun times we had?
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Hypothesis Testing
+
+- We now have the tools to do this with `\(\hat{\beta}_1\)`! (And `\(\hat{\beta}_0\)`, although that is rarely the quantity of interest.)
+
+- Note that we typically are interested in whether `\(\hat{\beta}_1\)` is zero:
+
+  - Null `\(H_0\)`: `\(\beta_1 = 0\)`
+  
+  - Alternative `\(H_A\)`: `\(\beta_1 \neq 0\)`
+  
+  - Test statistic: Critical `\(t\)` value for Student's T-test for our estimator `\(\hat{\beta}_1\)`
+  
+  - Rejection Region: `\(\hat{\beta}_1 &lt; 0 - t_{\alpha/2,\nu}*\sqrt{\widehat{VAR(\hat{\beta}_1)}}\)` or `\(\hat{\beta}_1 &gt; 0 + t_{\alpha/2,\nu}*\sqrt{\widehat{VAR(\hat{\beta}_1)}}\)`
+  
+---
+
+# Hypothesis Testing
+
+- What is `\(\sqrt{\widehat{VAR(\hat{\beta}_1)}}\)`? 
+
+--
+
+  - The **standard error** of the estimator `\(\hat{\beta}_1\)`, or `\(\widehat{se(\hat{\beta}_1)}\)`, (or often just `\(se_{\hat{\beta}_1}\)`)
+  
+- What is `\(\nu\)`?
+
+--
+
+  - The **degrees of freedom**: This will be `\(n - k - 1\)`. `\(n\)` observations minus `\(k\)` parameters (in this case just one: `\(\hat{\beta}_1\)`) - 1 (for the intercept `\(\hat{\beta}_0\)`)
+
+---
+
+# Hypothesis Testing
+
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+```r
+require(tidyverse)
+set.seed(123)
+n &lt;- 100
+X &lt;- rnorm(n)
+Y &lt;- rnorm(n,mean = X)
+
+summary(lm(Y~X))
+```
+
+```
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.9073 -0.6835 -0.0875  0.5806  3.2904 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.10280    0.09755  -1.054    0.295    
+## X            0.94753    0.10688   8.865  3.5e-14 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9707 on 98 degrees of freedom
+## Multiple R-squared:  0.4451,	Adjusted R-squared:  0.4394 
+## F-statistic:  78.6 on 1 and 98 DF,  p-value: 3.497e-14
+```
+
+---
+
+# Manual Calculation!
+
+
+```r
+b1_hat &lt;- cov(X,Y)/var(X)
+b0_hat &lt;- mean(Y) - (cov(X,Y)/var(X))*mean(X)
+
+preds &lt;- b0_hat + b1_hat*X
+resids &lt;- Y - preds
+mean(resids)
+```
+
+```
+## [1] -1.621641e-17
+```
+
+---
+
+# Manual Calculation!
+
+
+```r
+SSR &lt;- sum(resids^2)
+sigma2_hat &lt;- SSR/(n-2)
+sigma_hat &lt;- sqrt(sigma2_hat)
+
+SST_x &lt;- sum((X - mean(X))^2)
+S_xx &lt;- sum(X^2) - n*mean(X)^2 # Equivalent ways
+
+VAR0_hat &lt;- (sigma2_hat*(sum(X^2)/n))/SST_x
+se0_hat &lt;- sqrt(VAR0_hat)
+
+VAR1_hat &lt;- sigma2_hat/SST_x
+se1_hat &lt;- sqrt(VAR1_hat)
+```
+
+---
+
+# Manual Calculation!
+
+
+```r
+cat(c(b0_hat,se0_hat),'\n',c(b1_hat,se1_hat))
+```
+
+```
+## -0.1028031 0.09755118 
+##  0.9475284 0.1068786
+```
+
+```r
+summary(lm(Y~X))
+```
+
+```
+## 
+## Call:
+## lm(formula = Y ~ X)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.9073 -0.6835 -0.0875  0.5806  3.2904 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.10280    0.09755  -1.054    0.295    
+## X            0.94753    0.10688   8.865  3.5e-14 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9707 on 98 degrees of freedom
+## Multiple R-squared:  0.4451,	Adjusted R-squared:  0.4394 
+## F-statistic:  78.6 on 1 and 98 DF,  p-value: 3.497e-14
+```
+
+---
+
+# Other output
+
+- Regression output includes two additional columns
+
+  - `t value` and `Pr(&gt;|t|)`
+  
+- `t value` is just `\(\frac{\hat{\beta}_1}{\widehat{se(\hat{\beta}_1)}}\)` (or `\(\frac{\hat{\beta}_0}{\widehat{se(\hat{\beta}_0)}}\)`)
+
+  - `b1_hat / se1_hat = ` 8.8654627
+  
+- `Pr(&gt;|t|)` is literally the probably of observing a value as large as the absolute value of the t-value
+
+  - I.e., the `\(p\)`**-value**!: "attained significance level" or "smallest level of `\(\alpha\)` for which we would **reject** `\(H_0\)`
+
+---
+
+# Controlling for a variable
+
+- We talked last week about OVB (**O**mitted **V**ariable **B**ias)
+
+  - Subset of broader conversation about bias
+  
+- We might want to "control" for `\(z\)` to remove OVB (preventing the `\(\beta_2 z_i + \nu_i\)` from being "buried in the `\(u\)`)
+
+  - But remember that failing to control for `\(z\)` is only a problem **if** either (1) `\(\beta_2 \neq 0\)` or (2) `\(cov(z,x) \neq 0\)`
+  
+- *Ceteris paribus*: "all things being equal"
+  
+  - Want to estimate a *ceteris paribus* relationship between `\(X\)` and `\(Y\)`
+  
+  - What would the relationship look like if all other aspects of our units were the same?
+  
+  - Commonly invoked for causal claims, but more on that next semester
+  
+---
+
+# Controlling for a variable
+
+- Let's get precise with our terminology:
+
+  - `\(Z\)` is a potential **confound**
+  
+  - If `\(Z\)` "confounds" the relationship between `\(X\)` and `\(Y\)`, it **renders the relationship spurious**
+
+- How about some examples? 
+
+--
+
+| `\(X\)` | `\(Y\)` | `\(Z\)` | 
+| ------------ | ------------------- | -------------------- |
+| College degree | Salary at age 25 | Ability |
+| Female | Pro-Choice | Democrat |
+| First-born | IQ Score | Parental involvement | 
+| Asian-American | Trump Support | Vietnamese | 
+| Own a home | Participated in Women's March | Year of Birth |
+| ... | ... | ... |
+
+---
+
+# Controlling for a variable
+
+- To determine whether `\(Z\)` renders the relationship between `\(X\)` and `\(Y\)` spurious, we...
+
+  - "control for `\(Z\)`"
+  
+  - "condition on `\(Z\)`"
+  
+  - "hold `\(Z\)` constant"
+  
+- These all mean the same thing conceptually, but there are several different ways to do this
+
+- Ideally, we would do exactly what "holding `\(Z\)` constant" suggests: divide our units by categories of `\(Z\)` and examine the relationship between `\(X\)` and `\(Y\)` within each category of `\(Z\)`
+
+  - I.e., if women are more pro-choice, we want to see this among *both* Democrats and Republicans
+  
+  - If the relationship persists after holding `\(Z\)` constant, we say it is not spurious
+  
+  - If it no longer holds, we say that `\(Z\)` is a confound rendering the relationship between `\(X\)` and `\(Y\)` spurious
+  
+- In practice, we usually do something much less careful
+
+---
+
+# Controlling for a variable
+
+- We often will make our assumptions explicit with a **D**irected **A**cyclic **G**raph (DAG)
+
+  - This encodes our intuition about what the population parameters of interest might be
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/test-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable
+
+- Let's tackle a classic: education and income
+
+  - `\(Y\)`: income
+  
+  - `\(X\)`: education
+  
+- What is `\(Z\)`?
+
+--
+
+  - Parent's education?
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+
+```r
+require(tidyverse)
+require(haven) # To open .dta files
+
+dat &lt;- read_dta('../NFGH/GSS_stata/GSS_stata/gss7222_r1.dta')
+
+dat &lt;- dat %&gt;%
+  select(realinc,educ,paeduc) %&gt;%
+  sample_n(size = 10000,replace = F) %&gt;%
+  drop_na()
+
+gc()
+```
+
+```
+##           used  (Mb) gc trigger   (Mb)  max used   (Mb)
+## Ncells 2674987 142.9    4435107  236.9   4435107  236.9
+## Vcells 4598705  35.1  567149983 4327.1 486528011 3712.0
+```
+
+- (`gc()` helps save memory after I dropped thousands of rows and columns)
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+
+```r
+dat %&gt;%
+  group_by(educ) %&gt;%
+  summarise(income = mean(realinc,na.rm=T))
+```
+
+```
+## # A tibble: 21 × 2
+##    educ                    income
+##    &lt;dbl+lbl&gt;                &lt;dbl&gt;
+##  1 0 [no formal schooling] 16570.
+##  2 1                       21713.
+##  3 2                       14994.
+##  4 3                       11079.
+##  5 4                        9186.
+##  6 5                       12194.
+##  7 6                       14958.
+##  8 7                       13876.
+##  9 8                       15699.
+## 10 9                       18153.
+## # ℹ 11 more rows
+```
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+
+```r
+dat %&gt;%
+  ggplot(aes(x = educ,y = realinc)) + 
+  geom_point()
+```
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable
+
+- Start by looking at all three relationships separately
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-17-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable
+
+- Clearly evidence of:
+
+  - `\(\beta_1 \neq 0\)`
+  
+  - `\(\beta_2 \neq 0\)`
+  
+  - `\(cov(educ,paeduc) \neq 0\)`
+  
+- I.e., OVB!
+
+- Think through what this will mean for the following regression: `\(realinc_{i} = \beta_0 + \beta_1 educ_{i} + u_{i}\)`
+
+---
+
+# Controlling for a variable
+
+- Let's "control" for parent's education in three ways
+
+1. Fewest Assumptions: Just visualize it with a local linear smoother, and subset to different values of parent's education
+
+  - No linearity assumption between `\(X\)` and `\(Y\)`
+  
+  - Different relationship between `\(X\)` and `\(Y\)` for different values of `\(Z\)`
+
+2. More Assumptions: Run multiple linear regressions, subsetting to different values of parent's education
+
+  - Linearity assumption between `\(X\)` and `\(Y\)`
+  
+  - Different (linear) relationships between `\(X\)` and `\(Y\)` for different values of `\(Z\)`
+  
+3. Most Assumptions: Run single linear regression, adding `\(Z\)` as an additional predictor
+
+  - Linearity assumption between `\(X\)` and `\(Y\)`
+  
+  - Same linear relationship between `\(X\)` and `\(Y\)` for all values of `\(Z\)`
+
+
+---
+
+# Controlling for a variable
+
+- First, let's take `paeduc` and transform it into a categorical measure
+
+
+```r
+dat &lt;- dat %&gt;%
+  mutate(paeduc_cat = factor(ifelse(paeduc &lt; 9,'8th gr or less',
+                             ifelse(paeduc &lt; 12,'HS dropout',
+                                    ifelse(paeduc == 12,'HS degree',
+                                           ifelse(paeduc &lt; 16,'Some college',
+                                                  ifelse(paeduc == 16,'College degree','Post grad'))))),
+                             levels = c('8th gr or less','HS dropout','HS degree','Some college','College degree','Post grad')))
+dat %&gt;% count(paeduc_cat)
+```
+
+```
+## # A tibble: 6 × 2
+##   paeduc_cat         n
+##   &lt;fct&gt;          &lt;int&gt;
+## 1 8th gr or less  1966
+## 2 HS dropout       639
+## 3 HS degree       1823
+## 4 Some college     644
+## 5 College degree   646
+## 6 Post grad        443
+```
+---
+
+# Controlling for a variable: Fewest assumptions
+
+
+```r
+p &lt;- dat %&gt;%
+  ggplot(aes(x = educ,y = realinc)) + 
+  geom_point() + 
+  geom_smooth() + 
+  facet_wrap(~paeduc_cat)
+```
+
+---
+
+# Controlling for a variable: Fewest assumptions
+
+
+```r
+p
+```
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-20-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable: More assumptions
+
+
+```r
+res &lt;- list()
+for(i in unique(dat$paeduc_cat)) {
+  res[[i]] &lt;- lm(realinc ~ educ,dat %&gt;% 
+                               filter(paeduc_cat == i))
+}
+
+# 8th grade or less
+summary(res$`8th gr or less`)$coefficients
+```
+
+```
+##              Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -4094.743  1895.8798 -2.159811 3.090795e-02
+## educ         2638.320   155.3523 16.982813 1.837192e-60
+```
+
+```r
+# High school dropout
+summary(res$`HS dropout`)$coefficients
+```
+
+```
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -25032.831  5205.0048 -4.809377 1.891422e-06
+## educ          4214.049   384.6927 10.954326 1.054385e-25
+```
+
+---
+
+# Controlling for a variable: More assumptions
+
+
+```r
+summary(res$`HS degree`)$coefficients
+```
+
+```
+##              Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -14886.42  4035.6943 -3.688688 2.320293e-04
+## educ          3719.78   286.8858 12.966065 7.714621e-37
+```
+
+```r
+summary(res$`Some college`)$coefficients
+```
+
+```
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -16141.506  7459.3985 -2.163915 3.083896e-02
+## educ          3842.219   503.8077  7.626360 8.735241e-14
+```
+
+```r
+summary(res$`College degree`)$coefficients
+```
+
+```
+##              Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept) -2362.143  9455.9203 -0.2498058 8.028172e-01
+## educ         3303.226   615.0864  5.3703446 1.098777e-07
+```
+
+```r
+summary(res$`Post grad`)$coefficients
+```
+
+```
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -23809.762 11727.1583 -2.030310 4.292470e-02
+## educ          4207.818   721.4021  5.832833 1.055368e-08
+```
+
+---
+
+# Controlling for a variable: More assumptions
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Controlling for a variable: Most assumptions
+
+
+```r
+summary(lm(realinc ~ educ + paeduc,dat))
+```
+
+```
+## 
+## Call:
+## lm(formula = realinc ~ educ + paeduc, data = dat)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -56323 -17681  -6192   7678 145622 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -14161.94    1675.30  -8.453  &lt; 2e-16 ***
+## educ          3241.01     138.12  23.464  &lt; 2e-16 ***
+## paeduc         494.37      96.74   5.110 3.31e-07 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 28890 on 6158 degrees of freedom
+## Multiple R-squared:  0.1289,	Adjusted R-squared:  0.1286 
+## F-statistic: 455.5 on 2 and 6158 DF,  p-value: &lt; 2.2e-16
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "17:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

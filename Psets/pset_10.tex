@@ -1,0 +1,251 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Problem Set 6},
+  pdfauthor={{[}YOUR NAME{]}},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Problem Set 6}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Quantitative Political Science}
+\author{{[}YOUR NAME{]}}
+\date{Due Date: 2024-11-18}
+
+\begin{document}
+\maketitle
+
+\section{Instructions}\label{instructions}
+
+For this assignment, you are to use the \texttt{counties.dta} dataset
+found on our class
+\href{https://github.com/jbisbee1/PSCI_8356_F2024/raw/refs/heads/main/Data/counties.dta}{github}.
+It comes from the City and County Data Book produced by the U.S. Census
+Bureau.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(tidyverse)}
+\FunctionTok{require}\NormalTok{(haven)}
+
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read\_dta}\NormalTok{(}\StringTok{\textquotesingle{}https://github.com/jbisbee1/PSCI\_8356\_F2024/raw/refs/heads/main/Data/counties.dta\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\paragraph{\texorpdfstring{1: Analyze the following questions using
+\texttt{R}, but answer them with a few sentences in plain
+English.}{1: Analyze the following questions using R, but answer them with a few sentences in plain English.}}\label{analyze-the-following-questions-using-r-but-answer-them-with-a-few-sentences-in-plain-english.}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Controlling for household income (\texttt{hhincome}), is the
+  percentage of a county's residents who have college degrees
+  (\texttt{college}) associated with crime rates (\texttt{crimerate})?
+  How so?
+\item
+  Construct a plot displaying the relationship between
+  \(\widehat{\textit{crimerate}}\) and \texttt{college}. To do this,
+  write a loop that generates the value of
+  \(\widehat{\textit{crimerate}}\) when \texttt{college} is equal to
+  \(5, 7,\dots,25\). (In doing so, you may find it helpful to use the
+  coefficients.) Then plot these connected points.
+\item
+  You are interested in how well this model applies to counties in New
+  York State. Construct a plot showing at a glance that Tompkins County,
+  has a crime rate much lower than predicted by a regression of
+  \texttt{crimerate} on \texttt{college} among counties in New York
+  State.
+\item
+  Look up Tompkins County on the Internet. Why might it be an outlier?
+  Does this suggest an additional control variable?
+\end{enumerate}
+
+\paragraph{2: Is unemployment higher in counties located in the South
+than those located outside the
+South?}\label{is-unemployment-higher-in-counties-located-in-the-south-than-those-located-outside-the-south}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Answer this question first with a \(t\)-test to compare group means.
+\item
+  Now answer this question by running a bivariate specification
+  regressing \texttt{unemprate} on the indicator variable
+  \texttt{south}.
+\item
+  Identify two important similarities found between the two analyses.
+\item
+  We require a lot more assumptions to perform the second analysis than
+  the first. In a few sentences, reflect upon why they are unnecessary
+  to answer the question posed above.
+\end{enumerate}
+
+\paragraph{3: Is the association between poverty and crime by county
+stronger in the South or outside the
+South?}\label{is-the-association-between-poverty-and-crime-by-county-stronger-in-the-south-or-outside-the-south}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Answer this question first by running two separate regressions.
+\item
+  Now answer this question using an interacted specification.
+\item
+  Identify two important similarities found between the estimated
+  generated by the two analyses.
+\item
+  Construct a plot with two lines: one showing
+  \(\widehat{\textit{crimerate}}\) by \texttt{povrate} among counties in
+  the South, and the other showing \(\widehat{\textit{crimerate}}\) by
+  \texttt{povrate} among non-Southern counties.
+\end{enumerate}
+
+\paragraph{4: Perform the necessary analyses to assess the accuracy of
+the following statements. In a few sentences, discuss each of your
+findings.}\label{perform-the-necessary-analyses-to-assess-the-accuracy-of-the-following-statements.-in-a-few-sentences-discuss-each-of-your-findings.}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  The bivariate relationship between poverty and crime is weaker where
+  local government spending (\texttt{locspendcap}) is higher.
+\item
+  The bivariate relationship between unemployment and crime is stronger
+  in densely populated counties (\texttt{density}).
+\item
+  Federal spending per capita (\texttt{fedspendcap}) plays a greater
+  role in reducing poverty than local spending per capita
+  (\texttt{locspendcap}), controlling for variables that may confound
+  these relationships.
+\end{enumerate}
+
+\paragraph{\texorpdfstring{5: Pretend to \textbf{not} be a dispassionate
+scholar but instead are someone with an agenda who wants to show that
+crime is caused by poverty. To do so, you are hell-bent on finding the
+combination of regressors (including \texttt{povrate}) that results in a
+very large coefficient on \texttt{povrate} when \texttt{crimerate} is
+regressed upon these
+regressors.}{5: Pretend to not be a dispassionate scholar but instead are someone with an agenda who wants to show that crime is caused by poverty. To do so, you are hell-bent on finding the combination of regressors (including povrate) that results in a very large coefficient on povrate when crimerate is regressed upon these regressors.}}\label{pretend-to-not-be-a-dispassionate-scholar-but-instead-are-someone-with-an-agenda-who-wants-to-show-that-crime-is-caused-by-poverty.-to-do-so-you-are-hell-bent-on-finding-the-combination-of-regressors-including-povrate-that-results-in-a-very-large-coefficient-on-povrate-when-crimerate-is-regressed-upon-these-regressors.}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\item
+  Choose 90 percent of your observations at random and set them aside.
+  Do not include these observations in the analysis.
+\item
+  Find the combination of variables that yields the highest possible
+  coefficient on \texttt{povrate} as a predictor of \texttt{crimerate}
+  that you can obtain.
+\item
+  Once you've arrived at a specification, note the results. Now, take
+  the rest of your dataset out of ``cold storage.'' How well does your
+  model do with these other data? What is the lesson learned?
+\end{enumerate}
+
+\end{document}

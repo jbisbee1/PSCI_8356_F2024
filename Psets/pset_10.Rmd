@@ -1,11 +1,12 @@
 ---
 title: "Problem Set 6"
-subtitle: "Quantitative Political Science"
-author: "[YOUR NAME]"
-institute: "Vanderbilt University"
+author: '[YOUR NAME]'
 date: "Due Date: 2024-11-18"
 output:
   html_document: default
+  pdf_document: default
+subtitle: Quantitative Political Science
+institute: Vanderbilt University
 ---
 
 ```{css,echo = F}
