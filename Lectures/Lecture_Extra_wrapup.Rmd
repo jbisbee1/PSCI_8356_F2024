@@ -677,16 +677,20 @@ ggdag(simple_dag_with_coords,text_size = 5) +
 
 ```{r,message=F,warning=F}
 require(tidyverse)
-require(haven) # To open .dta files
+# require(haven) # To open .dta files
 
-dat <- read_dta('../NFGH/GSS_stata/GSS_stata/gss7222_r1.dta')
+# dat <- read_dta('../NFGH/GSS_stata/GSS_stata/gss7222_r1.dta')
+# 
+# dat <- dat %>%
+#   select(realinc,educ,paeduc) %>%
+#   sample_n(size = 10000,replace = F) %>%
+#   drop_na()
+# 
+# gc()
+# 
+# write_rds(dat,file = './Data/gss7222_r1_sample.rds')
 
-dat <- dat %>%
-  select(realinc,educ,paeduc) %>%
-  sample_n(size = 10000,replace = F) %>%
-  drop_na()
-
-gc()
+dat <- read_rds()
 ```
 
 - (`gc()` helps save memory after I dropped thousands of rows and columns)
