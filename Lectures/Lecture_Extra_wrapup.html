@@ -50,6 +50,10 @@ Slides Updated: 2024-12-02
 
 2. Heteroskedasticity
 
+3. Controlling for a variable
+
+4. Odds and ends
+
 ---
 
 # Recap
@@ -279,18 +283,7 @@ $$
   
   - "Heteroskedasticity-robust standard errors"
   
----
 
-# Stepping Back
-
-- The easiest thing to do is just calculate robust standard errors with `\(\widehat{VAR(\hat{\beta}_1)} = \frac{\sum(x_i - \bar{x})^2\hat{u}_i^2}{SST_x^2}\)`
-
-- However, if our fifth assumption fails (remember: `\(VAR(u|x) = \sigma^2\)`), it means that the OLS estimator is no longer the ``best'' estimator
-
-- What do we mean by ``best''? The lowest-variance!
-
-  - As an aside, **B**est **L**inear **U**nbiased **E**stimator or BLUE is a commonly used acronym for the OLS estimators. Note that we can prove **U**nbiasedness with the first four assumptions, and assumption 5 gives us **B**est
-  
 ---
 
 # Estimating Error Variance
@@ -328,7 +321,7 @@ $$
 
 # Estimating Error Variance
 
-- As we discussed last week in the theoretical case, `\(\hat{\sigma}^2\)` is a very interesting quantity, because `\(\sqrt{\hat{\sigma}^2} = \hat{\sigma} \overset{p}\rightarrow \sigma\)`
+- As we discussed in the theoretical case, `\(\hat{\sigma}^2\)` is a very interesting quantity, because `\(\sqrt{\hat{\sigma}^2} = \hat{\sigma} \overset{p}\rightarrow \sigma\)`
 
   - `\(\hat{\sigma}\)` is expressed in units of `\(y\)`
   
@@ -530,13 +523,13 @@ summary(lm(Y~X))
 
 # Controlling for a variable
 
-- We talked last week about OVB (**O**mitted **V**ariable **B**ias)
+- We talked about OVB (**O**mitted **V**ariable **B**ias)
 
   - Subset of broader conversation about bias
   
 - We might want to "control" for `\(z\)` to remove OVB (preventing the `\(\beta_2 z_i + \nu_i\)` from being "buried in the `\(u\)`)
 
-  - But remember that failing to control for `\(z\)` is only a problem **if** either (1) `\(\beta_2 \neq 0\)` or (2) `\(cov(z,x) \neq 0\)`
+  - But remember that failing to control for `\(z\)` is only a problem **if** both (1) `\(\beta_2 \neq 0\)` and (2) `\(cov(z,x) \neq 0\)`
   
 - *Ceteris paribus*: "all things being equal"
   
@@ -630,20 +623,18 @@ summary(lm(Y~X))
 require(tidyverse)
 require(haven) # To open .dta files
 
-dat &lt;- read_dta('../NFGH/GSS_stata/GSS_stata/gss7222_r1.dta')
+# dat &lt;- read_dta('../NFGH/GSS_stata/GSS_stata/gss7222_r1.dta')
+# 
+# dat &lt;- dat %&gt;%
+#   select(realinc,educ,paeduc) %&gt;%
+#   sample_n(size = 10000,replace = F) %&gt;%
+#   drop_na()
+# 
+# gc()
+# 
+# write_rds(dat,file = './Data/gss7222_r1_sample.rds')
 
-dat &lt;- dat %&gt;%
-  select(realinc,educ,paeduc) %&gt;%
-  sample_n(size = 10000,replace = F) %&gt;%
-  drop_na()
-
-gc()
-```
-
-```
-##           used  (Mb) gc trigger   (Mb)  max used   (Mb)
-## Ncells 2674987 142.9    4435107  236.9   4435107  236.9
-## Vcells 4598705  35.1  567149983 4327.1 486528011 3712.0
+dat &lt;- read_rds('https://github.com/jbisbee1/PSCI_8356_F2024/raw/refs/heads/main/Data/gss7222_r1_sample.rds')
 ```
 
 - (`gc()` helps save memory after I dropped thousands of rows and columns)
@@ -662,20 +653,29 @@ dat %&gt;%
 ```
 
 ```
-## # A tibble: 21 × 2
-##    educ                    income
-##    &lt;dbl+lbl&gt;                &lt;dbl&gt;
-##  1 0 [no formal schooling] 16570.
-##  2 1                       21713.
-##  3 2                       14994.
-##  4 3                       11079.
-##  5 4                        9186.
-##  6 5                       12194.
-##  7 6                       14958.
-##  8 7                       13876.
-##  9 8                       15699.
-## 10 9                       18153.
-## # ℹ 11 more rows
+## # A tibble: 20 × 2
+##    educ                     income
+##    &lt;dbl+lbl&gt;                 &lt;dbl&gt;
+##  1  0 [no formal schooling]  8673 
+##  2  2                       23458.
+##  3  3                       19607.
+##  4  4                       15749.
+##  5  5                       11469.
+##  6  6                       13508.
+##  7  7                       14783.
+##  8  8                       16908.
+##  9  9                       19906.
+## 10 10                       22768.
+## 11 11                       23442.
+## 12 12                       29762.
+## 13 13                       29123.
+## 14 14                       35195.
+## 15 15                       33984.
+## 16 16                       48959.
+## 17 17                       47494.
+## 18 18                       53783.
+## 19 19                       57989.
+## 20 20                       66066.
 ```
 
 ---
@@ -780,12 +780,12 @@ dat %&gt;% count(paeduc_cat)
 ## # A tibble: 6 × 2
 ##   paeduc_cat         n
 ##   &lt;fct&gt;          &lt;int&gt;
-## 1 8th gr or less  1966
-## 2 HS dropout       639
-## 3 HS degree       1823
-## 4 Some college     644
-## 5 College degree   646
-## 6 Post grad        443
+## 1 8th gr or less  2038
+## 2 HS dropout       650
+## 3 HS degree       1796
+## 4 Some college     598
+## 5 College degree   608
+## 6 Post grad        430
 ```
 ---
 
@@ -829,8 +829,8 @@ summary(res$`8th gr or less`)$coefficients
 
 ```
 ##              Estimate Std. Error   t value     Pr(&gt;|t|)
-## (Intercept) -4094.743  1895.8798 -2.159811 3.090795e-02
-## educ         2638.320   155.3523 16.982813 1.837192e-60
+## (Intercept) -2737.961  1914.1793 -1.430358 1.527678e-01
+## educ         2578.537   155.4847 16.583864 4.907750e-58
 ```
 
 ```r
@@ -840,8 +840,8 @@ summary(res$`HS dropout`)$coefficients
 
 ```
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
-## (Intercept) -25032.831  5205.0048 -4.809377 1.891422e-06
-## educ          4214.049   384.6927 10.954326 1.054385e-25
+## (Intercept) -10296.172  5918.7366 -1.739589 8.240594e-02
+## educ          3302.327   436.9071  7.558419 1.398166e-13
 ```
 
 ---
@@ -854,9 +854,9 @@ summary(res$`HS degree`)$coefficients
 ```
 
 ```
-##              Estimate Std. Error   t value     Pr(&gt;|t|)
-## (Intercept) -14886.42  4035.6943 -3.688688 2.320293e-04
-## educ          3719.78   286.8858 12.966065 7.714621e-37
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -19752.978  4065.6712 -4.858479 1.285800e-06
+## educ          4093.599   291.2128 14.057071 1.171362e-42
 ```
 
 ```r
@@ -865,8 +865,8 @@ summary(res$`Some college`)$coefficients
 
 ```
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
-## (Intercept) -16141.506  7459.3985 -2.163915 3.083896e-02
-## educ          3842.219   503.8077  7.626360 8.735241e-14
+## (Intercept) -29378.383  8248.1128 -3.561831 3.976952e-04
+## educ          4965.406   555.6254  8.936607 4.990469e-18
 ```
 
 ```r
@@ -874,9 +874,9 @@ summary(res$`College degree`)$coefficients
 ```
 
 ```
-##              Estimate Std. Error    t value     Pr(&gt;|t|)
-## (Intercept) -2362.143  9455.9203 -0.2498058 8.028172e-01
-## educ         3303.226   615.0864  5.3703446 1.098777e-07
+##               Estimate Std. Error   t value     Pr(&gt;|t|)
+## (Intercept) -13093.867   9643.725 -1.357760 1.750451e-01
+## educ          3863.467    626.462  6.167121 1.270992e-09
 ```
 
 ```r
@@ -885,8 +885,8 @@ summary(res$`Post grad`)$coefficients
 
 ```
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
-## (Intercept) -23809.762 11727.1583 -2.030310 4.292470e-02
-## educ          4207.818   721.4021  5.832833 1.055368e-08
+## (Intercept) -28133.839 12637.5718 -2.226206 2.652031e-02
+## educ          4618.406   778.1796  5.934885 6.079215e-09
 ```
 
 ---
@@ -911,21 +911,849 @@ summary(lm(realinc ~ educ + paeduc,dat))
 ## 
 ## Residuals:
 ##    Min     1Q Median     3Q    Max 
-## -56323 -17681  -6192   7678 145622 
+## -59141 -18613  -6731   7948 167351 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -14161.94    1675.30  -8.453  &lt; 2e-16 ***
-## educ          3241.01     138.12  23.464  &lt; 2e-16 ***
-## paeduc         494.37      96.74   5.110 3.31e-07 ***
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -14870.1     1726.5  -8.613  &lt; 2e-16 ***
+## educ          3375.4      141.1  23.930  &lt; 2e-16 ***
+## paeduc         461.0       99.9   4.614 4.03e-06 ***
 ## ---
 ## Signif. codes:  
 ## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 28890 on 6158 degrees of freedom
-## Multiple R-squared:  0.1289,	Adjusted R-squared:  0.1286 
-## F-statistic: 455.5 on 2 and 6158 DF,  p-value: &lt; 2.2e-16
+## Residual standard error: 29770 on 6117 degrees of freedom
+## Multiple R-squared:  0.1281,	Adjusted R-squared:  0.1279 
+## F-statistic: 449.5 on 2 and 6117 DF,  p-value: &lt; 2.2e-16
 ```
+
+---
+
+# FWL and Partialling Out
+
+- To understand what multiple regression looks like in matrix form, we need some helper concepts
+
+- The "residual maker" is a matrix `\(\mathbf{M}\)` that, when multiplied by `\(\mathbf{y}\)`, creates **residuals** `\(\mathbf{u}\)`
+
+- Start with the definition of the residual: `\(\mathbf{u} = \mathbf{y} - \hat{\mathbf{y}}\)` and substitute `\(\hat{\mathbf{y}} = \mathbf{X}\hat{\beta}\)` in
+
+$$
+`\begin{aligned}
+\mathbf{u} &amp;= \mathbf{y} - \mathbf{X}\hat{\beta}
+\end{aligned}`
+$$
+- Now replace `\(\hat{\beta}\)` with the definition `\((\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}\)`
+
+$$
+`\begin{aligned}
+\mathbf{u} &amp;= \mathbf{y} - \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}\\
+&amp;= (\mathbf{I} - \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top)\mathbf{y}\\
+&amp;= \mathbf{M}\mathbf{y}
+\end{aligned}`
+$$
+
+---
+
+# FWL and Partialling Out
+
+- `\(\mathbf{M}\)` is super helpful. It is both square and **idempotent**, meaning that `\(\mathbf{M}\mathbf{M} = \mathbf{M}\)`. (Try proving this for yourself!)
+
+- It also has the properties:
+
+  1. `\(\mathbf{M}\mathbf{X} = \mathbf{0}\)`
+  
+  2. `\(\mathbf{M}\mathbf{u} = \mathbf{u}\)`
+
+---
+
+# FWL and Partialling Out
+
+- The "hat" matrix is a matrix `\(\mathbf{H}\)` that, when multiplied by `\(\mathbf{y}\)`, creates **predicted values** `\(\mathbf{\hat{y}}\)`
+
+$$
+`\begin{aligned}
+\hat{\mathbf{y}} &amp;= \mathbf{y} - \mathbf{u} \\
+&amp;= (\mathbf{I} - \mathbf{M})\mathbf{y} \\
+&amp;= \mathbf{H}\mathbf{y}
+\end{aligned}`
+$$
+- So we now have `\(\mathbf{M} = \mathbf{I} - \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)` and `\(\mathbf{H} = \mathbf{I} - \mathbf{M}\)`
+
+- But this just means `\(\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\)`
+
+---
+
+# FWL and Partialling Out
+
+- These "hat" and "residual maker" matrices can help us understand OVB and, more generally, what "controlling" for a variable means in the matrix world
+
+- Consider the classic example where the true regression equation is given by `\(\mathbf{y} = \mathbf{x}_1\beta_1 + \mathbf{x}_2\beta_2 + u\)`, but we mistakenly omit `\(\mathbf{x}_2\)`
+
+- The true normal equation is:
+
+$$
+`\begin{aligned}
+\left[ {\begin{array}{cc}
+\mathbf{x}^\top_1\mathbf{x}_1 &amp; \mathbf{x}^\top_1\mathbf{x}_2 \\
+\mathbf{x}^\top_2\mathbf{x}_1 &amp; \mathbf{x}^\top_2\mathbf{x}_2 
+  \end{array} } \right]^{-1}\cdot 
+  \left[ {\begin{array}{c}
+\mathbf{x}_1\mathbf{y} \\
+\mathbf{x}_2\mathbf{y}
+  \end{array} } \right] &amp;= 
+  \left[ {\begin{array}{c}
+\hat{\beta}_1 \\
+\hat{\beta}_2
+  \end{array} } \right]
+\end{aligned}`
+$$
+
+---
+
+# FWL and Partialling Out
+
+- First, solve for `\(\hat{\beta}_1\)`
+
+$$
+`\begin{aligned}
+(\mathbf{x}_1^\top\mathbf{x}_1)\hat{\beta}_1 + (\mathbf{x}_1^\top\mathbf{x}_2)\hat{\beta}_2 &amp;= \mathbf{x}_1^\top\mathbf{y}\\
+(\mathbf{x}_1^\top\mathbf{x}_1)\hat{\beta}_1 &amp;= \mathbf{x}_1^\top\mathbf{y} -  (\mathbf{x}_1^\top\mathbf{x}_2)\hat{\beta}_2\\
+\hat{\beta}_1 &amp;= (\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} - (\mathbf{x}_1^\top\mathbf{x}_1)^{-1}(\mathbf{x}_1^\top\mathbf{x}_2)\hat{\beta}_2\\
+\hat{\beta}_1 &amp;= (\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top(\mathbf{y} - \mathbf{x}_2\hat{\beta}_2)
+\end{aligned}`
+$$
+
+- Recognize this? 
+
+--
+
+  - `\((\mathbf{x}^\top_1\mathbf{x}_1)^{-1}\mathbf{x}^\top_1\mathbf{x}_2\)` is the regression of `\(\mathbf{x}_2\)` on `\(\mathbf{x}_1\)`. This will be zero if `\(\mathbf{x}_2\)` is unrelated to `\(\mathbf{x}_1\)`
+  
+  - `\(\hat{\beta}_2\)` is the relationship between `\(\mathbf{y}\)` and `\(\mathbf{x}_2\)`.
+  
+--
+
+- **This is just OVB in matrix form**
+
+---
+
+# FWL and Partialling Out
+
+- Now let's see what happens when we control for `\(\mathbf{x}_2\)`
+
+- Start with `\(\hat{\beta}_1 = (\mathbf{x}^\top_1\mathbf{x}_1)^{-1}\mathbf{x}^\top_1(\mathbf{y} - \mathbf{x}_2\hat{\beta}_2)\)`
+
+- Then do direct multiplication on the second row in 
+
+$$
+`\begin{aligned}
+\left[ {\begin{array}{cc}
+\mathbf{x}^\top_1\mathbf{x}_1 &amp; \mathbf{x}^\top_1\mathbf{x}_2 \\
+\mathbf{x}^\top_2\mathbf{x}_1 &amp; \mathbf{x}^\top_2\mathbf{x}_2 
+  \end{array} } \right]^{-1}\cdot 
+  \left[ {\begin{array}{c}
+\mathbf{x}_1\mathbf{y} \\
+\mathbf{x}_2\mathbf{y}
+  \end{array} } \right] &amp;= 
+  \left[ {\begin{array}{c}
+\hat{\beta}_1 \\
+\hat{\beta}_2
+  \end{array} } \right]
+\end{aligned}`
+$$
+- to yield `\(\mathbf{x}_2^\top\mathbf{x}_1\hat{\beta}_1 + \mathbf{x}_2^\top\mathbf{x}_2\hat{\beta}_2 = \mathbf{x}_2^\top\mathbf{y}\)`
+
+- Finally, substitute in our definition of `\(\hat{\beta}_1\)` to get `\(\mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{x}_2\hat{\beta}_2 + \mathbf{x}_2^\top\mathbf{x}_2\hat{\beta}_2 = \mathbf{x}_2^\top\mathbf{y}\)`
+
+---
+
+# FWL and Partialling Out
+
+- So this is horrible, but try this!
+
+$$
+`\begin{aligned}
+\mathbf{x}_2^\top\mathbf{y} - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} &amp;= \mathbf{x}_2^\top\mathbf{x}_2\hat{\beta}_2 - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{x}_2\hat{\beta}_2\\
+\mathbf{x}_2^\top\mathbf{y} - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} &amp;= [\mathbf{x}_2^\top\mathbf{x}_2 - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{x}_2]\hat{\beta}_2\\
+\mathbf{x}_2^\top\mathbf{y} - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} &amp;= [(\mathbf{x}_2^\top - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{x}_2]\hat{\beta}_2\\
+\mathbf{x}_2^\top\mathbf{y} - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top\mathbf{y} &amp;= [(\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{x}_2]\hat{\beta}_2\\
+(\mathbf{x}_2^\top - \mathbf{x}_2^\top\mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{y} &amp;= [(\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{x}_2]\hat{\beta}_2\\
+\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{y} &amp;= [(\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{x}_2]\hat{\beta}_2\\
+\hat{\beta}_2 &amp;= [(\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{x}_2]^{-1}\mathbf{x}_2^\top(\mathbf{I} - \mathbf{x}_1(\mathbf{x}_1^\top\mathbf{x}_1)^{-1}\mathbf{x}_1^\top)\mathbf{y}\\
+&amp;= (\mathbf{x}_2^\top\mathbf{M}_1\mathbf{x}_2)^{-1}(\mathbf{x}_2^\top\mathbf{M}_1\mathbf{y})
+\end{aligned}`
+$$
+
+---
+
+# FWL and Partialling Out
+
+- So we now have `\(\hat{\beta}_2 = (\mathbf{x}_2^\top\mathbf{M}_1\mathbf{x}_2)^{-1}(\mathbf{x}_2^\top\mathbf{M}_1\mathbf{y})\)`
+
+- Remember that `\(\mathbf{M}\)` is the residual maker, meaning that `\(\mathbf{M}_1\)` is making residuals for regressions on the `\(\mathbf{x}_1\)` variables
+
+--
+
+  - `\(\mathbf{M}_1\mathbf{y}\)` therefore creates residuals from regressing `\(\mathbf{y}\)` on `\(\mathbf{x}_1\)`
+  
+  - `\(\mathbf{M}_1\mathbf{x}_2\)` therefore creates residuals from regressing `\(\mathbf{x}_2\)` on `\(\mathbf{x}_1\)`
+  
+--
+
+- Since `\(\mathbf{M}\)` is both idempotent and symmetric, we can rewrite as `\(\hat{\beta}_2 = (\mathbf{x}^{*\top}_2\mathbf{x}_2)^{-1}\mathbf{x}^{*\top}_2\mathbf{y}^*\)`
+
+  - Where `\(\mathbf{x}_2^* = \mathbf{M}_1\mathbf{x}_2\)` and `\(\mathbf{y}^* = \mathbf{M}_1\mathbf{y}\)`
+  
+--
+
+- This leads to the **Frisch-Waugh-Lovell** Theorem: In the OLS regression of a vector `\(\mathbf{y}\)` on two sets of variables `\(\mathbf{x}_1\)` and `\(\mathbf{x}_2\)`, `\(\hat{\beta}_2\)` is the coefficient obtained when the residuals from a regression of `\(\mathbf{y}\)` on `\(\mathbf{x}_1\)` alone are regressed on the set of residuals obtained when `\(\mathbf{x}_2\)` is regressed on `\(\mathbf{x}_1\)`
+
+---
+
+# FWL and Partialling Out
+
+- Imagine the following model (reverting back to the layperson's notation here): `\(Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + u\)`
+
+- According to FWL:
+
+  1. Regress `\(Y\)` on `\(X_1\)` and obtain the residuals `\(\hat{u}_1\)` (i.e., `\(\mathbf{M}_1\mathbf{y}\)` in matrix notation)
+  
+  2. Regress `\(X_2\)` on `\(X_1\)` and obtain the residuals `\(\hat{u}_2\)` (i.e., `\(\mathbf{M}_1\mathbf{x}_2\)` in matrix notation)
+  
+  3. Regress `\(\hat{u}_1\)` on `\(\hat{u}_2\)`: `\(\hat{u}_1 = \rho_0 + \rho_1 \hat{u}_2 + \epsilon\)`
+  
+--
+
+- `\(\hat{\beta}_2\)` will be equal to `\(\hat{\rho}_1\)`!
+
+--
+
+- Step 2 is called "partialling out" or "netting out" the effect of `\(X_1\)`. For this reason, the coefficients in multiple regression are often referred to as "partial regression coefficients". 
+
+---
+
+# FWL and Partialling Out
+
+- Let's try it!
+
+
+```r
+X1 &lt;- rnorm(100)
+X2 &lt;- rnorm(100)
+
+# True beta_1 = 1, beta_2 = -1, beta_3 = 3
+Y &lt;- X1 - X2 + rnorm(100) 
+
+# Multiple regression
+mFull &lt;- lm(Y ~ X1 + X2)
+
+# FWL way
+u_1 &lt;- resid(lm(Y ~ X1))
+u_2 &lt;- resid(lm(X2 ~ X1))
+mRes &lt;- lm(u_1 ~ u_2)
+```
+
+---
+
+# FWL and Partialling Out
+
+- As promised, we get the same estimates for `\(\hat{\beta}_2\)` whether we estimate them in the standard multiple regression setting, or if we use the FWL residualizer approach
+
+
+```r
+# Same coefficients!
+round(coef(mFull)[c(3)],4)
+```
+
+```
+##      X2 
+## -1.0277
+```
+
+```r
+round(coef(mRes)[c(2)],4)
+```
+
+```
+##     u_2 
+## -1.0277
+```
+
+
+---
+
+
+---
+
+# FWL and Partialling Out
+
+- Imagine the following model (reverting back to the layperson's notation here): `\(Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + u\)`
+
+- According to FWL:
+
+  1. Regress `\(Y\)` on `\(X_1\)` and obtain the residuals `\(\hat{u}_1\)` (i.e., `\(\mathbf{M}_1\mathbf{y}\)` in matrix notation)
+  
+  2. Regress `\(X_2\)` on `\(X_1\)` and obtain the residuals `\(\hat{u}_2\)` (i.e., `\(\mathbf{M}_1\mathbf{x}_2\)` in matrix notation)
+  
+  3. Regress `\(X_3\)` on `\(X_1\)` and obtain the residuals `\(\hat{u}_3\)` (i.e., `\(\mathbf{M}_1\mathbf{x}_3\)` in matrix notation)
+  
+  4. Regress `\(\hat{u}_1\)` on `\(\hat{u}_2\)` and `\(\hat{u}_3\)`: `\(\hat{u}_1 = \rho_0 + \rho_1 \hat{u}_2 + \rho_2 \hat{u}_3 + \epsilon\)`
+  
+--
+
+- `\(\hat{\beta}_2\)` will be equal to `\(\hat{\rho}_1\)` and `\(\hat{\beta}_3\)` will be equal to `\(\hat{\rho}_3\)`!
+
+--
+
+- Steps 2 and 3 are called "partialling out" or "netting out" the effect of `\(X_1\)`. For this reason, the coefficients in multiple regression are often referred to as "partial regression coefficients". 
+
+---
+
+# FWL and Partialling Out
+
+- Let's try it!
+
+
+```r
+X1 &lt;- rnorm(100)
+X2 &lt;- rnorm(100)
+X3 &lt;- rnorm(100)
+
+# True beta_1 = 1, beta_2 = -1, beta_3 = 3
+Y &lt;- X1 - X2 + 3*X3 + rnorm(100) 
+
+# Multiple regression
+mFull &lt;- lm(Y ~ X1 + X2 + X3)
+
+# FWL way
+u_1 &lt;- resid(lm(Y ~ X1))
+u_2 &lt;- resid(lm(X2 ~ X1))
+u_3 &lt;- resid(lm(X3 ~ X1))
+mRes &lt;- lm(u_1 ~ u_2 + u_3)
+```
+
+---
+
+# FWL and Partialling Out
+
+- As promised, we get the same estimates for `\(\hat{\beta}_2\)` and `\(\hat{\beta}_3\)` whether we estimate them in the standard multiple regression setting, or if we use the FWL residualizer approach
+
+
+```r
+# Same coefficients!
+round(coef(mFull)[c(3,4)],4)
+```
+
+```
+##      X2      X3 
+## -1.1152  3.0000
+```
+
+```r
+round(coef(mRes)[c(2,3)],4)
+```
+
+```
+##     u_2     u_3 
+## -1.1152  3.0000
+```
+
+
+---
+
+# Regression Diagnostics
+
+- We have so many assumptions at this point! (How many can you list?)
+
+--
+
+  1. Linearity
+  
+  2. I.i.d. random sample
+  
+  3. Non-zero variance / no multicolinearity
+  
+  4. Zero-conditional mean
+  
+  5. Homoskedasticity / spherical errors
+  
+  6. Normally distributed errors (small samples)
+  
+--
+
+- How can we be confident in these assumptions? **Diagnostics** (to an extent)
+
+---
+
+# Regression Diagnostics
+
+- Running example of two DGPs
+
+--
+
+- DGP 1:
+
+$$
+`\begin{aligned}
+\textit{Income}_i &amp;= 15 + 6*\textit{Labor}_i + 40*\textit{PhD}_i + u_i
+\end{aligned}`
+$$
+
+where `\(u \sim \mathcal{N}(0,5)\)` and i.i.d. holds
+
+--
+
+- DGP 2:
+
+$$
+`\begin{aligned}
+\textit{Income}_i &amp;= 15 + 6*\textit{Labor}_i + 40*\textit{PhD}_i + \textit{Labor}_i^2 + u_i
+\end{aligned}`
+$$
+where `\(u_i = 0.5*\textit{Labor}_i*e_i\)`,  `\(e_i \sim \mathcal{N}(0,5)\)` and i.i.d. holds
+
+--
+
+- Note that our assumptions hold by construction in DGP 1, but not in DGP 2
+
+--
+
+  - Specifically, zero conditional mean holds only if *Labor* is mean zero
+  
+  - In addition, the errors are not homoskedastic
+  
+---
+
+# Regression Diagnostics
+
+- Estimate with `\(\textit{Income}_i = \beta_0 + \beta_1 \textit{Labor}_i + \beta_2 \textit{PhD}_i + u_i\)`
+
+
+
+
+```r
+m1 &lt;- lm(inc ~ labor + phd, data = data)
+## Did we reproduce the truth?
+summary(m1)
+```
+
+```
+## 
+## Call:
+## lm(formula = inc ~ labor + phd, data = data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -13.5052  -3.5249  -0.2899   3.1433  12.7515 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 13.64262    0.94620   14.42   &lt;2e-16 ***
+## labor        6.11087    0.04866  125.59   &lt;2e-16 ***
+## phd         40.08627    0.83957   47.75   &lt;2e-16 ***
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 5.139 on 147 degrees of freedom
+## Multiple R-squared:  0.9921,	Adjusted R-squared:  0.992 
+## F-statistic:  9201 on 2 and 147 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Regression Diagnostics
+
+- Visualize the results
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-31-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Regression Diagnostics
+
+- What if we are in the DGP2 world?
+
+
+
+
+```r
+m2 &lt;- lm(inc ~ labor + phd, data = data2)
+
+summary(m2)
+```
+
+```
+## 
+## Call:
+## lm(formula = inc ~ labor + phd, data = data2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -143.12  -55.84  -13.86   58.68  216.07 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -127.7281    13.1058  -9.746   &lt;2e-16 ***
+## labor         35.6213     0.6945  51.287   &lt;2e-16 ***
+## phd           33.4525    12.1629   2.750   0.0067 ** 
+## ---
+## Signif. codes:  
+## 0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 74.47 on 147 degrees of freedom
+## Multiple R-squared:  0.9471,	Adjusted R-squared:  0.9464 
+## F-statistic:  1317 on 2 and 147 DF,  p-value: &lt; 2.2e-16
+```
+
+---
+
+# Regression Diagnostics
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-34-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Regression Diagnostics
+
+- We are doing a bad job because:
+
+  1. Income is not a linear function of labor and degree
+  
+  2. Errors are not mean zero
+  
+  3. Errors are not homoskedastic
+  
+--
+
+- We **know** all this because we simulated these data
+
+- But in reality, we typically never know what the true DGP is...how can we be alerted to the fact something is wrong with our model?
+
+---
+
+# Regression Diagnostics
+
+- We can **look** at our residuals in a number of ways that inform us about our model's fit
+
+--
+
+1. Residuals vs. Fitted Values: Tells us if the data are roughly linear (smoother is roughly a horizontal line) and if there is heteroskedasticity (residuals are larger for some observations than for others)
+
+2. Normal Q-Q Plot: Compares quantiles of our observed residuals to quantiles of hypothetical residuals that are normally distributed. If points cling to the 45 degree line, the residuals are normally distributed.
+
+3. Scale-Location Plot: Similar to Residuals vs. Fitted, except we put the y-axis is now the square root of the standardized residuals. Also informs us about heteroskedasticity (shouldn't see a pattern) and identifies potential outliers
+
+4. Residuals vs.k Leverage: Visualizes the **influence** of each observation on the regression coefficients. Points that are far from other points, especially those that are close to the dashed red lines, are problematic.
+
+--
+
+- Let's look at each in turn (`R` will produce all four by default if you simply run `plot(m1)` on your regression model)
+
+---
+
+# Residuals vs. Fitted
+
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-35-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Normal Q-Q Plot
+
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Scale-Location
+
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Residuals vs. Leverage
+
+
+&lt;img src="Lecture_Extra_wrapup_files/figure-html/unnamed-chunk-38-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Regression Diagnostics
+
+- Problematic points: points can be unusual, but not all unusual points are problems
+
+--
+
+- Consider three types of points:
+
+--
+
+  1. Outlier Point: an observation with a **large residual**
+  
+  2. Leverage Point: an observation with an extreme value for `\(x\)`
+  
+  3. Influential Point: an observation that changes the slope of the regression line
+  
+--
+
+- Always good to look at **influential points** to ensure there isn't an error in the measurement
+
+--
+
+  - But NOT always necessary to blindly throw them out
+  
+  - Better to characterize how sensitive the results are to them
+
+---
+
+# Choosing Variables
+
+- With all this in mind, **how do you choose your variables** and **specify your regression equation**?
+
+--
+
+- We know we want to specify the true relationships, but how do we do this in practice?
+
+--
+
+- Theory, *theory*, **theory** is essential and should come first
+
+--
+
+  - This can be formalized with models, or it can be described with intuition, but no amount of diagnostic plots can replace careful theorizing prior to analysis
+  
+--
+
+- That being said, let's consider some additional tests
+
+--
+
+- One simple method is to compare two specifications, say one that includes `\(x_2\)` as a control and another that doesn't
+
+--
+
+  - How can we compare these models?
+
+---
+
+# Goodness of Fit
+
+- Recall the definition of the `\(R^2\)` from the simple regression case
+
+$$
+`\begin{aligned}
+R^2 &amp;= \frac{\sum(\hat{y}_i - \bar{y})^2}{\sum(y_i - \bar{y})^2}\\
+&amp;= \frac{SSE}{SST} \\
+&amp;= 1 - \frac{SSR}{SST}
+\end{aligned}`
+$$
+- where `\(SSE\)` is the explained sum of squares and `\(SSR\)` is the residual sum of squares
+
+--
+
+- The `\(R^2\)` will never decrease as we add additional predictors
+
+--
+
+  - This is because the denominator doesn't change, but the numerator will either increase or stay the same with additional predictors
+  
+--
+
+- This makes the `\(R^2\)` a pretty terrible metric for comparing models!
+
+---
+
+# Goodness of Fit
+
+- Instead, we typically use the adjusted `\(R\)`-square value:
+
+$$
+`\begin{aligned}
+R^2_{adj} &amp;= 1 - \left[\frac{\frac{SSR}{(n-k-1)}}{\frac{SST}{(n-1)}}\right]\\
+&amp;= 1 - \frac{\frac{\hat{\sigma}^2_u}{(n-k-1)}}{\frac{SST}{(n-1)}}\\
+\end{aligned}`
+$$
+--
+
+- By construction, this will only increase with a new predictor if that variable's `\(t\)`-statistic is greater than 1 in absolute value
+
+--
+
+$$
+R^2_{adj} = 1 - \frac{(1-R^2)(n-1)}{(n-k-1)}
+$$
+
+--
+
+- On your own, think about when the `\(R^2\)` and `\(R^2_{adj}\)` will be similar and different?
+
+---
+
+# Too many variables
+
+- Define a variable (denoted `\(W\)`) as **irrelevant** if it has not partial effect on `\(y\)` in the population: `\(\frac{\partial y}{\partial W} = 0\)`
+
+--
+
+- If we include `\(W\)` in our model (aka "overspecifying the model") will not bias the estimates since it does not violate our assumptions 1 through 4
+
+  - In other words, if the true model is `\(y = \beta_0 + \beta_1 x + u\)` but we specify `\(y = \beta_0 + \beta_1 x + \beta_2 W + u\)`, all `\(\hat{\beta}\)` will be unbiased
+  
+--
+
+- However, we can still harm our model if `\(W\)` is collinear with `\(x\)`
+
+--
+
+  - Recall that `\(Var(\hat{\beta}_j) = \frac{\sigma^2}{n*var(x_j)*(1 - R^2_j)}\)` where `\(R^2_j\)` is the `\(R\)`-squared obtained from regressing `\(x_j\)` on all other independent variables in the model
+  
+  - If `\(W\)` is correlated with `\(x\)`, then `\(Var(\hat{\beta}_1)\)` will become inflated, meaning our model is less **efficient**
+  
+  - Put a different way, our statistical power decreases, increasing the likelihood of falsely accepting the null
+  
+---
+
+# Too many variables
+
+- You can assess this threat by calculating each `\(R^2_j\)` yourself
+
+--
+
+  - Also can calculate the **variance inflation factor** (VIF): `\(VIF(\hat{\beta}_j) = \frac{1}{1 - R^2_j}\)`
+  
+  - Can rewrite `\(Var(\hat{\beta}_j) = \frac{\sigma^2}{n*var(x_j)}VIF(\hat{\beta}_j)\)`, which is where it gets it's name...the factor by which `\(Var(\hat{\beta}_j)\)` is inflated due to the fact that `\(x_j\)` is correlated with other `\(x\)`'s in the model
+  
+--
+
+- However, we will sometimes *want* to include controls that are correlated with `\(y\)` but are **not** correlated with `\(x\)`
+
+--
+
+  - Note that these are not necessary to recover unbiased estimates (remember the definition of OVB?)
+  
+--
+
+- Why do we want to control for some `\(Z\)` where `\(\frac{\partial x}{\partial Z} = 0\)` but `\(\frac{\partial y}{\partial Z} \neq 0\)`?
+
+--
+
+  - It helps explain variation in `\(y\)`, meaning that `\(\sigma^2\)` is lower, meaning `\(Var(\hat{\beta}_j)\)` is also lower
+  
+  - In other words, it makes all our estimates more **efficient**
+
+---
+
+# Hypotheses about Parameters
+
+- Thus far, we've always been implicitly interested in a single coefficient, or testing each one at a time
+
+--
+
+- But we might be interested in how two coefficients related to each other
+
+  - For example, your book has the example where researchers are interested whether the effect on income of an additional year of education at a junior college is as much as the effect of an additional year of education at four-year university.
+  
+  - The idea here is that `\(jc\)`'s are lower status in the U.S. than universities, so maybe employers value these years of education less.
+  
+  - (A complementary hypothesis would be that a jc education may be of lower quality.) 
+  
+- The model assumed is `\(\log(wage) = \beta_{0}+\beta_{1}jc+\beta_{2}univ+\beta_{3}work+u\)`
+
+---
+
+# Hypotheses about Parameters
+
+- If we are interested in whether there is a **difference** in returns to education from junior colleges and universities, what is the appropriate null hypothesis?
+
+--
+
+- `\(H_0: \beta_1 = \beta_2\)`
+
+- And the alternative?
+
+--
+
+- `\(H_A: \beta_1 &lt; \beta_2\)`
+
+- We can re-write as:
+
+$$
+`\begin{aligned}
+H_0&amp;: \beta_1 - \beta_2 = 0\\
+H_A&amp;: \beta_1 - \beta_2 &lt; 0
+\end{aligned}`
+$$
+
+- Thus our quantity of interest is `\(\beta_1 - \beta_2\)` and our test statistic is `\(\frac{\hat{\beta}_1 - \hat{\beta}_2}{se(\hat{\beta}_1 - \hat{\beta}_2)}\)`
+
+---
+
+# Hypotheses about Parameters
+
+- What is `\(se(\hat{\beta}_1 - \hat{\beta}_2)\)`?
+
+$$
+`\begin{aligned}
+se(\hat{\beta}_1 - \hat{\beta}_2) &amp;= \sqrt{var(\hat{\beta}_1 - \hat{\beta}_2)}~~~\text{and}\\
+var(\hat{\beta}_1 - \hat{\beta}_2) &amp;= var(\hat{\beta}_1) + var(\hat{\beta}_2) - 2cov(\hat{\beta}_1,\hat{\beta}_2) ~~\text{so}\\
+se(\hat{\beta}_1 - \hat{\beta}_2) &amp;= \sqrt{var(\hat{\beta}_1) + var(\hat{\beta}_2) - 2cov(\hat{\beta}_1,\hat{\beta}_2)}
+\end{aligned}`
+$$
+--
+
+- We can just grab these values from the variance-covariance matrix of estimated betas
+
+--
+
+- Or we can do an even easier trick! Let's denote `\(\theta = \beta_1 - \beta_2\)`, meaning that `\(\beta_1 = \theta + \beta_2\)`
+
+- Therefore:
+
+$$
+`\begin{aligned}
+\log (wage) &amp;= \beta_{0}+\beta_{1}jc+\beta_{2}univ+\beta _{3}work+u\\
+&amp;= \beta_{0}+(\theta + \beta_2)jc+\beta_{2}univ+\beta _{3}work+u\\
+&amp;= \beta_{0}+\theta jc+\beta_{2}(univ+jc) + \beta _{3}work+u\\
+\end{aligned}`
+$$
+--
+
+- So easy! Just create a new variable that is the sum of `\(univ\)` and `\(jc\)` and look at the coefficient on `\(jc\)`!
+
+---
+
+# Multiple Linear Restrictions
+
+
+- What if we want to know if a **group** of predictors are **jointly** significant?
+
+- Start by defining an **unrestricted** model as `\(UR: y = \beta_0 + \beta_1 x_1 + \dots + \beta_k x_k + u\)`
+
+- Then take the group of variables we are interested in evaluating and move them to the end of the regression
+
+--
+
+  - I.e., if there are `\(q\)` variables we want to test are jointly significant, denote these as `\(\beta_{k-q+1}, \beta_{k-q+2}\)` etc.
+  
+  - Thus our null hypothesis is `\(H_0: \beta_{k-q+1} = \beta_{k-q+2} = \dots = \beta_k = 0\)`
+  
+--
+
+- We can write a restricted model as `\(R: y = \beta_0 + \beta_1 x_1 + \dots + \beta_{k-q}x_{k-q} + u\)`
+
+- To test, we use the `\(F\)`-statistic defined as `\(F \equiv \frac{(SSR_r - SSR_{ur})/q}{SSR_{ur}/ (n-k-1)}\)`
+
+--
+
+  - Note that, since `\(SSR_r \geq SSR_{ur}\)`, `\(F &gt; 0\)`
+  
+--
+
+- This is the ratio of two independent `\(\chi^2\)` random variables, divided by their respective degrees of freedom
+
+- We can therefore conduct hypothesis testing using this: if it is extremely unlikely that we would obtain the observed `\(F\)`-statistic by chance, we reject the null `\(H_0\)`
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
